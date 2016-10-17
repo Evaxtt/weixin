@@ -1,0 +1,73 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="title" content="悦享源场馆预定">
+	<meta name="description" content="">
+	<meta name="keywords" content="">
+	<title>悦享源场馆预定</title>
+	<link href="./css/bootstrap-combined.min.css" rel="stylesheet">
+	<link href="./css/layoutit.css" rel="stylesheet">
+	<link rel="stylesheet" href="http://apps.bdimg.com/libs/fontawesome/4.2.0/css/font-awesome.min.css">
+	<!--[if lt IE 9]>
+			<script src="js/html5shiv.js"></script>
+		<![endif]-->
+	<link rel="shortcut icon" href="img/favicon.png">
+	<script type="text/javascript" src="./js/jquery-2.1.4.js"></script>
+	<!--[if lt IE 9]>
+		<script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+		<![endif]-->
+	<script type="text/javascript" src="./js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="./js/jquery-ui.js"></script>
+	<script type="text/javascript" src="./js/jquery.ui.touch-punch.min.js"></script>
+	<script type="text/javascript" src="./js/jquery.htmlClean.js"></script>
+	
+	<style>
+
+	</style>
+</head>
+
+<script>
+	function getUrlParam(name)
+	{
+		var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
+		var r = window.location.search.substr(1).match(reg);  //匹配目标参数
+		if (r!=null) return unescape(r[2]); return null; //返回参数值
+	} 
+
+	$(document).ready(function(){
+		var code= getUrlParam('code')	
+		if (code == 'cancel'){
+			$("#code").css('width','200px')
+			$("#code").html('您选择的订单已经成功取消')		
+		}	
+	})
+</script>
+
+<body style="cursor: auto;background-color:#fff !important;padding:0;min-width:100px">
+
+<div class="container-fluid">
+	<div class="row-fluid">
+		<div class="span12">
+			<div class="row-fluid" style="margin-bottom:30px;">
+				<div class="span12" style="text-align:center;background-color:#ff9933;height:40px;line-height:40px;">
+						<b style="font-size:17px;color:#fff">预定完成</b>
+				</div>
+			</div>
+			<p style="text-align:center;width:130px;height:130px;line-height:130px;margin:0 auto;background:url('./img/success.png') 0 0 no-repeat"></p>
+			<p id="code" style="text-align:center;width:130px;height:50px;line-height:50px;margin:0 auto;font-size:16px;">您已预订成功</p>
+			
+		</div>
+	</div>
+</div>
+
+<script>
+	
+</script>
+
+
+
+</body>
+</html>

@@ -1,0 +1,150 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="title" content="悦享源场馆预定">
+	<meta name="description" content="">
+	<meta name="keywords" content="">
+	<title>悦享源场馆预定</title>
+	<link href="./css/bootstrap-combined.min.css" rel="stylesheet">
+	<link href="./css/layoutit.css" rel="stylesheet">
+	<link rel="stylesheet" href="http://apps.bdimg.com/libs/fontawesome/4.2.0/css/font-awesome.min.css">
+	<!--[if lt IE 9]>
+			<script src="js/html5shiv.js"></script>
+		<![endif]-->
+	<script type="text/javascript" src="./js/jquery-2.1.4.js"></script>
+	<!--[if lt IE 9]>
+		<script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+		<![endif]-->
+	<script type="text/javascript" src="./js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="./js/jquery-ui.js"></script>
+	<script type="text/javascript" src="./js/jquery.ui.touch-punch.min.js"></script>
+	<script type="text/javascript" src="./js/jquery.htmlClean.js"></script>
+	
+	<style type="text/css">
+		table td {text-align:center;line-height:35px;}	
+		.small_img{
+
+		}	
+	</style>
+</head>
+
+<script>
+function getUrlParam(name)
+	{
+		var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
+		var r = window.location.search.substr(1).match(reg);  //匹配目标参数
+		if (r!=null) return unescape(r[2]); return null; //返回参数值
+	} 
+
+$(document).ready(function(){
+	query()
+})
+// var openid = ''
+function query(){	
+	var parameter = getUrlParam('parameter')
+	var openid = getUrlParam('openid')	
+	// var appid = 'wx95198705de430c74'
+	var appid = getUrlParam('appid')
+	var data = ""
+	data = {'openid':openid, 'appid':appid}
+	$("#time_list").empty()
+	$.ajax({
+		url:'/activity/wx_list/',
+		type:'POST',
+		dataType:'JSON',
+		data:JSON.stringify({"custormer_id":appid}),
+		success:function(result){
+			if (result.error == 0){
+				//alert(JSON.stringify(result))
+				var list = result.activity_list
+				var html = []
+				if(parameter == null){
+					for (var i=0;i<list.length;i++){
+						//alert(list[i].img )
+						html.push("<tr style='margin-bottom:5px;height:40px;' id=" + list[i].id + "><td colspan='2' style='padding:0px;'>")
+						html.push("<img src='" + list[i].img + "'>")
+						html.push("</td><td style='background-color:#fff'>")
+						html.push(list[i].wx_title)
+						html.push("<br>")
+						html.push("<button class='btn-new' style='width:100px;' onclick='detail(this)'>马上报名</button></td></tr><tr style='height:20px;'>")
+						html.push("<td colspan='3' class='hr_white' ></td>")
+						html.push("</tr>")	
+					}					
+				}else if(parameter == "2"){
+					for(var i=0;i<list.length;i+2){
+							var j=i+1;
+							html.push("<tr colspan='4' style='margin-bottom:5px;height:40px;'><td colspan='2' style='padding:0px;'><img src='" + list[i].img + "'></td><td colspan='2' style='padding:0px;''><img src='" + list[j].img + "'></td></tr>")
+							html.push("<tr style='margin-bottom:5px;height:40px;'><td colspan='2' id=" + list[i].id + " style='background-color:#fff;border-right:1px solid #ddd'>")
+							html.push(list[i].wx_title)
+							html.push("<br><button class='btn-new' style='width:100px;'' onclick='detail(this)'>马上报名</button></td><td colspan='2' id=" + list[i].id + " style='background-color:#fff'>")
+							html.push(list[j].wx_title)
+							html.push("<br><button class='btn-new' style='width:100px;' onclick='detail(this)''>马上报名</button></td></tr>")
+							html.push("<tr style='height:20px;'><td colspan='4' class='hr_white'></td></tr>")
+					}						
+					}else{
+						for(var i=0;i<list.length;i+3){
+								var j=i+1;
+								html.push("<tr style='margin-bottom:5px;height:40px;' id=" + list[i].id + "><td colspan='4' style='padding:0px;'><img src='" + list[i].img + "'></td></tr>")
+								html.push("<tr style='margin-bottom:5px;height:40px;'><td colspan='4' style='background-color:#fff'>"+list[i].wx_title+"<br><button class='btn-new' style='width:100px;' onclick='detail(this)'>马上报名</button></td></tr>")
+								html.push("<tr colspan='4' style='margin-bottom:5px;height:40px;' id='17'><td colspan='2' style='padding:0px;'><img src='" + list[j].img + "'></td><td colspan='2' style='padding:0px;'><img src='" + list[j+1].img + "'></td></tr>")
+								html.push("<tr style='margin-bottom:5px;height:40px;'><td id=" + list[j].id + " colspan='2' style='background-color:#fff;border-right:1px solid #ddd'>"+list[j].wx_title+"<br><button class='btn-new' style='width:100px;' onclick='detail(this)'>马上报名</button></td><td id=" + list[j+1].id + " colspan='2' style='background-color:#fff'>"+list[j+1].wx_title+"<br><button class='btn-new' style='width:100px;' onclick='detail(this)'>马上报名</button></td></tr>")
+								html.push("<tr style='height:20px;'><td colspan='4' class='hr_white'></td></tr>")
+						}	
+					}
+
+				$("#time_list").append(html.join(""))
+			}
+    	},error:function (XMLHttpRequest, textStatus, errorThrown)  {
+			alert('error')
+		}
+	})
+}
+
+function detail(obj){
+	var id = $(obj).closest("tr").attr("id")
+	window.location.href = "/sport/activity_modal1.html?id=" + id + "&openid=" + getUrlParam('openid') + "&appid=" + getUrlParam("appid")
+}
+
+</script>
+
+
+<body style="cursor: auto;background-color:#dedede !important;padding:0;min-width:100px;">
+
+<div class="container-fluid">
+	<div class="row-fluid">
+		<div class="span12">
+			<div class="row-fluid" style="margin-bottom:20px;">
+				<div class="span12" style="text-align:center;background-color:#ff9933;height:40px;line-height:40px;">
+						<b style="font-size:17px;color:#fff">活动报名</b>
+				</div>
+			</div>
+			
+			
+			<div class="row-fluid">
+				<div class="span12" id="list" style="padding-left:10px;padding-right:10px;">
+					<table class="table table_new" >												
+						<tbody id="time_list">
+							
+						</tbody>
+					</table>
+					
+					
+					
+				</div>
+			</div>
+			
+		</div>
+	</div>
+</div>
+
+<script>
+
+
+
+
+
+</body>
+</html>

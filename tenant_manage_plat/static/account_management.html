@@ -1,0 +1,579 @@
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="title" content="Bootstrap可视化布局系统">
+	<meta name="description" content="">
+	<meta name="keywords" content="场地管理">
+	<title>场地管理</title>
+	<link href="./css/bootstrap-combined.min.css" rel="stylesheet">
+	<link href="./css/layoutit.css" rel="stylesheet">
+	
+	<link href="./css/notice.css" rel="stylesheet">
+	<link rel="stylesheet" href="http://apps.bdimg.com/libs/fontawesome/4.2.0/css/font-awesome.min.css">
+	<link rel="stylesheet" type="text/css" href="./css/activity.css">	
+	<!--[if lt IE 9]>
+			<script src="js/html5shiv.js"></script>
+		<![endif]-->
+	<link rel="shortcut icon" href="img/favicon.png">
+	<script type="text/javascript" src="./js/jquery-2.1.4.js"></script>
+	<!--[if lt IE 9]>
+		<script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+		<![endif]-->
+	<script type="text/javascript" src="./js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="./js/jquery-ui.js"></script>
+	<script type="text/javascript" src="./js/jquery.ui.touch-punch.min.js"></script>
+	<script type="text/javascript" src="./js/jquery.htmlClean.js"></script>
+	
+	<script type="text/javascript" src="./js/common.js"></script>
+	<script type="text/javascript" src="./js/confirm/jquery-confirm.min.js"></script>
+	<link href="./js/confirm/jquery-confirm.min.css" rel="stylesheet">
+	<link href="./js/mCustomScrollbar/jquery.mCustomScrollbar.min.css" rel="stylesheet" type="text/css" />
+	<script src="./js/mCustomScrollbar/jquery.mousewheel.min.js"></script>
+	<script src="./js/mCustomScrollbar/jquery.mCustomScrollbar.min.js"></script>
+	<style>
+
+	</style>
+</head>
+
+<body style="cursor: auto;">
+
+<div class="container-fluid">
+	<div class="row-fluid">
+		<div class="span12"  style="background-color:#FF9933;margin-bottom:20px;height:60px;">
+			<div class="row-fluid">
+				<div class="span3" style="margin-left:0 !important;height:60px;">
+					<a href="#" style="background:url('./img/logo.jpg') 50% 50% no-repeat;width:300px;height:60px;float:left;display:inline">
+						
+					</a>
+				</div>
+				<div class="span7" style="height:30px;">
+						<ul class="breadcrumb" >
+							<li style="min-width:120px;">
+								<a href="/sport/reserve_management.html">
+									预定管理
+								</a>
+							</li>							
+							<li style="min-width:120px;" >
+								<a href="/sport/activity_management.html">
+									活动管理
+								</a>
+							</li>
+							<li style="min-width:120px;">
+								<a href="/sport/stadium_management.html"  style="color:#555 !important">									
+									基础配置
+								</a>
+							</li>
+							<li style="min-width:120px;">
+								<a href="/sport/marketing_activity.html" style="color:#555">	
+									营销活动
+								</a>
+							</li>							
+							<li style="min-width:120px;">
+								<a href="/sport/vip_ifo.html" style="color:#555">								
+									会员信息
+								</a>
+							</li>							
+							<!--<li style="min-width:120px;">
+								<a href="#">
+									数据中心
+								</a>
+							</li>-->										
+						</ul>
+				</div>
+				<div class="span2" style="height:30px;">	
+						<ul class="breadcrumb" >
+							<li class="active">
+								<a href="#" id="user_name">
+									admin
+								</a>
+								<b>|</b>
+								<a href="#" id="login_out">
+									注销
+								</a>
+							</li>
+						</ul>
+					</div>	
+			</div>
+		</div>
+	</div>
+</div>
+<div class="container-fluid">
+<!-- 			<div class="row-fluid" style="margin-bottom:30px;border-bottom:1px solid #e6e7ec;margin-top:10px;position:relative">
+				<div class="span1">
+				</div>
+				<div class="span11">
+					<ul style="line-height:30px;height:31px;margin:0;padding:0">
+					<li style="line-height:30px;float:left;">
+						<a href="/sport/stadium_management.html" style="color:#FF9933;border-bottom:2px solid #FF9933;text-align:center;display:block;font-size:15px;">基础配置</a>
+					</li>
+					</ul>
+				</div>
+			</div> -->
+			<div class="content-main">
+				<div class="sub-nav">
+					<ul class="nav nav-pills">
+								
+						<li>
+							<a href="/sport/stadium_management.html">
+								<!-- <i class="icon-chevron-right"></i> -->
+								场馆管理
+							</a>
+						</li>
+						<li>
+							<a href="/sport/place_management.html">
+								<!-- <i class="icon-chevron-right"></i> -->
+								场地管理
+							</a>
+						</li>
+						<li>
+							<a href="/sport/price_management.html">
+								<!-- <i class="icon-chevron-right"></i> -->
+								价格管理
+							</a>
+						</li>
+						<li class="active">
+							<a href="/sport/account_management.html">
+								<!-- <i class="icon-chevron-right"></i> -->
+								账号管理
+							</a>
+						</li>
+								
+					</ul>
+				</div>
+				<div class="content-main radius center">
+					<div class="span12 tablespan">	
+						<div class="span5">
+						选择场馆：
+						<select onchange="query()" id="stadium_select" style="margin-bottom:0px">
+							<option>全部</option>
+							<option>悦享源</option>
+						</select>
+						</div>
+						<div class="span1"></div>
+						<div class="span5">
+						<button class="btn-new" type="button" style="height:30px;" onclick="openAdd()">新增账号</button>
+						</div>
+					</div>
+					<div class="span12 tablespan" style="margin-left:0px !important">							
+						<table class="table" style="height:auto;border-bottom:1px solid #dddddd">
+							<thead>
+								<tr>
+									<th>
+										<input type="checkbox" onclick="checkbox_all(this)"></input>
+									</th>
+									<th>
+										账号
+									</th>
+									<th>
+										手机
+									</th>
+									<th>
+										管理场馆
+									</th>											
+								</tr>
+							</thead>
+							<tbody id="account_list">
+								<tr>
+									<td>
+										<input type="checkbox"></input>
+									</td>
+									<td>
+										zhangshan
+									</td>
+									<td>
+										13919191919
+									</td>
+									<td>
+										悦享源
+									</td>
+									
+								</tr>
+								
+							</tbody>
+						</table>
+						<div class="row-fluid" style="margin-top:55px;">
+							
+							<div class="span6 buttonspan">
+								 <button class="btn-new" type="button" onclick="openModify()">编辑账号</button>
+							</div>
+							<div class="span6 buttonspan">
+								 <button class="btn-new" type="button" onclick="del()">删除账号</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal hide fade" id="add_new" tabindex="-1" role="dialog">
+<div class="modal-header"><button class="close" type="button" data-dismiss="modal" onclick="$('#add_new').modal('hide');query()">×</button>
+<h3 id="add_new_label" style="font-family:'微软雅黑'">新增账号</h3>
+</div>
+<div class="modal-body">
+	<div class="container" style="height:370px;width:450px;overflow:auto;margin-bottom:20px;">
+	<input type="hidden" name="user_id" id="user_id">
+	<input type="hidden" name="tenant" value='1'>
+	<input type="hidden" name="area" value='110106'>
+	<div style="margin-top:15px;">
+	
+		<table class="table_async" style="height:auto;border:none">
+			<tbody>
+				
+				<tr>
+					<td>登录账号</td>
+					<td><input id="account" name="account" type="text" style="margin-bottom:0px;height:auto"></input></td>
+				</tr>
+				<!--<tr>
+					<td>场馆类型</td>
+					<td><input name="category" type="text" style="margin-bottom:0px;height:auto"></input></td>
+				</tr>-->
+				<tr>
+					<td>手机号</td>
+					<td><input name="telephone" type="text" style="margin-bottom:0px;height:auto"></input></td>
+				</tr>
+				<tr>
+					<td>密码</td>
+					<td><input id="password" name="password" type="password" style="margin-bottom:0px;height:auto"></input></td>
+				</tr>
+				<tr id="repwd_display">
+					<td>确认密码</td>
+					<td><input id="re_password" name="re_password" type="password" style="margin-bottom:0px;height:auto"></input></td>
+				</tr>
+				<tr>
+					<td style="vertical-align:top">管理场所</td>
+					<td id="stadium_td">
+						
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	
+	</div>
+	<div class="row-fluid" style="margin-top:15px;text-align:center">
+		<div class="span1 buttonspan" style="width:170px !important;display:inline-block;margin-left:40px;">
+			<button class="btn-new" type="button" onclick="confirm()">确认</button>
+		</div>
+		<div class="span1 buttonspan" style="width:170px !important;display:inline-block">
+			 <button class="btn-new" type="button" style="background-color:#dedede;color:#000" onclick="$('#add_new').modal('hide');query()">取消</button>
+		</div>
+	</div>
+
+	
+	</div>
+</div>
+</div>
+
+<div id="loadingCover">
+        <p><img src="./img/loading.gif"/><span>请稍后</span></p>
+ </div>
+<div class="qb_quick_tip qb_none" id="bubble"></div>
+<script>
+(function($){
+         $(window).load(function(){
+            //$(".custom_scrollbar").mCustomScrollbar();
+			$(".container").mCustomScrollbar({
+				axis:"y", // horizontal scrollbar
+				theme:"3d-dark"
+			});		
+			
+			
+        });		
+		
+    })(jQuery);
+	
+$(document).ready(function(){
+		//获取session的登录用户信息		
+		$.ajax({
+			url:"/user/get_login_info",
+            dataType:'JSON',
+            type: 'GET',
+            success:function(result){
+            	if (result.error == "0") {
+            		var login_info = result.login_info;
+            		var user_name = login_info.user;
+            		$("#user_name").text(user_name);
+            	}else if(result.error == "1"){
+            		window.location.href="/sport/login.html"
+            	}else{
+            		alert("internal error!")
+            	}
+            },
+            error:function(e){
+            	alert("this error")
+            }
+		})	
+
+		$("#login_out").click(function(){
+			$.ajax({
+				url:"/login_out/",
+	            dataType:'JSON',
+	            type: 'GET',
+	            success:function(result){
+	            	if (result.error == "0") {
+	            		window.location.href="/sport/login.html"
+	            	}else{
+            			alert("注销失败！")
+            		}
+	            },
+	            error:function(e){
+	            	alert("error")
+	            }
+			})	
+		})
+
+	$("#stadium_td").empty()
+		/*<span style="display:inline-block;width:200px;text-align:left">悦享源</span><span style="display:inline-block;width:auto"><input type="checkbox"></input></span> <br>
+						<span style="display:inline-block;width:200px;margin-top:10px;text-align:left">悦享源1</span><span style="display:inline-block;width:auto"><input type="checkbox"></input></span> <br>
+						<span style="display:inline-block;width:200px;margin-top:10px;text-align:left">悦享源111</span><span style="display:inline-block;width:auto"><input type="checkbox"></input></span> <br>
+		*/
+		$("#loadingCover").show()
+		$.ajax({
+			url:'/stadium/list/',
+			type:'POST',
+			data:JSON.stringify({}),
+			dataType:'json',
+			async:false,
+			success:function(result){
+				if (result.error == 0){
+					var html=[]
+					var list = result.stadium_list
+					for (var i=0;i<list.length;i++){
+						if (i==0){
+							html.push('<span stadium_id=' + list[i].id + ' style="display:inline-block;width:200px;text-align:left">' + list[i].name + '</span><span stadium_id=' + list[i].id + ' style="display:inline-block;width:auto"><input type="checkbox"></input></span> <br>')
+						}else{
+							html.push('<span stadium_id=' + list[i].id + ' style="display:inline-block;width:200px;text-align:left;margin-top:10px;">' + list[i].name + '</span><span stadium_id=' + list[i].id + ' style="display:inline-block;width:auto"><input type="checkbox"></input></span> <br>')
+						}
+						//html.push("<option value=" + list[i].id + ">" + list[i].name + "</option>")	
+					}
+					$("#loadingCover").hide()
+					$("#stadium_td").append(html.join(''))
+					
+					$("#stadium_select").empty()
+					var html=[]
+					var list = result.stadium_list
+					for (var i=0;i<list.length;i++){
+						html.push("<option value=" + list[i].id + ">" + list[i].name + "</option>")	
+					}
+					//$("#loadingCover").hide()
+					$("#stadium_select").append('<option value=0>全部</option>')
+					$("#stadium_select").append(html.join(''))
+					
+				}else{
+					$("#loadingCover").hide()
+					$(".qb_quick_tip").css('background','#e96262')
+					showBubble("获取信息失败")
+				}			
+				},error:function (XMLHttpRequest, textStatus, errorThrown)  {
+					$("#loadingCover").hide()
+					$(".qb_quick_tip").css('background','#e96262')
+					showBubble("获取信息失败")
+				}
+		
+		})
+		query()
+})
+	
+function openAdd(){
+		$(".table_async").find("input").val('')
+		$(".table_async").find("input[type='checkbox']").prop("checked", false)
+		$('#add_new').modal('show');
+		$("#stadium_td input[type='checkbox']").prop("checked",false)	
+		$("#repwd_display").show()
+	}
+
+function openModify(){
+	$("#add_new_label").html("编辑账号")
+	var ids = []
+		$("#account_list tr").find('input[type="checkbox"]:checked').each(function(){
+			ids.push($(this).closest('tr').attr('id'))
+		})
+		//alert(ids)
+		if (ids.length > 1){
+			$(".qb_quick_tip").css('background','#e96262')
+			showBubble("一次只能编辑一条记录")
+		}else if (ids.length == 0){
+			$(".qb_quick_tip").css('background','#e96262')
+			showBubble("请选择要编辑的记录")
+		}else{
+			var account = $("#account_list tr").find('input[type="checkbox"]:checked').closest("tr").attr("account")
+			var telephone = $("#account_list tr").find('input[type="checkbox"]:checked').closest("tr").attr("telephone")
+			var password = $("#account_list tr").find('input[type="checkbox"]:checked').closest("tr").attr("password")
+			var manage_stadiums = $("#account_list tr").find('input[type="checkbox"]:checked').closest("tr").attr("manage_stadiums")
+			var user_id = $("#account_list tr").find('input[type="checkbox"]:checked').closest("tr").attr("id")
+			manage_stadiums = manage_stadiums.split(";")
+			openAdd()
+			$("#account").val(account)
+			$("#telephone").val(telephone)
+			$("#password").val(password)
+			$("#user_id").val(user_id)
+			//alert(manage_stadiums)
+			$("#stadium_td").find("input[type='checkbox']").each(function(){
+				var id = $(this).closest("span").attr("stadium_id")
+				//alert(id)
+				if (manage_stadiums.indexOf(id) != -1){
+					$(this).prop("checked", true)
+				}
+			})
+			$("#repwd_display").hide()
+		}
+}
+
+function confirm(){
+	var name = $("#account").val()
+	var passwd = $("#password").val()
+	var telephone = $("#telephone").val()
+	var user_id = $("#user_id").val()
+	var manage_stadiums=[]
+	$("#stadium_td input[type='checkbox']:checked").each(function(){
+		var id = $(this).closest("span").attr("stadium_id")
+		manage_stadiums.push(id)
+	})
+	if (user_id == null || user_id.length == 0)
+	{
+		$.ajax({
+						url:'/user/add/',
+						type:'POST',
+						data:JSON.stringify({'name':name,'passwd':passwd,'telephone':telephone,'manage_stadiums':manage_stadiums}),
+						dataType:'json',
+						success:function(result){
+							if (result.error == 0){
+								$(".qb_quick_tip").css('background','#44b549')
+								showBubble('添加成功')
+								$("#stadium_list tr").find('input[type="checkbox"]:checked').closest('tr').remove()
+							}else{
+								$(".qb_quick_tip").css('background','#e96262')
+								showBubble("添加失败")
+							}			
+							},error:function (XMLHttpRequest, textStatus, errorThrown)  {
+								$(".qb_quick_tip").css('background','#e96262')
+								showBubble("添加失败")
+							}
+					
+					})
+	}else{
+		$.ajax({
+						url:'/user/edit/',
+						type:'POST',
+						data:JSON.stringify({'user_id':user_id, 'name':name,'passwd':passwd,'telephone':telephone,'manage_stadiums':manage_stadiums}),
+						dataType:'json',
+						success:function(result){
+							if (result.error == 0){
+								$(".qb_quick_tip").css('background','#44b549')
+								showBubble('编辑成功')
+								$("#stadium_list tr").find('input[type="checkbox"]:checked').closest('tr').remove()
+							}else{
+								$(".qb_quick_tip").css('background','#e96262')
+								showBubble("编辑失败")
+							}			
+							},error:function (XMLHttpRequest, textStatus, errorThrown)  {
+								$(".qb_quick_tip").css('background','#e96262')
+								showBubble("编辑失败")
+							}
+					
+					})
+	}
+}
+
+function query(){
+	$("#account_list").empty()
+	var data = {}
+	if ($("#stadium_select").val() != "0"){
+		data["stadium_id"] = $("#stadium_select").val()
+	}
+	$.ajax({
+						url:'/user/list/',
+						type:'POST',
+						data:JSON.stringify(data),
+						dataType:'json',
+						success:function(result){
+							if (result.error == 0){
+								//alert(JSON.stringify(result))
+								var html = []
+								for (var i=0;i<result.users.length;i++){
+									var manage_stadiums = ""
+									var manage_stadiums_names = ""
+									for (k in result.users[i].manage_stadiums){
+										//alert(k)
+										manage_stadiums += k + ";"
+										manage_stadiums_names += result.users[i].manage_stadiums[k] + "，&nbsp;"
+									}
+									html.push('<tr manage_stadiums="' + manage_stadiums + '" id=' + result.users[i].id + ' account=' + result.users[i].name + ' telephone=' + result.users[i].telephone + ' password=' + result.users[i].passwd + '><td><input type="checkbox"></input></td>')
+									html.push('<td>' + result.users[i].name + '</td>')
+									html.push('<td>' + result.users[i].telephone + '</td>')									
+									html.push('<td>' + manage_stadiums_names + '</td>')
+									html.push('</tr>')
+								}
+								$("#account_list").append(html.join(""))
+							}else{
+								$(".qb_quick_tip").css('background','#e96262')
+								showBubble("获取数据失败")
+							}			
+							},error:function (XMLHttpRequest, textStatus, errorThrown)  {
+								$(".qb_quick_tip").css('background','#e96262')
+								showBubble("获取数据失败")
+							}
+					
+					})
+}
+
+function del(){
+	var ids = []
+		$("#account_list tr").find('input[type="checkbox"]:checked').each(function(){
+			ids.push($(this).closest('tr').attr('id'))
+		})
+		if (ids.length == 0){
+			$(".qb_quick_tip").css('background','#e96262')
+			showBubble("请选择要删除的记录")
+		}else{
+			$.confirm({
+				title: ' ',
+				content: '确定要删除所选记录么',
+				confirmButton: '确认',
+				cancelButton: '取消',
+				confirmButtonClass: 'btn-warning',
+				confirm: function(){
+					$.ajax({
+						url:'/user/delete/',
+						type:'POST',
+						data:JSON.stringify({'user_ids':ids}),
+						dataType:'json',
+						success:function(result){
+							if (result.error == 0){
+								$(".qb_quick_tip").css('background','#44b549')
+								showBubble('删除成功')
+								$("#account_list tr").find('input[type="checkbox"]:checked').closest('tr').remove()
+							}else{
+								$(".qb_quick_tip").css('background','#e96262')
+								showBubble("删除失败")
+							}			
+							},error:function (XMLHttpRequest, textStatus, errorThrown)  {
+								$(".qb_quick_tip").css('background','#e96262')
+								showBubble("删除失败")
+							}
+					
+					})
+				}
+			});
+		}
+}
+
+var timeout
+	function showBubble(a) {
+		var c = $("#bubble");
+			c.css("opacity", 1), c.hasClass("qb_none") || c.html(a), c.html(a).removeClass("qb_none")
+			timeout = 	setTimeout("disapper()", 1300 )
+	}
+
+	function disapper(){
+		$("#bubble").addClass("qb_none").removeAttr("style")
+		clearTimeout(timeout)
+	}	
+
+</script>
+
+</body>
+</html>

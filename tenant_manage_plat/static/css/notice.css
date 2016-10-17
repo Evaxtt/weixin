@@ -1,0 +1,20 @@
+.qb_quick_tip {
+	position: fixed;
+	line-height: 23px;
+	padding: 13px 5px;
+	background: rgba(0,0,0,.8);
+	color: #FFF;
+	border-radius: 5px;
+	text-align: center;
+	z-index: 99999;
+	top: 40%;
+	left: 30%;
+	right: 30%;
+	font-size:16px;
+}
+.qb_quick_tip {
+	text-shadow: none
+}
+.qb_none {
+	display: none!important
+}

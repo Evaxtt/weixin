@@ -1,0 +1,320 @@
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="title" content="Bootstrap可视化布局系统">
+	<meta name="description" content="">
+	<meta name="keywords" content="场地管理">
+	<title>场地管理</title>
+	<link href="./css/bootstrap-combined.min.css" rel="stylesheet">
+	<!-- <link href="./css/layoutit.css" rel="stylesheet"> -->
+	
+	<link href="./css/notice.css" rel="stylesheet">
+	<link rel="stylesheet" href="https://apps.bdimg.com/libs/fontawesome/4.4.0/css/font-awesome.css">
+	<link rel="stylesheet" type="text/css" href="./css/activity.css">
+	<!--[if lt IE 9]>
+			<script src="js/html5shiv.js"></script>
+		<![endif]-->
+	<link rel="shortcut icon" href="img/favicon.png">
+	<script type="text/javascript" src="./js/jquery-2.1.4.js"></script>
+	<script type="text/javascript" src="./js/qrcode/jquery.qrcode.js"></script>
+	<script type="text/javascript" src="./js/qrcode/qrcode.js"></script>
+	<!--[if lt IE 9]>
+		<script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+		<![endif]-->
+	<script type="text/javascript" src="./js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="./js/jquery-ui.js"></script>
+	<script type="text/javascript" src="./js/jquery.ui.touch-punch.min.js"></script>
+	<script type="text/javascript" src="./js/jquery.htmlClean.js"></script>
+	
+	<script type="text/javascript" src="./js/common.js"></script>
+	<script type="text/javascript" src="./js/confirm/jquery-confirm.min.js"></script>
+	<link href="./js/confirm/jquery-confirm.min.css" rel="stylesheet">
+	<link href="./js/mCustomScrollbar/jquery.mCustomScrollbar.min.css" rel="stylesheet" type="text/css" />
+	<script src="./js/mCustomScrollbar/jquery.mousewheel.min.js"></script>
+	<script src="./js/mCustomScrollbar/jquery.mCustomScrollbar.min.js"></script>
+	<style type="text/css">
+		.nav-tabs>.active>a{background-color:#fff !important}
+	</style>
+</head>
+
+<body style="cursor: auto;">
+	<div class="container-fluid">
+		<div class="row-fluid">
+			<div class="span12"  style="background-color:#FF9933;margin-bottom:20px;height:60px;">
+				<div class="row-fluid">
+					<div class="span3" style="margin-left:0 !important;height:60px;">
+						<a href="#" style="background:url('./img/logo.jpg') 50% 50% no-repeat;width:300px;height:60px;float:left;display:inline">
+							
+						</a>
+					</div>
+					<div class="span7" style="height:30px;">
+							<ul class="breadcrumb" >
+								<li style="min-width:120px;">
+									<a href="/sport/reserve_management.html">
+										预定管理
+									</a>
+								</li>							
+								<li style="min-width:120px;" >
+									<a href="/sport/activity_management.html" style="color:#555 !important">
+										活动管理
+									</a>
+								</li>
+								<li style="min-width:120px;">
+									<a href="/sport/stadium_management.html" >
+										
+										基础配置
+									</a>
+								</li>
+								<li style="min-width:120px;">
+									<a href="/sport/marketing_activity.html" style="color:#555">	
+										营销活动
+									</a>
+								</li>							
+								<li style="min-width:120px;">
+									<a href="/sport/vip_ifo.html" style="color:#555">								
+										会员信息
+									</a>
+								</li>								
+								<!--<li style="min-width:120px;">
+									<a href="#">
+										数据中心
+									</a>
+								</li>-->										
+							</ul>
+					</div>
+					<div class="span2" style="height:30px;">	
+							<ul class="breadcrumb" >
+								<li class="active">
+									<a href="#" id="user_name">
+										admin
+									</a>
+									<b>|</b>
+									<a href="#" id="login_out">
+										注销
+									</a>
+								</li>
+							</ul>
+						</div>	
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="container-fluid">
+<!-- 			<div class="row-fluid" style="margin-bottom:30px;border-bottom:1px solid #e6e7ec;margin-top:10px;position:relative">
+				<div class="span1">
+				</div>
+				<div class="span11">
+					<ul style="line-height:30px;height:31px;margin:0;padding:0">
+					<li style="line-height:30px;float:left;">
+						<a href="/sport/activity_management.html" style="color:#FF9933;border-bottom:2px solid #FF9933;text-align:center;display:block;font-size:15px;">活动管理</a>
+					</li>
+					</ul>
+				</div>
+			</div> -->
+		<div class="content-main">
+			<div class="sub-nav">
+				<ul class="nav nav-pills">
+							
+					<li>
+						<a href="/sport/activity_management_publish.html" class="activity_link">
+							<!-- <i class="icon-chevron-right"></i> -->
+							活动编辑
+						</a>
+					</li>
+<!-- 					<li>
+						<a href="/sport/activity_management_member.html" class="activity_link">
+							名单管理
+						</a>
+					</li> -->
+					<li class="active">
+						<a href="/sport/activity_popularize.html" class="activity_link">
+							<!-- <i class="icon-chevron-right"></i> -->
+							活动推广
+						</a>
+					</li>		
+				</ul>
+			</div>
+			<div class="radius">
+				<div class="activity_popularize">
+					<!-- Nav tabs -->
+					<ul class="nav nav-tabs" role="tablist">
+					  <li role="presentation" class="active"><a href="#social-media" role="tab" data-toggle="tab">社交媒体</a></li>
+					  <li role="presentation"><a href="#wechat-invite" role="tab" data-toggle="tab">微信邀请函</a></li>
+					  <li role="presentation"><a href="#messages" role="tab" data-toggle="tab">短信推广</a></li>
+					</ul>
+
+					<!-- Tab panes -->
+					<div class="tab-content">
+					  <div role="tabpanel" class="tab-pane active" id="social-media">
+						<div class="panel-body">
+							<div class="idcode panel-body">
+								<div id="qrcodeCanvas0"></div>
+							</div>
+							<div class="span8">
+								<h3 style="margin-top:5px;margin-bottom:5px;">活动页二维码</h3>
+								<p>这是活动专属的二维码，赶紧扫描分享给朋友吧！</p>
+								<p style="margin-bottom:15px;">
+									<textarea class="form-control" style="width: 400px;height: 60px;"></textarea>
+								</p>
+								<div class="share">
+<!-- 									<span>分享：</span>
+									<div class="share-btns clearfix">
+										<a class="share_sina" href="#" ></a>
+										<a class="share_qzon" href="#" ></a>
+										<a class="share_douban" href="#" ></a>
+										<a class="share_weixin" href="#" ></a>
+									</div> -->
+								<!-- JiaThis Button BEGIN -->
+									<div id="ckepop" >
+										<span class="jiathis_txt">分享到：</span>
+										<a class="jiathis_button_tsina">新浪微博</a>
+										<a class="jiathis_button_weixin">微信</a>
+										<a class="jiathis_button_douban">豆瓣</a>
+
+										<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank">更多</a>
+										<a class="jiathis_counter_style"></a>
+									</div>
+									<script type="text/javascript" src="http://v2.jiathis.com/code/jia.js" charset="utf-8"></script>
+									<!-- JiaThis Button END -->
+								</div>
+							</div>
+						</div>
+					  </div>
+					  <div role="tabpanel" class="tab-pane" id="wechat-invite">
+					  	<div class="event-liveapp">
+					  		<iframe src="/sport/activity_invite.html" frameborder="0" id="wechatInviteIframe"></iframe>	
+					  		<div id="qrcodeCanvas"></div>
+					  	</div>			  		
+					  </div>
+					  <div role="tabpanel" class="tab-pane" id="messages">
+					  	<div class="messages-send">
+						  	<h3 style="margin-top:5px;margin-bottom:0;">短信群发</h3>
+						  	<hr>
+						  	<div class="form-group">
+							  	<label class="pull-left">手机号码<span>*</span></label>
+							  	<textarea class="form-control"></textarea>
+						  	</div>
+						  	<div class="form-group">
+							  	<label class="pull-left">短信内容<span>*</span></label>
+							  	<textarea class="form-control"></textarea>
+							</div>
+						  	<div class="form-group">
+							  	<p>群发产生的短信费将从您的账户中抵扣，每60字<span>￥0.1元</span>，请确保余额充足。群发产生的短信记录大概10分钟左右可以查询到。</p>
+							  	<p><span>目前余额：￥0元 </span><a href="#">立即充值</a></p>
+							  	<input class="btn btn-large btn-warning" type="submit" name="messages-send" value="发送">
+							</div>
+					  	</div>
+					  </div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+<script type="text/javascript">
+	jQuery("#qrcodeCanvas").qrcode({
+		text:"http://115.28.111.96/sport/activity_invite.html"
+	});
+	jQuery("#qrcodeCanvas0").qrcode({
+		text:"http://115.28.111.96/sport/activity_invite.html"
+	});
+
+	function getUrlParam(name)
+	{
+		var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
+		var r = window.location.search.substr(1).match(reg);  //匹配目标参数
+		if (r!=null) return unescape(r[2]); return null; //返回参数值
+	}
+	
+	$(document).ready(function(){
+		//获取session的登录用户信息		
+		$.ajax({
+			url:"/user/get_login_info",
+	        dataType:'JSON',
+	        type: 'GET',
+	        success:function(result){
+	        	if (result.error == "0") {
+	        		var login_info = result.login_info;
+	        		var user_name = login_info.user;
+	        		$("#user_name").text(user_name);
+	        	}else if(result.error == "1"){
+	        		window.location.href="/sport/login.html"
+	        	}else{
+	        		alert("internal error!")
+	        	}
+	        },
+	        error:function(e){
+	        	alert("this error")
+	        }
+		})	
+
+		$("#login_out").click(function(){
+			$.ajax({
+				url:"/login_out/",
+	            dataType:'JSON',
+	            type: 'GET',
+	            success:function(result){
+	            	if (result.error == "0") {
+	            		window.location.href="/sport/login.html"
+	            	}else{
+	        			alert("注销失败！")
+	        		}
+	            },
+	            error:function(e){
+	            	alert("error")
+	            }
+			})	
+		})
+
+		var storage = window.sessionStorage;
+		var activity_id = storage.getItem("activity_id")
+		// var activity_id = getUrlParam("id")
+		// $(".activity_link").click(function(){
+		// 	$(".activity_link").attr('href',$(this).attr('href')+activity_id)
+		// })
+		// alert(activity_id)
+		$.ajax({
+			url:"/activity/applicant_list/",
+	        dataType:'JSON',
+	        type: 'post',
+	        data:JSON.stringify({'activity_id':activity_id}),
+	        success:function(result){
+	        	if (result.error == "0") {
+	        		var applicants = result.applicants
+	        		for(var i=0;i<applicants.length;i++){
+		        		var name = applicants[i].name
+		        		var telephone_number = applicants[i].telephone
+		        		var apply_time = applicants[i].apply_time
+		        		var pay_state = applicants[i].is_payed
+		        		var sign_state = applicants[i].checked
+
+		        		if (pay_state == true) {
+		        			var pay_img_src = "./img/status_ok.png"
+		        		}else{
+		        			pay_img_src = "./img/status_fail.png"
+		        		}
+
+		        		if (sign_state == '0') {
+		        			var sign_img_src = "./img/status_fail.png"
+		        		}else{
+		        			sign_img_src = "./img/status_ok.png"
+		        		}
+
+		        		var activity_member = '<tr><td><input type="checkbox"></input></td><td>'+name+'</td><td>'+telephone_number+'</td><td>'+apply_time+'</td><td><img src="'+pay_img_src+'"></img></td><td><img class="sign_state_img" src="'+sign_img_src+'"></img></td></tr>'
+
+		        		$(activity_member).appendTo("#place_list")
+	        		}
+
+	        	}else{
+	        		alert("this error!")
+	        	}
+	        },
+	        error:function(e){
+	        	alert("error")
+	        }
+		})	
+	})	
+</script>
+</html>

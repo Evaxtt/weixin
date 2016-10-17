@@ -1,0 +1,14 @@
+<div class="qb_quick_tip qb_none" id="bubble"></div>
+<script>
+var timeout
+function showBubble(a) {
+	var c = $("#bubble");
+		c.css("opacity", 1), c.hasClass("qb_none") || c.html(a), c.html(a).removeClass("qb_none")
+		timeout = 	setTimeout("disapper()", 1200 )
+}
+
+function disapper(){
+	$("#bubble").addClass("qb_none").removeAttr("style")
+	clearTimeout(timeout)
+}	
+</script>

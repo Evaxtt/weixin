@@ -1,0 +1,854 @@
+﻿<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="title" content="预定管理">
+	<meta name="description" content="">
+	<meta name="keywords" content="预定管理">
+	<title>预定管理</title>
+	<link href="./css/bootstrap-combined.min.css" rel="stylesheet">
+	<link href="./css/layoutit.css" rel="stylesheet">
+	<link href="./css/notice.css" rel="stylesheet">
+	<link rel="stylesheet" href="http://apps.bdimg.com/libs/fontawesome/4.2.0/css/font-awesome.min.css">
+	<!--[if lt IE 9]>
+			<script src="js/html5shiv.js"></script>
+		<![endif]-->
+	<link rel="shortcut icon" href="img/favicon.png">
+	<script type="text/javascript" src="./js/jquery-2.1.4.js"></script>
+	<!--[if lt IE 9]>
+		<script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+		<![endif]-->
+	<script type="text/javascript" src="./js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="./js/jquery-ui.js"></script>
+	<script type="text/javascript" src="./js/jquery.ui.touch-punch.min.js"></script>
+	<script type="text/javascript" src="./js/jquery.htmlClean.js"></script>
+	<script type="text/javascript" src="./js/jquery.cookie.js"></script>
+	
+	<link href="./js/mCustomScrollbar/jquery.mCustomScrollbar.min.css" rel="stylesheet" type="text/css" />
+	<script src="./js/mCustomScrollbar/jquery.mousewheel.min.js"></script>
+	<script src="./js/mCustomScrollbar/jquery.mCustomScrollbar.min.js"></script>
+	<script type="text/javascript" src="./js/reserve_manage.js"></script>
+	<!-- jquery.datePicker.js -->
+	<script type="text/javascript" src="./js/datepicker/date.js"></script>
+	<script type="text/javascript" src="./js/datepicker/jquery.datePicker.js"></script>
+	<!-- datePicker required styles -->
+	<link rel="stylesheet" type="text/css" media="screen" href="./js/datepicker/datePicker.css">
+</head>
+
+<script>
+
+</script>
+
+<body style="cursor: auto;background-color:#fbfbfb !important; min-width:1250px">
+<input type="hidden" id="choose_date_hide">
+<div id="loadingCover">
+        <p><img src="./img/loading.gif"/><span>请稍后</span></p>
+ </div>
+<!--<div class="container-fluid">
+	<div class="row-fluid">
+		<div class="span12"  style="background-color:#FF9933;margin-bottom:20px;height:70px;min-width:1250px">
+			<div class="row-fluid">
+				<div class="span1 padding">
+				</div>
+				<div class="span3" style="height:70px;">
+					<a href="reserve_management.html" style="text-decoration:none">
+						<img src="./img/order.png"></img>
+						<b style="padding-left:10px;color:#fff;font-size:24px;line-height:65px;">预定管理中心</b>
+					</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>-->
+
+<div class="container-fluid">
+	<div class="row-fluid">
+		<div class="span12"  style="background-color:#FF9933;margin-bottom:20px;height:70px;min-width:1250px">
+			<div class="row-fluid">
+				<div class="span3" style="margin-left:0 !important;height:70px;">
+					<a href="#" style="background:url('./img/logo.jpg') 50% 50% no-repeat;width:300px;height:70px;float:left;display:inline">
+						
+					</a>
+				</div>
+				<div class="span7" style="height:40px;">
+						<ul class="breadcrumb" >
+							<li style="min-width:120px;">
+								<a href="/sport/reserve_management.html" style="color:#555 !important">
+									预定管理
+								</a>
+							</li>							
+							<li style="min-width:120px;" >
+								<a href="/sport/activity_management.html">
+									活动管理
+								</a>
+							</li>
+							<li style="min-width:120px;">
+								<a href="/sport/stadium_management.html">									
+									基础配置
+								</a>
+							</li>
+							<li style="min-width:120px;">
+								<a href="/sport/marketing_activity.html" style="color:#555">	
+									营销活动
+								</a>
+							</li>							
+							<li style="min-width:120px;">
+								<a href="/sport/vip_ifo.html" style="color:#555">								
+									会员信息
+								</a>
+							</li>							
+							<!--<li style="min-width:120px;">
+								<a href="#">
+									数据中心
+								</a>
+							</li>-->										
+						</ul>
+				</div>
+				<div class="span2" style="height:40px;">	
+						<ul class="breadcrumb" >
+							<li class="active">
+								<a href="#" id="user_name">
+									admin
+								</a>
+								<b>|</b>
+								<a href="#" id="login_out">
+									注销
+								</a>
+							</li>
+						</ul>
+					</div>	
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="container-fluid">
+	<div class="row-fluid">
+		<div class="span12"  style="min-width:1250px;">
+			<div class="row-fluid">
+				<div class="span1 padding">
+				</div>
+				<div class="span3">					
+					<!--<b style="color:#ff9933;font-size:24px;line-height:30px;">悦享源运动休闲中心</b>-->
+					<div class="btn-group">
+						 <button class="btn customize" id="stadium"></button> <button style="height:28px" data-toggle="dropdown" class="btn dropdown-toggle customize"><span class="caret"></span></button>
+						<ul class="dropdown-menu" id="stadium_select">
+							
+							
+						</ul>
+					</div>
+				</div>
+				<div class="span4">
+					<div class="btn-group">
+						 <button class="btn customize" id="stadium_type"></button> <button style="height:28px" data-toggle="dropdown" class="btn dropdown-toggle customize"><span class="caret"></span></button>
+						<ul class="dropdown-menu" id="stadium_type_select">
+							
+							
+						</ul>
+					</div>
+				</div>
+				<div class="span1 padding">
+				</div>
+			</div>
+			<div class="row-fluid" style="margin:20px 0 20px 0;height:50px;border-top:1px solid #dedede;border-bottom:1px solid #dedede">
+				<div class="span1 padding">
+				</div>
+				<!--<div class="span4 status-instruction" style="width:170px !important">
+					<span style="background-color:#90ea5b;float:left"></span>
+					<span style="color:#000;float:left">可预订</span>
+				</div>-->
+				
+				<div class="span4 status-instruction" style="width:140px !important">
+					<span style="background-color:#ff9933;color:#000;float:left"></span>
+					<span style="color:#000;float:left;font-size:13px;">网络预定</span>
+				</div>
+				
+				<div class="span4 status-instruction" style="margin-left:11px;width:140px !important">
+					<span style="background-color:#3385ff;color:#000;float:left"></span>
+					<span style="color:#000;float:left;font-size:13px;">场馆预定</span>
+				</div>
+				
+				<div class="span4 status-instruction" style="margin-left:11px;width:140px !important">
+					<span style="background:url('./img/notpaid.png') -4px 7px no-repeat #eaeaea;float:left"></span>
+					<span style="color:#000;float:left;font-size:13px;">未付款</span>
+				</div>
+				
+				<div class="span4 status-instruction" style="margin-left:11px;width:140px !important">
+					<span style="background:url('./img/lock.png') 50% 50% no-repeat #eaeaea;float:left"></span>
+					<span style="color:#000;float:left;font-size:13px;">已锁定</span>
+				</div>
+				
+				<div class="span4 status-instruction" style="margin-left:11px;width:140px !important">
+					<span style="background:#eaeaea;float:left"></span>
+					<span style="color:#000;float:left;font-size:13px;">不可预订</span>
+				</div>
+				
+				
+				
+				<div class="span1 padding">
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row-fluid">
+		<div class="span12" style="min-width:1250px;">
+			<div class="row-fluid">
+				<div class="span1 padding">
+				</div>
+				<div class="span7" style="min-width:850px">
+					<div class="row-fluid">
+						<img src="./img/arrow_left.png" style="float:left;cursor:pointer" onclick="get_left_date()"></img>
+						<ul class="breadcrumb" style="width:595px;overflow:hidden;float:left;background-color:inherit;padding:0;white-space: nowrap;padding-left:1px;margin-top:0" id="date_selecter">
+							
+							
+						</ul>
+							<img src="./img/arrow_right.png" style="float:left;cursor:pointer" onclick="get_right_date()"></img>
+
+						<input type="text" class="date-pick" style="margin-left:20px;font-size:12px;background:url('./img/date_time.png') 1px 3px no-repeat;height:32px;line-height:32px;padding:0 0 0 20px;width:100px;text-align:center" id="choose_date" readonly='readonly' value="">
+					</div>
+					
+					<div>
+						<table class="table table-bordered table-condensed reserve-table-time-web">						
+							<tbody>
+									
+							</tbody>
+						</table>
+					</div>
+					
+					<div class="custom_scrollbar" style="overflow:auto;height:auto">
+					<table class="table table-bordered table-condensed reserve-table-web" style="table-layout:fixed;width:600px">						
+						<tbody>
+									
+						</tbody>
+					</table>
+					</div>
+				</div>
+				<div class="span3" style="min-width:315px;">
+					<div class="row-fluid">
+						<div class="span12">
+							<div class="tabbable" id="tabs-483419" style="">
+								<ul class="nav nav-tabs" style="white-space: nowrap;padding-left:1px;margin-bottom:0px">
+									<li class="active" style="display:inline-block;float:none">
+										<a href="#panel-reserve" data-toggle="tab" style="color:#bdbdbd">预定</a>
+									</li>
+									<li style="display:inline-block;float:none">
+										<a href="#panel-batch_reserve" data-toggle="tab" style="color:#bdbdbd">批量预定</a>
+									</li>
+									<li style="display:inline-block;float:none">
+										<a href="#panel-lock" data-toggle="tab" style="color:#bdbdbd">批量锁定</a>
+									</li>
+									<li style="display:inline-block;float:none">
+										<a href="#panel-unlock" data-toggle="tab" style="color:#bdbdbd">批量解锁</a>
+									</li>
+									
+								</ul>
+								<div class="tab-content">
+									<div class="tab-pane active" id="panel-reserve">										
+									    <div style="padding:20px 0 20px 10px;" class="span12 web-function-tab">
+											<p>
+												<span>会员类型</span>
+												<input type="radio" name="member_ship" checked onclick="show_member_card(1)">会员</input>
+												<input type="radio" name="member_ship" style="margin-left:10px" onclick="show_member_card(0)">非会员</input>
+											</p>
+											
+											<p id="member_card">
+												<span>会员卡号</span>
+												<input type="text" id="member_card_number"></input>
+											</p>
+											<p>
+												<span>联系人</span>
+												<input type="text" id="contact"></input>
+											</p>
+											<p>
+												<span>联系电话</span>
+												<input type="text" id="telephone"></input>
+											</p>
+											<p>
+												<span>备注</span>
+												<input type="text" id="note" maxlength="16"></input>
+											</p>
+											<p>
+												<span>总额</span>
+												<b id="total_fee" style="color:#ff9933;margin-right:10px;">0</b>元
+											</p>
+											
+											<!--<p>
+												<span>支付方式</span>
+												<select>
+													<option>会员卡支付</option>
+													<option>现场支付</option>
+												</select>
+											</p>-->
+											<p style="margin-top:20px;text-align:center">
+												<button class="btn-new" style="width:80px;" onclick="start_reserve()">预定</button>
+												<button class="btn-new" style="width:80px;margin-left:40px;" onclick="lock()">锁定</button>
+											</p>
+										</div>
+									</div>
+									<div class="tab-pane" id="panel-batch_reserve">
+										<div style="padding:20px 0 20px 10px;" class="span12 web-function-tab">
+											<p>
+												<span>会员类型</span>
+												<input type="radio" name="member_ship_batch" checked onclick="show_member_card_batch(1)">会员</input>
+												<input type="radio" name="member_ship_batch" style="margin-left:10px" onclick="show_member_card_batch(0)">非会员</input>
+											</p>
+											
+											<p id="member_card_batch">
+												<span>会员卡号</span>
+												<input type="text" id="member_card_number_batch"></input>
+											</p>
+											<p>
+												<span>联系人</span>
+												<input type="text" id="contact_batch"></input>
+											</p>
+											<p>
+												<span>联系电话</span>
+												<input type="text" id="telephone_batch"></input>
+											</p>
+											<p>
+												<span>备注</span>
+												<input type="text" id="note_batch" maxlength="16"></input>
+											</p>
+											
+											<p>
+												<span>预定周期</span>
+												<input type="radio" name="batch_circle_reserve" checked onclick="show_weekly_reserve(0)" value="0">每天</input>
+												<input type="radio" name="batch_circle_reserve" style="margin-left:10px" onclick="show_weekly_reserve(1)" value="1">每周</input>
+												<select style="width:80px;display:none;height:auto;line-height:auto;font-size:12px;" id="batch_reserve_weekly" class="weekly_reserve">
+													<option value="1">星期一</option>
+													<option value="2">星期二</option>
+													<option value="3">星期三</option>
+													<option value="4">星期四</option>
+													<option value="5">星期五</option>
+													<option value="6">星期六</option>
+													<option value="7">星期日</option>
+												</select>		
+											</p>
+											<p>
+												<span>场地选择</span>
+												<select class="batch_places" id="batch_reserve_places"></select>
+											</p>
+											<p>
+												<span>日期选择</span>
+												<input id="batch_reserve_startdate" type="text" class="date-pick-batch" style="font-size:12px;background:url('./img/date_time.png') 1px 3px no-repeat;height:32px;line-height:32px;padding:0 0 0 20px;width:95px;text-align:center" id="choose_date" readonly='readonly' value="">
+												-
+												<input id="batch_reserve_enddate" type="text" class="date-pick-batch" style="margin-left:5px;font-size:12px;background:url('./img/date_time.png') 1px 3px no-repeat;height:32px;line-height:32px;padding:0 0 0 20px;width:95px;text-align:center" id="choose_date" readonly='readonly' value="">
+											</p>
+											<p>
+												<span>时间选择</span>
+												<select style="width:80px;" class="batch_times" id="batch_reserve_starttime"></select>
+												-
+												<select style="width:80px;" class="batch_times" id="batch_reserve_endtime"></select>
+											</p>
+											
+											<p>
+												<span>总额</span>
+												<input type="text" id="total_fee_batch" style="width:80px;"></input>元
+											</p>
+											
+											<p style="margin-top:20px;text-align:center">
+												<button class="btn-new" style="width:80px;" onclick="start_batch_reserve()">批量预定</button>
+												<button class="btn-new" style="width:80px;margin-left:40px;" onclick="start_batch_unreserve()">批量取消</button>
+											</p>
+										</div>
+									
+									
+									</div>
+									
+									<div class="tab-pane" id="panel-lock">
+										 <div style="padding:20px 0 20px 10px;" class="span12 web-function-tab">
+											
+											<p>
+												<span>预定周期</span>
+												<input type="radio" name="batch_circle_lock" checked onclick="show_weekly_lock(0)" value="0">每天</input>
+												<input type="radio" name="batch_circle_lock" style="margin-left:10px" onclick="show_weekly_lock(1)" value="1">每周</input>
+												<select style="width:80px;display:none;height:auto;line-height:auto;font-size:12px;" id="batch_lock_weekly" class="weekly_lock">
+													<option value="1">星期一</option>
+													<option value="2">星期二</option>
+													<option value="3">星期三</option>
+													<option value="4">星期四</option>
+													<option value="5">星期五</option>
+													<option value="6">星期六</option>
+													<option value="7">星期日</option>
+												</select>		
+											</p>
+											<p>
+												<span>场地选择</span>
+												<select class="batch_places" id="batch_lock_places"></select>
+											</p>
+											<p>
+												<span>日期选择</span>
+												<input id="batch_lock_startdate" type="text" class="date-pick-batch" style="font-size:12px;background:url('./img/date_time.png') 1px 3px no-repeat;height:32px;line-height:32px;padding:0 0 0 20px;width:95px;text-align:center" id="choose_date" readonly='readonly' value="">
+												-
+												<input id="batch_lock_enddate" type="text" class="date-pick-batch" style="margin-left:5px;font-size:12px;background:url('./img/date_time.png') 1px 3px no-repeat;height:32px;line-height:32px;padding:0 0 0 20px;width:95px;text-align:center" id="choose_date" readonly='readonly' value="">
+											</p>
+											<p>
+												<span>时间选择</span>
+												<select style="width:80px;" class="batch_times" id="batch_lock_starttime"></select>
+												-
+												<select style="width:80px;" class="batch_times" id="batch_lock_endtime"></select>
+											</p>
+											
+											<p style="margin-top:20px;text-align:center">
+												<button class="btn-new" style="width:80px;" onclick="start_batch_lock()">批量锁定</button>
+											</p>
+										 </div>
+									</div>
+									<div class="tab-pane" id="panel-unlock">
+										<div style="padding:20px 0 20px 10px;" class="span12 web-function-tab">
+											<p>
+												<span>预定周期</span>
+												<input type="radio" name="batch_circle_unlock" checked onclick="show_weekly_unlock(0)" value="0">每天</input>
+												<input type="radio" name="batch_circle_unlock" style="margin-left:10px" onclick="show_weekly_unlock(1)" value="1">每周</input>
+												<select style="width:80px;display:none;height:auto;line-height:auto;font-size:12px;" id="batch_unlock_weekly" class="weekly_unlock" >
+													<option value="1">星期一</option>
+													<option value="2">星期二</option>
+													<option value="3">星期三</option>
+													<option value="4">星期四</option>
+													<option value="5">星期五</option>
+													<option value="6">星期六</option>
+													<option value="7">星期日</option>
+												</select>		
+											</p>
+											<p>
+												<span>场地选择</span>
+												<select class="batch_places" id="batch_unlock_places"></select>
+											</p>
+											<p>
+												<span>日期选择</span>
+												<input id="batch_unlock_startdate" type="text" class="date-pick-batch" style="font-size:12px;background:url('./img/date_time.png') 1px 3px no-repeat;height:32px;line-height:32px;padding:0 0 0 20px;width:95px;text-align:center" id="choose_date" readonly='readonly' value="">
+												-
+												<input id="batch_unlock_enddate" type="text" class="date-pick-batch" style="margin-left:5px;font-size:12px;background:url('./img/date_time.png') 1px 3px no-repeat;height:32px;line-height:32px;padding:0 0 0 20px;width:95px;text-align:center" id="choose_date" readonly='readonly' value="">
+											</p>
+											<p>
+												<span>时间选择</span>
+												<select style="width:80px;" class="batch_times" id="batch_unlock_starttime"></select>
+												-
+												<select style="width:80px;" class="batch_times" id="batch_unlock_endtime"></select>
+											</p>
+											
+											<p style="margin-top:20px;text-align:center">
+												<button class="btn-new" style="width:80px;" onclick="start_batch_unlock()">批量解锁</button>
+											</p>
+										 </div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="span1 padding">
+				</div>
+			</div>
+		</div>
+		<div class="row-fluid" id="chosen_places_div" style="display:none">
+			<div class="span12" id="chosen_places" >
+								
+			</div>
+		</div>
+		
+		
+</div>
+	</div>
+</div>
+
+<script>
+	$(function(){
+		//获取session的登录用户信息		
+		$.ajax({
+			url:"/user/get_login_info",
+            dataType:'JSON',
+            type: 'GET',
+            success:function(result){
+            	if (result.error == "0") {
+            		var login_info = result.login_info;
+            		var user_name = login_info.user;
+            		$("#user_name").text(user_name);
+            	}else if(result.error == "1"){
+            		window.location.href="/sport/login.html"
+            	}else{
+            		alert("internal error!")
+            	}
+            },
+            error:function(e){
+            	alert("this error")
+            }
+		})	
+
+		$("#login_out").click(function(){
+			$.ajax({
+				url:"/login_out/",
+	            dataType:'JSON',
+	            type: 'GET',
+	            success:function(result){
+	            	if (result.error == "0") {
+	            		window.location.href="/sport/login.html"
+	            	}else{
+            			alert("注销失败！")
+            		}
+	            },
+	            error:function(e){
+	            	alert("error")
+	            }
+			})	
+		})
+	})
+	
+	$("#contact, #contact_batch").focus(function(){
+		if ($("#contact").val() == '请输入联系人'){
+			$("#contact").val('')
+			$("#contact").css('color',"#000")
+		}
+		if ($("#contact_batch").val() == '请输入联系人'){
+			$("#contact_batch").val('')
+			$("#contact_batch").css('color',"#000")
+		}
+	})
+
+	$("#telephone, #telephone_batch").focus(function(){
+		if ($("#telephone").val() == '请输入手机号码' || $("#telephone").val() == '请输入有效的手机号码'){
+			$("#telephone").val('')
+			$("#telephone").css('color',"#000")
+		}
+		if ($("#telephone_batch").val() == '请输入手机号码' || $("#telephone_batch").val() == '请输入有效的手机号码'){
+			$("#telephone_batch").val('')
+			$("#telephone_batch").css('color',"#000")
+		}
+	})
+
+	$("#member_card_number, #member_card_number_batch").focus(function(){
+		if ($("#member_card_number").val() == '请输入会员卡号'){
+			$("#member_card_number").val('')
+			$("#member_card_number").css('color',"#000")
+		}
+		if ($("#member_card_number_batch").val() == '请输入会员卡号'){
+			$("#member_card_number_batch").val('')
+			$("#member_card_number_batch").css('color',"#000")
+		}
+	})
+	
+	$("#member_card_number").blur(function(){
+		var member_card_number = $("#member_card_number").val()
+		if ( member_card_number != '请输入会员卡号' && $.trim(member_card_number) !=''){	
+			if ($.cookie(member_card_number)){
+				var cookie = $.cookie(member_card_number).split(";")
+				var contact = cookie[0]
+				var telephone = cookie[1]
+				var note = cookie[2]
+				$("#contact").val(contact)
+				$("#telephone").val(telephone)
+				$("#note").val(note)
+			}else{
+				$("#contact").val('')
+				$("#telephone").val('')
+				$("#note").val('')
+			}
+		}
+	})
+	
+	$("#member_card_number_batch").blur(function(){
+		var member_card_number = $("#member_card_number_batch").val()
+		if ( member_card_number != '请输入会员卡号' && $.trim(member_card_number) !=''){	
+			if ($.cookie(member_card_number)){
+				var cookie = $.cookie(member_card_number).split(";")
+				var contact = cookie[0]
+				var telephone = cookie[1]
+				var note = cookie[2]
+				$("#contact_batch").val(contact)
+				$("#telephone_batch").val(telephone)
+				$("#note_batch").val(note)
+			}else{
+				$("#contact_batch").val('')
+				$("#telephone_batch").val('')
+				$("#note_batch").val('')
+			}
+		}
+	})
+	
+	var click = 0
+	var leftcount =0
+	var rightcount = 0
+	
+	$(".date-pick").change(function(){
+		var origin = $("#choose_date_hide").val()
+		//alert(origin)
+		if (origin != $(".date-pick").val()){
+			$("#choose_date_hide").val($(".date-pick").val())
+			$("#date_selecter").html('')
+			$(".reserve-table-web tbody").html('')
+			$(".reserve-table-time-web tbody").html('')
+			click = 0
+			leftcount =0
+			rightcount = 0
+			var date = new Date($(".date-pick").val())
+			var year = date.getFullYear() 
+			var month = date.getMonth() + 1;
+			var maxday = getDaysInMonth(year,month)
+			
+			
+			if (month.length == 1){
+				month = '0' + month
+			}
+			var day = date.getDate();
+			var day_day = date.getDay()
+			
+			
+			for (var i=0;i<7;i++){
+				var weekday = ''
+				switch(day_day){
+					case 0:
+						weekday = '周日';
+						break;
+					case 1:
+						weekday = '周一';
+						break;
+					case 2:
+						weekday = '周二';
+						break;
+					case 3:
+						weekday = '周三';
+						break;
+					case 4:
+						weekday = '周四';
+						break;
+					case 5:
+						weekday = '周五';
+						break;
+					case 6:
+						weekday = '周六';
+						break;
+				}
+				
+				if (day > maxday){
+					day = day - maxday
+					month = month+1
+					if (month > 12){
+						month = month - 12
+					}
+				}	
+				
+				var display_day = '' + day
+				if (display_day.length == 1){
+					display_day = '0' + day
+				}	
+				
+				if (i==0){
+					$(".date-pick").val(year + '-' +month + '-' + display_day)	
+					$("#choose_date_hide").val(year + '-' +month + '-' + display_day)	
+				}
+			
+				var canorder = ""
+				var date_now = new Date()
+				var date_new = new Date(year + '-' + month + '-' + display_day)
+				if (date_new < date_now){
+					canorder = "no"
+				}else{
+					canorder = "yes"
+				}
+				/*if (i==0){
+					var html = '<li style="display:inline-block;padding-right:5px;"><a href="#"><button onclick="select(this)" class="btn-new btn-new-selected" type="button" style="text-shadow:none;background-color:#fff;color:#bdbdbd;border-color:#bdbdbd;width:100px;">' + month + '-' + display_day + ' ' + weekday + '</button></a></li>'
+				}else{*/
+					var html = '<li order=' + canorder + ' day=' + day_day + ' full_date=' + year + '-' + month + '-' + display_day + ' style="display:inline-block;padding-right:5px;"><a href="javascript:void(0)"><button onclick="select(this)" class="btn-new" type="button" style="text-shadow:none;background-color:#fff;color:#bdbdbd;border-color:#bdbdbd;width:80px;height:32px;font-size:12px">' + month + '-' + display_day + ' ' + weekday + '</button></a></li>'
+				//}
+				$("#date_selecter").append(html)	
+				day = day + 1	
+				day_day = day_day*1 + 1	
+				if (day_day > 6){
+					day_day = day_day - 7
+				}
+				
+				
+			}
+			
+			$(".breadcrumb").find('li:first button').addClass('btn-new-selected')	
+			
+			
+			get_reserve_infos()
+			
+		}
+	})
+	var flag = false
+	var hover_time;
+	var out_time;
+	$('body').on('mouseenter mouseout','.sold-web,.sold-mobile,.notpaid,.notpaid-mobile',function(){
+		
+		//alert()
+		//console.log( event.type );//"mouseenter" or "mouseout" 根据这个标志来切换你的分支
+		var popudiv;
+		var arrow;
+		
+		var tar = $(event.target);
+		var id = tar.attr('num')
+			 var html_arrow = []
+			 var html = []
+			 html_arrow.push('<div class="arrow-outer"><div class="arrow-shadow"></div></div>')
+			 html.push('<div class="popudiv" id=' + id + '>')
+			 html.push('<table>')
+			 html.push('<tr><td>订单号：</td><td class="number"></td></tr>')
+			 html.push('<tr><td>预定时间：</td><td class="order_time"></td></tr>')
+			 <!--html.push('<tr><td>预定场地：</td><td class="places"></td></tr>')-->
+			  html.push('<tr><td>会员卡号：</td><td class="member_card_number"></td></tr>')
+			  html.push('<tr><td>金额：</td><td class="money"></td></tr>')
+			 html.push('<tr><td>姓名：</td><td class="contact"></td></tr>')
+			 html.push('<tr><td>手机号：</td><td class="telephone"></td></tr>')
+			 html.push('<tr><td>备注：</td><td class="note"></td></tr>')	
+			 html.push('<tr><td>状态：</td><td class="is_payed"></td></tr>')	
+			 html.push('<tr><td colspan="2" class="confirm_pay"><button class="btn-new" onclick="confirm_pay(this,0)" style="width:100px;height:30px;margin:7px 0 0 15px">确认支付</button><button class="btn-new" onclick="confirm_pay(this,1)" style="width:100px;height:30px;margin:7px 0 0 15px">取消订单</button></td></tr>')			 
+			 html.push('</table></div>')
+		
+		if (event.type == "mouseover"){	
+			
+			
+            /*ajax({
+                url:'',
+                ...
+                success:function(data){*/
+                    
+                    if($('#' + id).size()==0){
+						arrow = $(html_arrow.join('')).appendTo('body');
+                        popudiv = $(html.join('')).appendTo('body');//不存在则创建了放到body中
+						$.ajax({
+						url:'/order/list/',
+						type:'POST',
+						dataType:'JSON',
+						data:JSON.stringify({'number':id}),
+						success:function(result){
+							//alert(JSON.stringify(result))
+							var orders = result.orders[0]
+							
+							$("#"+id).find(".number").html(orders.number)  
+							$("#"+id).find(".order_time").html(orders.order_time)
+							$("#"+id).find(".telephone").html(orders.telephone) 
+							if (!orders.member_card_number || orders.member_card_number==''){
+								orders.member_card_number = '无'
+							}
+							$("#"+id).find(".member_card_number").html(orders.member_card_number) 
+							$("#"+id).find(".contact").html(orders.contact) 
+							$("#"+id).find(".money").html(orders.money) 
+							$("#"+id).find(".note").html((orders.note==0?"无":orders.note))  
+							$("#"+id).find(".is_payed").html((orders.is_payed==true?"已付款":"未付款")) 
+							//alert(orders.is_payed==true)
+							if (orders.is_payed==true){
+								$("#"+id).find(".confirm_pay").closest('tr').hide()
+							}else{
+								$("#"+id).find(".confirm_pay").closest('tr').show()
+							}
+							//$("#"+id).find(".number") = orders.number
+						}
+						})
+						
+                    }else{
+						arrow = $(".arrow-outer")
+                        popudiv = $('#' +id);
+                    }//创建popudiv，如果已存在则不创建
+                    //popudiv.html(data);//设置内容
+                    popudiv.css('position','absolute');//设置position
+                    var taroff = tar.offset()
+					var width = tar.width()
+					var height = tar.height();
+					
+					var arrow_css = {
+						top : taroff.top + 26,
+                        left : taroff.left +12,
+					}
+					
+                    var pos = {//定位popudiv，这里以在td右边显示为例子，左边跟上边的时候还要计算popudiv的尺寸
+                        top : taroff.top + 49,
+                        left : taroff.left - 110,
+						width: "280px",
+						height: "auto",
+						border:"1px solid #dbdbdb",
+						backgroundColor:"#FFFFDF",
+						zIndex:'100'
+                    }
+					
+					clearTimeout(out_time);					
+					hover_time=setTimeout(function(){
+						var show_id;
+						$(".popudiv").each(function(){
+							if ($(this).is(':visible')){
+								show_id = $(this).attr('num')
+							}
+						}) 
+						if (show_id != id) {
+							$('.arrow-outer').hide();
+							$(".popudiv").hide()
+						}
+					
+						arrow.css(arrow_css).show()
+						popudiv.css(pos).show();//设置left，top，并显示出来
+					},300);
+					
+                //}
+            //})
+		}/*else if (event.type == "mouseout"){
+			//alert()
+			
+			//if (!$(event.target).isChildAndSelfOf(".popudiv")){
+			clearTimeout(hover_time);
+			out_time=setTimeout(function(){
+				$('.arrow-outer').hide();
+				$('.popudiv').hide();//鼠标离开TD，popudiv隐藏
+				
+			},300);
+			
+			
+			
+			
+		}*/
+	});
+	
+	$('body').on('mouseenter mouseout','.popudiv',function(){
+		
+		//alert()
+		//console.log( event.type );//"mouseenter" or "mouseout" 根据这个标志来切换你的分支
+		var popudiv;
+		var arrow;
+		arrow = $(".arrow-outer")
+        popudiv = $('.popudiv');
+		if (event.type == "mouseover"){	
+			//alert()
+			
+				clearTimeout(out_time);
+			
+                   
+		}/*else if (event.type == "mouseout"){
+			
+			clearTimeout(hover_time);
+			out_time=setTimeout(function(){
+				$('.arrow-outer').hide();
+				$('.popudiv').hide();//鼠标离开TD，popudiv隐藏
+				
+			},300);
+		}*/
+	});
+	
+	$(document).mouseover(function(event){
+		var popudiv;
+		var arrow;
+		arrow = $(".arrow-outer")
+        popudiv = $('.popudiv');
+		if (!$(event.target).isChildAndSelfOf (".sold-web") && !$(event.target).isChildAndSelfOf (".sold-mobile") && !$(event.target).isChildAndSelfOf (".notpaid-mobile") && !$(event.target).isChildAndSelfOf (".notpaid") && !$(event.target).isChildAndSelfOf (".popudiv") && !$(event.target).isChildAndSelfOf (".arrow-outer")){
+			
+			clearTimeout(hover_time);
+			out_time=setTimeout(function(){
+				$('.arrow-outer').hide();
+				$('.popudiv').hide();//鼠标离开TD，popudiv隐藏
+				
+			},300);
+		}else{
+			clearTimeout(out_time);
+		}
+	});
+    	
+	
+	
+</script>
+
+<div class="qb_quick_tip qb_none" id="bubble"></div>
+
+
+<!--#include file="/stadium/notice.html"-->
+</body>
+</html>

@@ -1,0 +1,61 @@
+# -*- coding: utf-8 -*-
+
+import urllib2
+import json
+import sys
+
+reload(sys)
+sys.setdefaultencoding('utf-8')
+ 
+appid = 'wx95198705de430c74' 
+secret = 'b032a7cc9a585f13075aa1d03cfacb02'
+
+#{
+ #                         "name":"云盘服务",
+  #                        "sub_button":[
+   #                                       {"type":"view","name":"自助开通","url":"http://124.74.252.151/home/wap/register"}
+    #                                   ]                          
+     #               },
+            #                               {"type":"click","name":"常见问题","key":"QandA"},
+     
+
+#{"type":"view","name":"绑定云盘账号","url":"http://10.25.78.11/home/wap/register"}
+class MenuManager:
+    accessUrl = "https://101.226.90.58/cgi-bin/token?grant_type=client_credential&appid=" + appid + "&secret=" + secret
+    delMenuUrl = "https://101.226.90.58/cgi-bin/menu/delete?access_token="
+    createUrl = "https://101.226.90.58/cgi-bin/menu/create?access_token="
+    getMenuUri="https://101.226.90.58/cgi-bin/menu/get?access_token="
+    def getAccessToken(self):
+        f = urllib2.urlopen(self.accessUrl)
+        accessT = f.read().decode("utf-8")
+        jsonT = json.loads(accessT)
+        return jsonT["access_token"]
+    def delMenu(self, accessToken):
+        html = urllib2.urlopen(self.delMenuUrl + accessToken)
+        result = json.loads(html.read().decode("utf-8"))
+        return result["errcode"]
+    def createMenu(self, accessToken):
+        menu = '''{
+                 "button":[
+                     {  
+                          "type":"view",
+                          "name":"场地预定",
+                          "url":"http://115.28.240.2/stadium/reserve_wx.html"
+                    }
+                ]}'''
+        html = urllib2.urlopen(self.createUrl + accessToken, menu.encode("utf-8"))
+        result = json.loads(html.read().decode("utf-8"))
+        return result["errcode"]
+    def getMenu(self):
+        html = urllib2.urlopen(self.getMenuUri + accessToken)
+        print(html.read().decode("utf-8"))
+     
+ 
+if __name__ == "__main__":
+    wx = MenuManager()
+    accessToken = wx.getAccessToken()
+    print(wx.delMenu(accessToken))   #删除菜单
+    print(wx.createMenu(accessToken))  #创建菜单
+    #wx.delMenu(accessToken)
+    #wx.createMenu(accessToken)
+    #wx.getMenu()

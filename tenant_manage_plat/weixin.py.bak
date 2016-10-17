@@ -1,0 +1,345 @@
+#coding:utf8
+from django.http import HttpResponse
+from django.views.decorators.csrf import csrf_exempt
+from django.template import RequestContext, Template
+from django.utils.encoding import smart_str, smart_unicode
+import hashlib
+from xml.etree import ElementTree as etree
+import xml.etree.ElementTree as ET
+import os
+import urllib
+import urllib2
+import json
+import sys
+import time
+from tenant_manage_plat.util import wx_pay_sdk
+
+#测试环境
+# appid = 'wx95198705de430c74' 
+# secret = 'b032a7cc9a585f13075aa1d03cfacb02'
+# accessUrl = "https://101.226.90.58/cgi-bin/token?grant_type=client_credential&appid=" + appid + "&secret=" + secret
+# mch_id = '10057206'
+# key = '00000000000000000000000000000000'
+
+#正式环境
+appid = 'wxe2199cc318a1f4db' 
+secret = 'e1452caab791a1f0f268e78294a6da7b'
+accessUrl = "https://101.226.90.58/cgi-bin/token?grant_type=client_credential&appid=" + appid + "&secret=" + secret
+mch_id = '1273376801'
+key = 'abcde123450000000000q1w2e3r4t5y6'
+#check_online_kflist_url = 'https://101.226.90.58/cgi-bin/customservice/getonlinekflist?access_token='
+#PicUrl = 'https://mmbiz.qlogo.cn/mmbiz/feFQGpxBYpjCdyBFqFJPHMnibLR8l437SRQvQ9OCh4VsshRHXeAVveubuQvfn6QIS5DEEVOnZU6gkpZo5lyFuwA/0?wx_fmt=png'
+@csrf_exempt
+def weixin(request):
+    
+    if request.method=='GET':
+        response=HttpResponse(checkSignature(request))
+        return response
+    else:
+       
+#         new_path_filename = '/home/text.txt'
+#         f = open(new_path_filename, 'a')
+#         try:
+#             msg = str(request)
+#             f.writelines(msg)
+#         except Exception, e:
+#             f.writelines(request)
+#         
+#         try:
+#             xmlstr = smart_str(request.raw_post_data)
+#         except Exception, e:
+#            os.system("echo " + str(e))
+#         
+#         try:
+#             xml = etree.fromstring(xmlstr)
+#         except Exception, e:
+#             new_path_filename = '/home/text.txt'
+#             f = open(new_path_filename, 'a')
+#             msg = str(e)
+#             f.writelines(msg)
+        xmlstr = smart_str(request.body)
+        xml = etree.fromstring(xmlstr)
+      
+        
+       
+        ToUserName = xml.find('ToUserName').text
+        FromUserName = xml.find('FromUserName').text
+        CreateTime = xml.find('CreateTime').text
+        MsgType = xml.find('MsgType').text
+        
+        try:
+            MsgId = xml.find('MsgId').text
+            Content = xml.find('Content').text
+        except:
+            MsgId = ''
+            Content = ''
+        
+        try:
+            Event = xml.find('Event').text
+            os.system("echo " + Event)
+        except:
+            Event = ""
+        
+        if Event == 'subscribe':
+            reply_xml = reply_text(FromUserName,ToUserName,CreateTime, "欢迎您关注宝信企业云盘公众号  在这里您可以获取云盘最新资讯")
+            #reply_xml = reply_lottery(FromUserName,ToUserName,CreateTime)
+#         elif Event == 'CLICK':
+#             EventKey = xml.find('EventKey').text
+#             reply_xml = reply_text(FromUserName,ToUserName,CreateTime, "欢迎您关注宝信企业云盘公众号  本公众号尚在开发中...")
+#             if EventKey == 'product_intro':
+#                  reply_xml = reply_product_intro(FromUserName,ToUserName,CreateTime)
+#             elif EventKey == 'version_intro':
+#                  reply_xml = reply_version_intro(FromUserName,ToUserName,CreateTime)
+#             elif EventKey == 'help':
+#                  if get_online_kf_num() == 0:
+#                      reply_xml = reply_text(FromUserName,ToUserName,CreateTime, "对不起，当前没有客服人员在线，您可以尝试拨打运维电话来向我们提问")
+#                  else:
+#                      reply_xml = reply_custom_help(FromUserName,ToUserName,CreateTime)
+#                      #reply_xml = reply_text(FromUserName,ToUserName,CreateTime, "您已接入云盘在线客服，您可以直接发送消息与客服人员进行互动")
+#             elif EventKey == 'QandA':
+#                  reply_xml = reply_text(FromUserName,ToUserName,CreateTime, "常见问题，即将来临...")
+#             elif EventKey == 'connect':
+#                  reply_xml = reply_text(FromUserName,ToUserName,CreateTime, "联系电话：20379412\r\n联系邮箱：eCop@baosight.com")
+#             elif EventKey == 'manual':
+#                  reply_xml = reply_manual(FromUserName,ToUserName,CreateTime)
+#             elif EventKey == 'project_intro':
+#                  reply_xml = reply_project_intro(FromUserName,ToUserName,CreateTime)
+#             elif EventKey == 'lottery':
+#                  reply_xml = reply_lottery_page(FromUserName,ToUserName,CreateTime)
+#             else:
+#                  reply_xml = reply_text(FromUserName,ToUserName,CreateTime, "此功能尚在开发中。。。")
+        elif Content.encode("utf-8") == '帮助':
+           reply_xml = reply_custom_help(FromUserName,ToUserName,CreateTime)        
+        else:
+            reply_xml = reply_text(FromUserName,ToUserName,CreateTime,"欢迎使用宝钢云盘微信服务号，如果需要帮助，请回复 “帮助” 将会有客服人员在线为您解答")
+        return HttpResponse(reply_xml)
+
+def checkSignature(request):
+    signature=request.GET.get('signature',None)
+    timestamp=request.GET.get('timestamp',None)
+    nonce=request.GET.get('nonce',None)
+    echostr=request.GET.get('echostr',None)
+    token="uV1JizBxfPQQGv3MZd8bZdJnFHMk"    
+
+    tmplist=[token,timestamp,nonce]
+    tmplist.sort()
+    tmpstr="%s%s%s"%tuple(tmplist)
+    tmpstr=hashlib.sha1(tmpstr).hexdigest()
+    if tmpstr==signature:
+        return echostr
+    else:
+        return None
+    
+def gettoken(request):
+    url = 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=APPID&secret=APPSECRET'
+    f = urllib2.urlopen(self.accessUrl)
+    accessT = f.read().decode("utf-8")
+    jsonT = json.loads(accessT)
+    return jsonT["access_token"]
+
+def post(url, data):  
+    req = urllib2.Request(url)  
+    #data = urllib.urlencode(data)  
+    #enable cookie  
+    opener = urllib2.build_opener(urllib2.HTTPCookieProcessor())  
+    response = opener.open(req, data)  
+    return response.read()  
+
+def get_openid_redirect(request):
+    id = request.GET['id']
+    #place_id = request.GET['place_id']
+    day = request.GET['day']
+    total_fee = request.GET['total_fee']
+    order_detail = request.GET['order_detail']
+    redirect_uri = 'http://t.tzjmall.com/stadium/reserve_middleware_wx.html?id=' + id + '&day=' + day + '&total_fee=' + total_fee + '&order_detail=' + order_detail
+    #redirect_uri = redirect_uri.decode('gbk', 'replace')
+#     redirect_uri = urllib.quote(redirect_uri.encode('utf-8', 'replace'))
+    return HttpResponse(json.dumps({'redirect_uri':redirect_uri,'appid':appid, "id":id, "day":day, "total_fee":total_fee, "order_detail":order_detail},ensure_ascii=False))
+
+def get_openid_redirect_query(request):
+    redirect_uri = 'http://t.tzjmall.com/stadium/reserve_middleware_wx.html?query=yes'   
+    return HttpResponse(json.dumps({'redirect_uri':redirect_uri,'appid':appid},ensure_ascii=False))
+
+def get_openid(request):
+    code = request.GET['code']
+    openid = ""
+    url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=" + appid + "&secret=" + secret + "&code=" + code + "&grant_type=authorization_code"
+    result = post(url, '')  
+    try:
+        result = json.loads(result)
+        openid = result['openid']
+        new_path_filename = '/home/text.txt'
+        f = open(new_path_filename, 'a')
+        f.writelines('openid:' + openid + '\r\n')
+    except Exception,e:
+        new_path_filename = '/home/text.txt'
+        f = open(new_path_filename, 'a')
+        f.writelines(e)
+    return HttpResponse(json.dumps({'openid':openid},ensure_ascii=False))
+    
+def get_prepay_id(request):
+    new_path_filename = '/home/text.txt'
+    f = open(new_path_filename, 'a')
+    f.writelines('start\r\n')
+    
+    pay_url = 'https://api.mch.weixin.qq.com/pay/unifiedorder'
+    
+    
+    nonce_str = wx_pay_sdk.Common_util_pub().createNoncestr()
+    body = '悦享源场馆预定'
+    
+    new_path_filename = '/home/text.txt'
+    f = open(new_path_filename, 'a')
+    f.writelines('body:' + body)
+    
+    out_trade_no = request.GET['num']
+    
+    f.writelines('out_trade_no:' + out_trade_no)
+    
+    
+    total_fee = request.GET['total_fee']
+    
+    f.writelines('total_fee:' + total_fee)
+    
+    
+    spbill_create_ip = request.META['REMOTE_ADDR']  
+    
+    f.writelines('spbill_create_ip:' + spbill_create_ip)
+    notify_url = 'http://115.28.240.2/wx/get_wx_pay_notify'
+    trade_type = 'JSAPI'
+    #openid = 'oawF8jjPjmMzuth315_7teoBsZyI'
+    openid = request.GET['openid']
+    para = {}
+    para['appid'] = appid
+    para['body'] = body
+    para['spbill_create_ip'] = spbill_create_ip
+    para['mch_id'] = mch_id
+    para['nonce_str'] = nonce_str
+    para['notify_url'] = notify_url
+    para['openid'] = openid
+    para['out_trade_no'] = out_trade_no
+    para['total_fee'] = total_fee
+    para['trade_type'] = trade_type
+    
+    
+    #para = 'appid=%s&body=%s&ip=%s&mch_id=%s&nonce_str=%s&notify_url=%s&openid=%s&out_trade_no=%s&total_fee=%s&trade_type=%s' % (appid,body,ip,mch_id,nonce_str,notify_url,openid,out_trade_no,total_fee,trade_type)
+    #sign = 'appid=%s&body=%s&mch_id=%s&nonce_str=%s&notify_url=%s&openid=%s&out_trade_no=%s&spbill_create_ip=%s&total_fee=%s&trade_type=%s&key=%s' % (appid,body,mch_id,nonce_str,notify_url,openid,out_trade_no,spbill_create_ip,total_fee,trade_type,key)
+    #sign = hashlib.md5(sign).hexdigest().upper()
+    
+    sign_new =  wx_pay_sdk.Common_util_pub().getSign(para)
+    
+#     new_path_filename = '/home/text.txt'
+#     f = open(new_path_filename, 'a')
+#     #f.writelines(sign)
+#     f.writelines(sign_new)
+    para['sign'] = sign_new
+    
+    
+    data = wx_pay_sdk.Common_util_pub().arrayToXml(para)
+    result = post(pay_url, data)  
+    #result = wx_pay_sdk.Common_util_pub().xmlToArray(result)
+    #prepay_id =result['prepay_id']
+    new_path_filename = '/home/text.txt'
+    f = open(new_path_filename, 'a')
+    f.writelines(result)
+    
+    
+    result = wx_pay_sdk.Common_util_pub().xmlToArray(result)
+    return_msg = result['return_msg']
+    prepay_id = ''
+    if return_msg == 'OK':
+        prepay_id = result['prepay_id']
+    
+    new_path_filename = '/home/text.txt'
+    f = open(new_path_filename, 'a')
+    f.writelines('prepay_id:' + prepay_id + '\r\n')
+    
+    
+    #jsonT = json.loads(result)
+   
+    return HttpResponse(json.dumps({'result':return_msg,'prepay_id':prepay_id},ensure_ascii=False))
+
+def start_pay(request):
+    prepay_id = request.GET['prepay_id']
+    para = {}
+    para['appId'] = appid
+    para['timeStamp'] = int(time.time())
+    para['nonceStr'] = wx_pay_sdk.Common_util_pub().createNoncestr()
+    para['package'] = 'prepay_id=' + prepay_id
+    para['signType'] = "MD5"
+    para['paySign'] = wx_pay_sdk.Common_util_pub().getSign(para)
+    return HttpResponse(json.dumps(para,ensure_ascii=False))
+
+def get_wx_pay_notify(request):
+    xmlstr = smart_str(request.body)
+    xml = etree.fromstring(xmlstr)
+    return_code = xml.find('return_code').text
+    
+    
+    new_path_filename = '/home/text.txt'
+    f = open(new_path_filename, 'a')
+    msg = "return_code" + return_code
+    
+    
+    
+    if return_code == "SUCCESS":
+        result_code = xml.find('result_code').text
+        msg += " result_code:" + result_code
+        if return_code == "SUCCESS":
+            bank_type = xml.find('bank_type').text
+            total_fee = xml.find("total_fee").text
+            transaction_id = xml.find("transaction_id").text
+            out_trade_no = xml.find("out_trade_no").text
+            time_end = xml.find("time_end").text
+            msg += " bank_type:" + bank_type
+            msg += " total_fee:" + total_fee
+            msg += " transaction_id:" + transaction_id
+            msg += " out_trade_no:" + out_trade_no
+            msg += " time_end:" + time_end
+            f.writelines(msg)
+            #do sth
+        else:
+            err_code = xml.find("err_code").text
+            err_code_des = xml.find("err_code_des").text
+    else:
+        return_msg = xml.find("return_msg").text
+    return HttpResponse(reply_pay_notify())
+        
+    
+    
+def reply_text(FromUserName,ToUserName,CreateTime,Content):
+    reply_xml = """<xml>
+           <ToUserName><![CDATA[%s]]></ToUserName>
+           <FromUserName><![CDATA[%s]]></FromUserName>
+           <CreateTime>%s</CreateTime>
+           <MsgType><![CDATA[text]]></MsgType>
+           <Content><![CDATA[%s]]></Content>
+           </xml>"""%(FromUserName,ToUserName,CreateTime, Content)
+    return reply_xml
+
+def reply_custom_help(FromUserName,ToUserName,CreateTime):
+    reply_xml = """<xml>
+           <ToUserName><![CDATA[%s]]></ToUserName>
+           <FromUserName><![CDATA[%s]]></FromUserName>
+           <CreateTime>%s</CreateTime>
+           <MsgType><![CDATA[transfer_customer_service]]></MsgType>
+           </xml>"""%(FromUserName,ToUserName,CreateTime)
+    return reply_xml
+
+def reply_pay_notify():
+    reply_xml = """<xml>
+           <return_code><![CDATA[%s]]></return_code>
+           <return_msg></return_msg>
+           </xml>"""%('SUCCESS')
+    return reply_xml
+
+
+
+
+
+
+
+
+
+
+    

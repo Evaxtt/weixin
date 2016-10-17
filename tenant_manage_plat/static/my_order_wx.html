@@ -1,0 +1,208 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>我的订单</title>
+	<meta name="keywords" content="" />
+	<meta name="description" content="" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" /><!-- 禁止缩放 -->
+	<!-- <meta name="format-detection" content="telephone=no" /> --><!-- 禁止将数字变为电话号码 -->
+	<meta name="apple-mobile-web-app-capable" content="yes" /><!-- iphone设备中的safari私有meta标签 -->
+	<meta name="apple-mobile-web-app-state-bar-style" content="black"><!-- iphone的私有标签 -->
+	<link rel="stylesheet" type="text/css" href="./css/activity_wx.css">
+	<style>
+	    body{font-size:62.5%;font-family:"Microsoft YaHei",Arial; overflow-x:hidden; overflow-y:auto;margin:0;}
+	    .viewport{ max-width:640px; min-width:300px; margin:0 auto;}
+	</style>
+ </head>
+ 
+<body>
+    <div class="wrapper">
+<!--     	<div class="page-back">
+    		<a href="javascript;:">
+    			<span> < </span>
+    			<span>我的订单</span>
+    		</a>
+    	</div> -->
+    	<div class="order_category">
+    		<span style="border-right:1px solid #ddd;" id="for_order_all">全部</span>
+    		<span id="for_order_already">已预定</span>
+    	</div>
+    	<div id="order_record">
+	    	<div id="order_all">
+<!-- 		        <div class="activity-list clearfix">
+		        	<div class="activity_title">
+		        		<a href="javascript;:">
+			        		<span>场馆</span>
+			        		<span> > </span>
+			        		<span class="acticity_out">已结束</span>
+		        		</a>
+		        	</div>
+			        <div class="activity_detail clearfix">
+			        	<div  class="content-left">
+			        		<img src="img/basketball.png" style="width: 80%;">
+			        	</div>
+			        	<div  class="content-right">
+				        	<div style="float:left;width:50%;">
+				        		<p>地点：<span>场馆1</span></p>
+				        		<p>2016年9月20日</p>
+				        	</div>
+				        	<div style="float:left;width:50%;">
+				        		<p>￥<span>20</span>元</p>
+				        		<p>16:00~18:00</p>
+				        	</div>      		
+			        	</div>
+			        </div>
+			    </div> -->
+			</div>
+			<div id="order_already" style="display: none;">
+<!-- 		        <div class="activity-list">
+		        	<div class="activity_title">
+		        		<a href="javascript;:">
+			        		<span>活动名称</span>
+			        		<span> > </span>
+			        		<span class="acticity_in">报名中</span>
+		        		</a>
+		        	</div>
+			        <div class="activity_detail clearfix">
+			        	<div  class="content-left">
+			        		<img src="img/basketball.png" style="width: 80%;">
+			        	</div>
+			        	<div  class="content-right">
+				        	<div style="float:left;width:50%;">
+				        		<p>地点：<span>场馆1</span></p>
+				        		<p>2016年9月20日</p>
+				        	</div>
+				        	<div style="float:left;width:50%;">
+				        		<p>￥<span>20</span>元</p>
+				        		<p>16:00~18:00</p>
+				        	</div> 
+				        	<div>简介：<span>这是一场羽毛球盛宴...</span></div>      		
+			        	</div>
+			        </div>
+			    </div> -->
+			</div>		    
+
+		</div>
+    </div>
+</body>
+
+<script type="text/javascript" src="./js/jquery-2.1.4.js"></script>
+<script type="text/javascript">
+	function getUrlParam(name)
+	{
+		var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
+		var r = window.location.search.substr(1).match(reg);  //匹配目标参数
+		if (r!=null) return unescape(r[2]); return null; //返回参数值
+	} 
+	var openid = getUrlParam('openid')
+	// alert(openid)	
+
+	$(document).ready(function(){
+		var orders_details = ""
+		$.ajax({
+			url:'/order/list/',
+			type:'post',
+			dataType:'JSON',
+			data:JSON.stringify({"openid":openid}),
+			success:function(res){
+				if (res.error == '0') {
+					var orders = res.orders
+					// alert(JSON.stringify(orders))
+					for (var i=0;i<orders.length;i++){
+						var stadium = orders[i].stadium_name
+						var state = ""
+						var stadium_img = orders[i].stadium_img
+						var place = orders[i].places[0].name
+						var reserve_price = orders[i].money
+						var reserve_date = orders[i].places[0].day
+						var reserve_time = orders[i].places[0].order_hours+":00"
+						var str
+						if(orders[i].places[0].state == "0"){
+							state = "已结束"
+							str ="out"
+						}else{
+							state = "预定中"
+							str = "in"
+							orders_details='<div class="activity-list clearfix"><div class="activity_title"><a href="javascript;:"><span>'+stadium+'</span><span> > </span><span class="acticity_'+str+'">'+state+'</span></a></div><div class="activity_detail clearfix"><div  class="content-left"><img src="'+stadium_img+'" style="width: 80%;"></div><div  class="content-right"><div style="float:left;width:50%;"><p>地点：<span>'+place+'</span></p><p>'+reserve_date+'</p></div><div style="float:left;width:50%;"><p>￥<span>'+reserve_price+'</span>元</p><p>'+reserve_time+'</p></div></div></div></div>'
+
+							$(orders_details).appendTo("#order_already")
+						}
+						
+						orders_details='<div class="activity-list clearfix"><div class="activity_title"><a href="javascript;:"><span>'+stadium+'</span><span> > </span><span class="acticity_'+str+'">'+state+'</span></a></div><div class="activity_detail clearfix"><div  class="content-left"><img src="'+stadium_img+'" style="width: 80%;"></div><div  class="content-right"><div style="float:left;width:50%;"><p>地点：<span>'+place+'</span></p><p>'+reserve_date+'</p></div><div style="float:left;width:50%;"><p>￥<span>'+reserve_price+'</span>元</p><p>'+reserve_time+'</p></div></div></div></div>'
+
+						$(orders_details).appendTo("#order_all")
+					}
+				}else if(res.error == '-1'){
+					alert('internal error!')
+				}else {
+					alert('parameter error!')
+				}
+			}
+
+			,error:function(e){
+				alert("error!")
+			}
+
+		})
+
+		var activity_lists_details = ""
+		$.ajax({
+			url:'/activity/applicant_list/',
+			type:'post',
+			dataType:'JSON',
+			data:JSON.stringify({"openid":openid}),
+			success:function(res){
+				if (res.error == '0') {
+					var activity_lists = res.applicants
+					// alert(JSON.stringify(orders))
+					for (var i=0;i<activity_lists.length;i++){
+						var activity_name = activity_lists[i].activity_name  
+						var state = ""
+						var stadium_img = activity_lists[i].img
+						var stadium_name = activity_lists[i].stadium_name
+						var reserve_price = activity_lists[i].price
+						var start_time = activity_lists[i].start_time
+						var end_time = activity_lists[i].end_time
+						var str
+						if(activity_lists[i].activity_state == "0"){
+							state = "已结束"
+							str ="out"
+						}else{
+							state = "预定中"
+							str = "in"
+							activity_lists_details='<div class="activity-list clearfix"><div class="activity_title"><a href="javascript;:"><span>'+activity_name+'</span><span> > </span><span class="acticity_'+str+'">'+state+'</span></a></div><div class="activity_detail clearfix"><div  class="content-left"><img src="'+stadium_img+'" style="width: 80%;"></div><div  class="content-right"><div style="float:left;width:50%;"><p>地点：<span>'+stadium_name+'</span></p><p>'+start_time+'</p></div><div style="float:left;width:50%;"><p>￥<span>'+reserve_price+'</span>元</p><p>'+end_time+'</p></div></div></div></div>'
+
+							$(activity_lists_details).appendTo("#order_already")
+						}
+						
+						activity_lists_details='<div class="activity-list clearfix"><div class="activity_title"><a href="javascript;:"><span>'+activity_name+'</span><span> > </span><span class="acticity_'+str+'">'+state+'</span></a></div><div class="activity_detail clearfix"><div  class="content-left"><img src="'+stadium_img+'" style="width: 80%;"></div><div  class="content-right"><div style="float:left;width:50%;"><p>地点：<span>'+stadium_name+'</span></p><p>'+start_time+'</p></div><div style="float:left;width:50%;"><p>￥<span>'+reserve_price+'</span>元</p><p>'+end_time+'</p></div></div></div></div>'
+
+						$(activity_lists_details).appendTo("#order_all")
+					}
+				}else if(res.error == '-1'){
+					alert('internal error!')
+				}else {
+					alert('parameter error!')
+				}
+			}
+
+			,error:function(e){
+				alert("error!")
+			}
+
+		})
+		$("#for_order_already").click(function(){
+			$("#order_all").hide();
+			$("#order_already").show();
+		});
+		$("#for_order_all").click(function(){
+			$("#order_already").hide();
+			$("#order_all").show();
+
+		});
+
+
+	})
+</script>
+</html>

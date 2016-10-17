@@ -1,0 +1,118 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="登录界面" />
+    <title>登录</title>
+    <link rel="stylesheet" href="http://apps.bdimg.com/libs/fontawesome/4.2.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/login.css">
+</head>
+<body>
+<div class="container-fluid">
+    <div class="row-fluid">
+        <div class="span12"  style="background-color:#FF9933;margin-bottom:20px;height:70px;">
+            <div class="row-fluid">
+                <div class="span3" style="margin-left:0 !important;height:70px;">
+                    <a href="#" style="background:url('./img/logo.jpg') 50% 50% no-repeat;width:300px;height:70px;float:left;display:inline">                      
+                    </a>
+                </div>
+<!--                 <div class="span2 pull-right" style="height:40px;">    
+                    <ul class="breadcrumb" >
+                        <li class="active">
+                            <a href="login.html#login" id="tologin">
+                                admin
+                            </a>
+                            <b>|</b>
+                            <a href="#">
+                                注销
+                            </a>
+                        </li>
+                    </ul>
+                </div>   -->
+            </div>
+        </div>
+    </div>
+</div>
+<!-- begin -->
+<div id="login">
+    <div class="wrapper">
+        <div class="login">
+            <form method="post" class="container offset1 loginform" autocomplete="on">
+                <div id="owl-login">
+                    <div class="hand"></div>
+                    <div class="hand hand-r"></div>
+                    <div class="arms">
+                        <div class="arm"></div>
+                        <div class="arm arm-r"></div>
+                    </div>
+                </div>
+                <div class="pad">
+                    <div class="control-group">
+                        <div class="controls">
+                            <label for="email" class="control-label fa fa-envelope"></label>
+                            <input id="email" type="email" name="email" required="required" placeholder="邮箱" tabindex="1" autofocus="autofocus" class="form-control input-medium">
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <div class="controls">
+                            <label for="password" class="control-label fa fa-asterisk"></label>
+                            <input id="password" type="password" name="password" required="required" placeholder="密码" tabindex="2" class="form-control input-medium">
+                        </div>
+                    </div>
+                    <div class="text-center text-danger">
+                        <span id="msg-wrning"></span>   
+                    </div>                
+                </div>
+                <div class="form-actions">
+                    <a href="#" tabindex="5" class="btn pull-left btn-link text-muted">忘记密码请联系管理员</a>
+                   <!--  <a id="to_signup" href="register.html" tabindex="6" class="btn btn-link text-muted">立即注册</a> -->
+                    <button id="submit-btn" type="button" tabindex="4" class="btn btn-warning">登录</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- end -->
+
+<script src="js/jquery-1.11.3.min.js"></script>
+<script>
+$(function() {
+
+    $('#login #password').focus(function() {
+        $('#owl-login').addClass('password');
+    }).blur(function() {
+        $('#owl-login').removeClass('password');
+    });
+
+    $("#submit-btn").click(function(){
+        var data = {'name':$("#email").val(),'passwd':$("#password").val()}
+
+        $.ajax({
+            url:'/login/',
+            dataType:'JSON',
+            type: 'post',
+            data: JSON.stringify(data),
+            success:function(result){
+                if (result.error == "0"){
+                    window.location.href="/sport/reserve_management.html";
+                }else if (result.error == "1"){
+                    $("#msg-wrning").html('参数无效!');
+                }else if (result.error == "2"){
+                    $("#msg-wrning").html('用户不存在!'); 
+                }else if (result.error == "3"){
+                    $("#msg-wrning").html('密码错误!');
+                }else{
+                    $("#msg-wrning").html('内部错误!'); 
+                }
+            },
+            error:function(e){
+              $("#msg-wrning").html('登录失败');
+            }
+      }); 
+    });
+});
+</script>
+</body>
+</html>

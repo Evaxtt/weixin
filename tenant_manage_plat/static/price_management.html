@@ -1,0 +1,681 @@
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="title" content="预定管理">
+	<meta name="description" content="">
+	<meta name="keywords" content="预定管理">
+	<title>预定管理</title>
+	<link href="./css/bootstrap-combined.min.css" rel="stylesheet">
+	<link href="./css/layoutit.css" rel="stylesheet">
+	<link href="./css/notice.css" rel="stylesheet">
+	<link rel="stylesheet" href="http://apps.bdimg.com/libs/fontawesome/4.2.0/css/font-awesome.min.css">
+	<link rel="stylesheet" type="text/css" href="./css/activity.css">
+	<!--[if lt IE 9]>
+			<script src="js/html5shiv.js"></script>
+		<![endif]-->
+	<link rel="shortcut icon" href="img/favicon.png">
+	<script type="text/javascript" src="./js/jquery-2.1.4.js"></script>
+	<!--[if lt IE 9]>
+		<script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+		<![endif]-->
+	<script type="text/javascript" src="./js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="./js/jquery-ui.js"></script>
+	<script type="text/javascript" src="./js/jquery.ui.touch-punch.min.js"></script>
+	<script type="text/javascript" src="./js/jquery.htmlClean.js"></script>
+	<script type="text/javascript" src="./js/jquery.cookie.js"></script>
+	
+	<script type="text/javascript" src="./js/common.js"></script>
+	
+	<link href="./js/mCustomScrollbar/jquery.mCustomScrollbar.min.css" rel="stylesheet" type="text/css" />
+	<script src="./js/mCustomScrollbar/jquery.mousewheel.min.js"></script>
+	<script src="./js/mCustomScrollbar/jquery.mCustomScrollbar.min.js"></script>
+	
+	<!-- jquery.datePicker.js -->
+	<script type="text/javascript" src="./js/datepicker/date.js"></script>
+	<script type="text/javascript" src="./js/datepicker/jquery.datePicker.js"></script>
+	<!-- datePicker required styles -->
+	<link rel="stylesheet" type="text/css" media="screen" href="./js/datepicker/datePicker.css">
+	
+	<!--<script type="text/javascript" src="./js/reserve_manage.js"></script>-->
+	
+	
+	<link href="./js/asyncbox/skins/ZCMS/asyncbox.css" type="text/css" rel="stylesheet" />
+	<script type="text/javascript" src="./js/asyncbox/AsyncBox.v1.4.js"></script>
+</head>
+
+<script>
+(function($){
+         $(window).load(function(){
+            //$(".custom_scrollbar").mCustomScrollbar();
+			$(".container").mCustomScrollbar({
+				axis:"y", // horizontal scrollbar
+				theme:"3d-dark"
+			});		
+			
+			$(".price_table").mCustomScrollbar({
+				axis:"x", // horizontal scrollbar
+				theme:"3d-dark"
+			});
+			
+        });		
+		
+    })(jQuery);
+	
+$(document).ready(function(){
+	//获取session的登录用户信息		
+	$.ajax({
+		url:"/user/get_login_info",
+        dataType:'JSON',
+        type: 'GET',
+        success:function(result){
+        	if (result.error == "0") {
+        		var login_info = result.login_info;
+        		var user_name = login_info.user;
+        		$("#user_name").text(user_name);
+        	}else if(result.error == "1"){
+        		window.location.href="/sport/login.html"
+        	}else{
+        		alert("internal error!")
+        	}
+        },
+        error:function(e){
+        	alert("this error")
+        }
+	})	
+
+	$("#login_out").click(function(){
+		$.ajax({
+			url:"/login_out/",
+            dataType:'JSON',
+            type: 'GET',
+            success:function(result){
+            	if (result.error == "0") {
+            		window.location.href="/sport/login.html"
+            	}else{
+        			alert("注销失败！")
+        		}
+            },
+            error:function(e){
+            	alert("error")
+            }
+		})	
+	})
+		$("#loadingCover").show()
+		$("#stadium_select").empty()
+		$.ajax({
+			url:'/stadium/list/',
+			type:'POST',
+			data:JSON.stringify({}),
+			dataType:'json',
+			async:false,
+			success:function(result){
+				if (result.error == 0){
+					var html=[]
+					var list = result.stadium_list
+					for (var i=0;i<list.length;i++){
+						html.push("<option value=" + list[i].id + ">" + list[i].name + "</option>")	
+					}
+					$("#loadingCover").hide()
+					$("#stadium_select").append(html.join(''))
+				}else{
+					$("#loadingCover").hide()
+					$(".qb_quick_tip").css('background','#e96262')
+					showBubble("获取信息失败")
+				}			
+				},error:function (XMLHttpRequest, textStatus, errorThrown)  {
+					$("#loadingCover").hide()
+					$(".qb_quick_tip").css('background','#e96262')
+					showBubble("获取信息失败")
+				}
+		
+		})
+		
+		$("#loadingCover").show()
+		$("#sport_types").empty()
+		$.ajax({
+			url:'/sport_type/list/',
+				type:'get',
+				data:JSON.stringify({}),
+				dataType:'json',
+				async:false,
+				success:function(result){
+					//alert(result)
+					if (result.error == 0){
+						types = result.sport_types
+						var html = []
+						for (var i=0;i<types.length;i++){
+							var id = types[i].id
+							var name = types[i].name
+							html.push("<option value=" + id + ">" + name + "</option>")						
+						}
+						$("#sport_types").append(html.join(""))
+						$("#loadingCover").hide()
+					}else{
+						$("#loadingCover").hide()
+						$(".qb_quick_tip").css('background','#e96262')
+						showBubble("获取数据失败")
+					}	
+					},error:function (XMLHttpRequest, textStatus, errorThrown)  {
+						$("#loadingCover").hide()
+						$(".qb_quick_tip").css('background','#e96262')
+						showBubble("获取数据失败")
+					}
+		})
+		
+		query()
+	})
+</script>
+
+<body style="cursor: auto;">
+<div class="container-fluid">
+	<div class="row-fluid">
+		<div class="span12"  style="background-color:#FF9933;margin-bottom:20px;height:60px;">
+			<div class="row-fluid">
+				<div class="span3" style="margin-left:0 !important;height:60px;">
+					<a href="#" style="background:url('./img/logo.jpg') 50% 50% no-repeat;width:300px;height:60px;float:left;display:inline">
+						
+					</a>
+				</div>
+				<div class="span7" style="height:30px;">
+						<ul class="breadcrumb" >
+							<li style="min-width:120px;">
+								<a href="/sport/reserve_management.html" >
+									预定管理
+								</a>
+							</li>							
+							<li style="min-width:120px;" >
+								<a href="/sport/activity_management.html">
+									活动管理
+								</a>
+							</li>
+							<li style="min-width:120px;">
+								<a href="/sport/stadium_management.html" style="color:#555 !important">									
+									基础配置
+								</a>
+							</li>
+							<li style="min-width:120px;">
+								<a href="/sport/marketing_activity.html" style="color:#555">	
+									营销活动
+								</a>
+							</li>							
+							<li style="min-width:120px;">
+								<a href="/sport/vip_ifo.html" style="color:#555">								
+									会员信息
+								</a>
+							</li>							
+							<!--<li style="min-width:120px;">
+								<a href="#">
+									数据中心
+								</a>
+							</li>-->										
+						</ul>
+				</div>
+				<div class="span2" style="height:30px;">	
+						<ul class="breadcrumb" >
+							<li class="active">
+								<a href="#" id="user_name">
+									admin
+								</a>
+								<b>|</b>
+								<a href="#" id="login_out">
+									注销
+								</a>
+							</li>
+						</ul>
+					</div>	
+			</div>
+		</div>
+	</div>
+</div>
+<div class="container-fluid">
+<!-- 			<div class="row-fluid" style="margin-bottom:30px;border-bottom:1px solid #e6e7ec;margin-top:10px;position:relative">
+				<div class="span1">
+				</div>
+				<div class="span11">
+					<ul style="line-height:30px;height:31px;margin:0;padding:0">
+					<li style="line-height:30px;float:left;">
+						<a href="/stadium/stadium_management.html" style="color:#FF9933;border-bottom:2px solid #FF9933;text-align:center;display:block;font-size:15px;">基础配置</a>
+					</li>
+					</ul>
+				</div>
+			</div> -->
+			<div class=content-main>
+				<div class="sub-nav">
+					<ul class="nav nav-pills">
+								
+						<li>
+							<a href="/sport/stadium_management.html">
+								<!-- <i class="icon-chevron-right"></i> -->
+								场馆管理
+							</a>
+						</li>
+						<li>
+							<a href="/sport/place_management.html">
+								<!-- <i class="icon-chevron-right"></i> -->
+								场地管理
+							</a>
+						</li>
+						<li class="active">
+							<a href="/sport/price_management.html">
+								<!-- <i class="icon-chevron-right"></i> -->
+								价格管理
+							</a>
+						</li>
+						<li>
+							<a href="/sport/account_management.html">
+								<!-- <i class="icon-chevron-right"></i> -->
+								账号管理
+							</a>
+						</li>
+								
+					</ul>
+				</div>
+				<div class="span12 radius">
+				<div class="row-fluid" style="margin-top:15px;">
+					<div class="span1 padding">
+					</div>
+					<div class="span10" style="min-width:850px">
+						<div class="span3">
+							场馆：
+							<select id="stadium_select" onchange="query()" style="margin-bottom:0px;width:100px;">
+								
+							</select>
+						</div>
+						<div class="span3">
+							项目：
+							<select id="sport_types" onchange="query()" style="margin-bottom:0px;width:100px;">
+								
+							</select>
+						</div>
+						<div class="span3">
+							<button class="btn-new" type="button" style="height:30px;" onclick="openSetPrice()">价格设定</button>
+						</div>
+						
+					</div>
+					<div class="span10" style="min-width:850px;margin-top:25px;">
+					<div class="row-fluid">
+						
+						<ul class="breadcrumb" style="width:625px;overflow:hidden;float:left;background-color:inherit;padding:0;white-space: nowrap;padding-left:1px;margin-top:0" id="date_selecter">
+							<li style="display:inline-block;padding-right:5px;"><a href="javascript:void(0)"><button value="1" onclick="select(this)" class="btn-new btn-new-selected" type="button" style="text-shadow:none;background-color:#fff;color:#bdbdbd;border-color:#bdbdbd;width:80px;height:32px;font-size:12px">周一</button></a></li>
+							<li style="display:inline-block;padding-right:5px;"><a href="javascript:void(0)"><button value="2" onclick="select(this)" class="btn-new" type="button" style="text-shadow:none;background-color:#fff;color:#bdbdbd;border-color:#bdbdbd;width:80px;height:32px;font-size:12px">周二</button></a></li>
+							<li style="display:inline-block;padding-right:5px;"><a href="javascript:void(0)"><button value="3" onclick="select(this)" class="btn-new" type="button" style="text-shadow:none;background-color:#fff;color:#bdbdbd;border-color:#bdbdbd;width:80px;height:32px;font-size:12px">周三</button></a></li>
+							<li style="display:inline-block;padding-right:5px;"><a href="javascript:void(0)"><button value="4" onclick="select(this)" class="btn-new" type="button" style="text-shadow:none;background-color:#fff;color:#bdbdbd;border-color:#bdbdbd;width:80px;height:32px;font-size:12px">周四</button></a></li>
+							<li style="display:inline-block;padding-right:5px;"><a href="javascript:void(0)"><button value="5" onclick="select(this)" class="btn-new" type="button" style="text-shadow:none;background-color:#fff;color:#bdbdbd;border-color:#bdbdbd;width:80px;height:32px;font-size:12px">周五</button></a></li>
+							<li style="display:inline-block;padding-right:5px;"><a href="javascript:void(0)"><button value="6" onclick="select(this)" class="btn-new" type="button" style="text-shadow:none;background-color:#fff;color:#bdbdbd;border-color:#bdbdbd;width:80px;height:32px;font-size:12px">周六</button></a></li>
+							<li style="display:inline-block;padding-right:5px;"><a href="javascript:void(0)"><button value="7" onclick="select(this)" class="btn-new" type="button" style="text-shadow:none;background-color:#fff;color:#bdbdbd;border-color:#bdbdbd;width:80px;height:32px;font-size:12px">周日</button></a></li>
+						</ul>
+						
+					</div>
+					
+					<div>
+						<table class="table table-bordered table-condensed reserve-table-time-web">						
+							<tbody>
+									
+							</tbody>
+						</table>
+					</div>
+					
+					<div class="price_table" style="overflow:auto;height:auto">
+					<table class="table table-bordered table-condensed reserve-table-web" style="table-layout:fixed;width:750px">						
+						<tbody>
+							
+						</tbody>
+					</table>
+					</div>
+				</div>
+				
+				
+				
+				</div>
+			</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<div class="modal hide fade" id="setprice" tabindex="-1" role="dialog" style="width:750px;">
+<div class="modal-header"><button class="close" type="button" data-dismiss="modal" onclick="$('#setprice').modal('hide');query()">×</button>
+<h3 id="myModalLabel" style="font-family:'微软雅黑'">价格设定</h3>
+</div>
+<div class="modal-body" >
+<div class="container" style="height:400px;width:620px;overflow:auto;margin-bottom:20px;">
+	<div>
+		<p style="margin-bottom:15px;text-align:center;font-size:15px">
+			<span>场馆：<b class="chosen_stadium_name"></b></span>
+			<span style="margin-left:30px;">项目：<b class="chosen_sport_type">足球</b>
+			</span>
+			<span style="margin-left:30px;">配置时间：<b id="chosenday" value="1">周一</b>
+			</span>
+		</p>
+	</div>
+	
+	<div style="margin-top:15px;">
+		<p style="margin-bottom:15px;">
+			
+			<table style="font-size:14px;">
+				<tr>
+				<td>场地类型：</td>
+				
+				<td>
+					<select id="place_type" style="margin:0 auto;width:100px;">
+						
+					</select>
+				</td>
+				</tr>
+			</table>
+		</p>
+		
+	</div>
+	
+	<div id="type_set" style="margin-top:15px;">
+		<p style="margin-bottom:15px;" id="timeset">
+			<span style="vertical-align:top;display:inline-block;float:left">场地价格：</span>		
+			
+			
+		</p>
+	</div>
+	<div style="margin-top:15px;">
+		<p style="margin-bottom:15px;">
+			
+			<table id="setday" style="font-size:14px;">
+				<tr>
+				<td style="width:70px;">配置到：</td>
+				<td style="width:60px;"><input type="checkbox" style="margin:0 auto" value="1">周一</td>
+				<td style="width:60px;"><input type="checkbox" style="margin:0 auto" value="2">周二</td>
+				<td style="width:60px;"><input type="checkbox" style="margin:0 auto" value="3">周三</td>
+				<td style="width:60px;"><input type="checkbox" style="margin:0 auto" value="4">周四</td>
+				<td style="width:60px;"><input type="checkbox" style="margin:0 auto" value="5">周五</td>
+				<td style="width:60px;"><input type="checkbox" style="margin:0 auto" value="6">周六</td>
+				<td style="width:60px;"><input type="checkbox" style="margin:0 auto" value="7">周日</td>
+				</tr>
+			</table>
+		</p>
+		
+	</div>
+	<div style="margin-top:35px;text-align:center;margin-bottom:30px;margin-left:85px;">
+		<div class="span1 buttonspan" style="width:170px !important;display:inline-block">
+			<button class="btn-new" type="button" onclick="confirm_price()">确认</button>
+		</div>
+		<div class="span1 buttonspan" style="width:170px !important;display:inline-block">
+			 <button class="btn-new" type="button" style="background-color:#dedede;color:#000" onclick="$('#setprice').modal('hide');query()">取消</button>
+		</div>
+	</div>
+	
+	
+	
+</div>
+</div>
+</div>
+
+<div id="loadingCover">
+        <p><img src="./img/loading.gif"/><span>请稍后</span></p>
+ </div>
+<div class="qb_quick_tip qb_none" id="bubble"></div>
+
+<script>
+function select(day){
+	$(".btn-new-selected").removeClass('btn-new-selected')
+	$("#date_selecter").find('li:eq(' + (day*1-1) + ') button').addClass('btn-new-selected')
+}
+
+function openSetPrice(){
+	$(".chosen_stadium_name").html($("#stadium_select").find("option:selected").text())
+	$(".chosen_sport_type").html($("#sport_types").find("option:selected").text())
+$("#loadingCover").show()
+	$(".timeset_span").remove()
+	var html = []
+		html.push('<span class="timeset_span" style="display:inline-block;width:530px;float:left;margin-left:2px;margin-bottom:15px;"><span class="datetimeset_span" style="display:inline-block;border:1px solid #dedede;width:490px;float:left;margin-left:0px;padding-top:10px;">')
+		html.push('</span></span>')
+		
+		$('#timeset').append(html.join(''))
+		
+		var html_date_time = [] 
+		html_date_time.push('<span class="date_time" style="display:inline-block;width:auto">')
+		html_date_time.push('<select class="from_time time" style="width:80px;height:auto;line-height:auto;font-size:12px;margin-left:15px;margin-bottom:0px;"></select>')
+		html_date_time.push('&nbsp;-&nbsp;')
+		html_date_time.push('<select class="to_time time" style="width:80px;height:auto;line-height:auto;font-size:12px;margin-bottom:0px;"></select>')
+		html_date_time.push('<span style="display:inline-block;width:auto;margin-left:20px;margin-bottom:10px">价格：<input class="price" type="text" style="height:auto;margin-bottom:0px;width:80px;margin-left:5px;height:28px;"></span>')
+		html_date_time.push('<img src="./img/add_plus.png" onclick="add_datetimeset(this)" style="margin-left:10px;cursor:pointer">')
+		html_date_time.push('</span>')
+		
+		$(".datetimeset_span").append(html_date_time.join(''))
+		$('.timeset_span:last').find(".time").each(function(){
+			for (var t=8;t<24;t++){	
+				var time = ''
+				time = t + ":00"
+				if (t < 10){
+					time = "0" + time
+				}
+				$(this).append('<option value=' + t + '>' + time + '</option>')
+			}
+		})
+	$("#loadingCover").hide()
+	
+	$("#place_type").empty()
+	$.ajax({
+		url:'/place_type/list/',
+			type:'get',
+			data:JSON.stringify({}),
+			dataType:'json',
+			success:function(result){
+				//alert(result)
+				if (result.error == 0){
+					types = result.place_types
+					var html = []
+					for (var i=0;i<types.length;i++){
+						var id = types[i].id
+						var name = types[i].name
+						html.push("<option value=" + id + ">" + name + "</option>")						
+					}
+					$("#place_type").append(html.join(""))
+				}else{
+					//$("#loadingCover").hide()
+					$(".qb_quick_tip").css('background','#e96262')
+					showBubble("获取数据失败")
+				}	
+				},error:function (XMLHttpRequest, textStatus, errorThrown)  {
+					//$("#loadingCover").hide()
+					$(".qb_quick_tip").css('background','#e96262')
+					showBubble("获取数据失败")
+				}
+	})
+	$("#chosenday").attr("value", $(".btn-new-selected").attr("value"))
+	$("#chosenday").html($(".btn-new-selected").html())
+	$("#setday").find("input[type='checkbox']").each(function(){
+		if ($(this).val() == $("#chosenday").attr('value')){
+			$(this).prop('checked', true)
+			$(this).attr("onclick","javascript:return false;")
+		}else{
+			$(this).removeAttr("checked")
+			$(this).removeAttr("onclick")
+		}
+	})
+	$('#setprice').modal('show');	
+}
+
+function add_datetimeset(obj){
+		var html = []
+		html.push('<span class="date_time" style="display:inline-block;width:auto"> <select class="from_time time" style="width:80px;height:auto;line-height:auto;font-size:12px;margin-left:15px;margin-bottom:0px;"></select>&nbsp;-&nbsp;')
+		html.push('<select class="to_time time" style="width:80px;height:auto;line-height:auto;font-size:12px;margin-bottom:0px"></select>')
+		//html.push('<select style="width:80px;height:auto;line-height:auto;font-size:12px;margin-bottom:0px;margin-left:5px;"><option>1号场</option><option>2号场</option><option>3号场</option></select>')
+		html.push('<span style="display:inline-block;width:auto;margin-left:20px;margin-bottom:10px">价格：<input class="price" type="text" style="height:auto;margin-bottom:0px;width:80px;margin-left:5px;height:28px;"></span>')
+		html.push('<img src="./img/minus.png" onclick="minus_datetimeset(this)" style="margin-left:10px;cursor:pointer"></span>')
+		$(obj).closest(".datetimeset_span").append(html.join(''))
+		$(obj).closest('.datetimeset_span').find(".time:eq(-1),.time:eq(-2)").each(function(){
+			for (var t=8;t<24;t++){	
+				var time = ''
+				time = t + ":00"
+				if (t < 10){
+					time = "0" + time
+				}
+				$(this).append('<option value=' + t + '>' + time + '</option>')
+			}
+		})
+		
+		//$(img).css('margin-tio')
+	}
+
+	function minus_datetimeset(obj){		
+		$(obj).closest(".date_time").remove()
+	}
+	
+	function confirm_price(){
+		var day = $("#chosenday").attr('value')
+		var stadium_id = $("#stadium_select").val()
+		var sport = $("#sport_types").val()
+		var place_type = $("#place_type").val()
+		var select_day = []
+		$("#setday").find("input[type='checkbox']:checked").each(function(){
+			select_day.push($(this).attr("value"))
+		})
+		var prices = {}
+		var hour_price = {}
+		$(".date_time").each(function(){
+			var from_time = $(this).find(".from_time").val()*1
+			var to_time = $(this).find(".to_time").val()*1
+			var price = $(this).find(".price").val()
+			for (var n=from_time;n<to_time+1;n++){
+				hour_price[n] = price
+			}
+			
+		})
+		
+		
+		for (var i=0;i<select_day.length;i++){
+			prices[select_day[i]] = hour_price		
+		}
+		//alert(JSON.stringify(prices))
+		var data = {"stadium_id":stadium_id, "sport_id":sport, "place_type":place_type, "prices":prices}
+		
+		$.ajax({
+			url:'/price/batch_set/',
+				type:'post',
+				data:JSON.stringify(data),
+				dataType:'json',
+				success:function(result){
+					//alert(result)
+					if (result.error == 0){
+						$(".qb_quick_tip").css('background','#44b549')
+						showBubble("设置价格成功")
+					}else{
+						//$("#loadingCover").hide()
+						$(".qb_quick_tip").css('background','#e96262')
+						showBubble("设置价格失败")
+					}	
+					},error:function (XMLHttpRequest, textStatus, errorThrown)  {
+						//$("#loadingCover").hide()
+						$(".qb_quick_tip").css('background','#e96262')
+						showBubble("设置价格失败")
+					}
+		})
+		
+	
+	}
+	
+	function select(obj){
+		$(".btn-new-selected").removeClass("btn-new-selected")
+		$(obj).addClass('btn-new-selected')		
+		query()
+	}
+	
+	function query(){
+		$(".price_table table tbody").empty()
+
+		$("#loadingCover").show()
+		var weekday = $(".btn-new-selected").attr("value")
+		var stadium_id = $("#stadium_select").val()
+		var sport_id = $("#sport_types").val()
+		var data = {"weekday":weekday,"stadium_id":stadium_id,"sport_id":sport_id}
+		$.ajax({
+			url:'/price/list/',
+				type:'post',
+				data:JSON.stringify(data),
+				dataType:'json',
+				success:function(result){
+					if (result.error == 0){
+						var price_list = result.place_prices
+						//alert(JSON.stringify(price_list))
+						//alert(JSON.stringify(price_list.business_time))
+						if (price_list.business_time){
+							alert()
+							var from_time = price_list.business_time[0].from_hour
+							var to_time =  price_list.business_time[price_list.business_time.length - 1].to_hour
+						}else{
+							var from_time = 8
+							var to_time = 24
+						}
+					
+						var html = []
+						html.push('<tr><td></td>')
+						for (var time=from_time*1;time<to_time*1;time++){
+							if (String(time).length == 1){
+								html.push('<td style="font-weight:bold">0' + time + ':00</td>')
+							}else{
+								html.push('<td style="font-weight:bold">' + time + ':00</td>')
+							}			
+						}
+						$(".price_table table tbody").append(html.join(''))
+					
+					
+						
+						
+						
+						var html = []
+						
+						for (var i=8;i<price_list.length;i++){
+							html.push('<tr><td style="font-weight:bold">' + price_list[i].place_type_name + '</td>')
+							var prices =  price_list[i].prices
+							var price = ''
+							for (var time=0;time<24;time++){
+								try{
+									price = prices[time]
+								}catch (e){
+									price = '未设置'
+								}
+								if (!price){
+									price = '未设置'
+								}
+								if (price != '未设置'){
+									html.push('<td style="color:#FF9933;font-weight:bold">' + price + '</td>')
+								}else{
+									html.push('<td>' + price + '</td>')
+								}
+							}
+							html.push('</tr>')
+						}
+						
+						$(".price_table table tbody").append(html.join(''))
+						$("#loadingCover").hide()
+					}else{
+						$("#loadingCover").hide()
+						$(".qb_quick_tip").css('background','#e96262')
+						showBubble("获取数据失败")
+					}	
+					},error:function (XMLHttpRequest, textStatus, errorThrown)  {
+						$("#loadingCover").hide()
+						$(".qb_quick_tip").css('background','#e96262')
+						showBubble("获取数据失败")
+					}
+		})
+		//alert(weekday)
+	}
+
+	var timeout
+	function showBubble(a) {
+		var c = $("#bubble");
+			c.css("opacity", 1), c.hasClass("qb_none") || c.html(a), c.html(a).removeClass("qb_none")
+			timeout = 	setTimeout("disapper()", 1300 )
+	}
+
+	function disapper(){
+		$("#bubble").addClass("qb_none").removeAttr("style")
+		clearTimeout(timeout)
+	}
+	
+</script>
+
+</body>
+</html>

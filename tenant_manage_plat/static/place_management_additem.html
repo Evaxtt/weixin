@@ -1,0 +1,283 @@
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="title" content="Bootstrap可视化布局系统">
+	<meta name="description" content="">
+	<meta name="keywords" content="场地管理">
+	<title>场地管理</title>
+	<link href="./css/bootstrap-combined.min.css" rel="stylesheet">
+	<link href="./css/layoutit.css" rel="stylesheet">
+	<link rel="stylesheet" href="http://apps.bdimg.com/libs/fontawesome/4.2.0/css/font-awesome.min.css">
+	<!--[if lt IE 9]>
+			<script src="js/html5shiv.js"></script>
+		<![endif]-->
+	<link rel="shortcut icon" href="img/favicon.png">
+	<script type="text/javascript" src="./js/jquery-2.1.4.js"></script>
+	<!--[if lt IE 9]>
+		<script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+		<![endif]-->
+	<script type="text/javascript" src="./js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="./js/jquery-ui.js"></script>
+	<script type="text/javascript" src="./js/jquery.ui.touch-punch.min.js"></script>
+	<script type="text/javascript" src="./js/jquery.htmlClean.js"></script>
+	
+	
+	<style>
+
+	</style>
+</head>
+<script>
+	
+	$(window).load(function(){
+		for (var t=0;t<24;t++){	
+				var time = ''
+				time = t + ":00"
+				if (t < 10){
+					time = "0" + time
+				}
+				$(".time").append('<option value=' + t + '>' + time + '</option>')
+		}
+	})
+</script>
+<body style="cursor: auto;background-color:#fff !important;padding-bottom:0px;">
+	<div class="span12" style="margin-top:15px;">
+		<p style="margin-bottom:15px;">
+			<span>场馆：悦享源</span>
+			<span style="margin-left:30px;">项目：
+				<select style="margin-bottom:0px;width:100px;">
+					<option>足球</option>
+					<option>篮球</option>
+					<option>羽毛球</option>					
+				</select>
+			</span>
+		</p>
+		<p style="margin-bottom:15px;">
+			<span>场地类型：
+				<select style="margin-bottom:0px;width:80px">
+					<option>普通</option>
+					<option>vip</option>
+				</select>
+			</span>
+		</p>
+		<p style="margin-bottom:15px;">
+			<span>单位时间：
+				<select style="margin-bottom:0px;width:80px">
+					<option>60</option>
+					<option>120</option>
+					<option>180</option>
+					<option>240</option>
+					<option>300</option>
+					<option>360</option>
+				</select>
+			</span>
+		</p>
+		<p style="margin-bottom:15px;">
+			<span>场地数量：
+				<input type="text" style="height:auto;margin-bottom:0px;width:100px;" id="place_count">
+				<input type="radio" name="name_type" value="0" onclick="show_place_name()" checked style="margin:0 auto;margin-left:15px;">默认名称</input>
+				<input type="radio" name="name_type" value="1" onclick="show_place_name()" style="margin:0 auto;margin-left:5px;">自定义名称</input>
+			</span>
+		</p>
+		
+		<p id="place_count_detail" style="margin-bottom:15px;display:none">
+			<span style="display:inline-block;border:1px solid #dedede;background-color:#efefef;width:95%;padding:10px;">
+				<table class="table_placeadd_time" >
+						<tbody>
+						</tbody>
+				</table>
+			</span>
+		</p>
+		
+		<p style="margin-bottom:15px;" id="timeset">
+			<span style="vertical-align:top">开放时间：</span>
+			
+			<span class="timeset_span" style="display:inline-block;width:450px">
+				<span class="datetimeset_span" style="display:inline-block;border:1px solid #dedede;width:410px">
+					<table class="table_placeadd_time" >
+						<tbody>
+							<tr>
+								<td><input type="checkbox">全部</td>
+								<td><input type="checkbox">周一</td>
+								<td><input type="checkbox">周二</td>
+								<td><input type="checkbox">周三</td>
+								<td><input type="checkbox">周四</td>
+							</tr>
+							<tr>
+								<td><input type="checkbox">周五</td>
+								<td><input type="checkbox">周六</td>
+								<td><input type="checkbox">周日</td>
+							</tr>
+						</tbody>
+					</table>
+					<span class="date_time" style="display:inline-block;width:auto;"> 
+						<select class="time" style="width:80px;height:auto;line-height:auto;font-size:12px;margin-left:15px;">
+						</select>	
+							-
+						<select class="time" style="width:80px;height:auto;line-height:auto;font-size:12px;">
+						</select>
+						<img src="./img/add_plus.png" onclick="add_datetimeset(this)" style="margin-top:-10px;margin-left:5px;cursor:pointer">
+					</span>
+				</span>
+				<img class="add_timeset_img" src="./img/add_plus.png" onclick="add_timeset()" style="margin-top:-95px;margin-left:5px;cursor:pointer">
+			</span>
+			
+		</p>
+	</div>
+	
+	<div class="row-fluid" style="margin-top:35px;text-align:center;margin-bottom:30px">
+		<div class="span1 buttonspan" style="width:170px !important;display:inline-block">
+			<button class="btn-new" type="button" >确认</button>
+		</div>
+		<div class="span1 buttonspan" style="width:170px !important;display:inline-block">
+			 <button class="btn-new" type="button" style="background-color:#dedede;color:#000" onclick="top.$('#additem_close').click();">取消</button>
+		</div>
+	</div>
+</body>
+<script>
+	$(document).ready(function(){
+		//获取session的登录用户信息		
+		$.ajax({
+			url:"/user/get_login_info",
+	        dataType:'JSON',
+	        type: 'GET',
+	        success:function(result){
+	        	if (result.error == "0") {
+	        		var login_info = result.login_info;
+	        		var user_name = login_info.user;
+	        		$("#user_name").text(user_name);
+	        	}else if(result.error == "1"){
+	        		window.location.href="/sport/login.html"
+	        	}else{
+	        		alert("internal error!")
+	        	}
+	        },
+	        error:function(e){
+	        	alert("this error")
+	        }
+		})	
+
+		$("#login_out").click(function(){
+			$.ajax({
+				url:"/login_out/",
+	            dataType:'JSON',
+	            type: 'GET',
+	            success:function(result){
+	            	if (result.error == "0") {
+	            		window.location.href="/sport/login.html"
+	            	}else{
+	        			alert("注销失败！")
+	        		}
+	            },
+	            error:function(e){
+	            	alert("error")
+	            }
+			})	
+		})
+	})	
+	function add_timeset(){
+		var html = []
+		html.push('<span class="timeset_span" style="margin-left:74px;margin-top:10px;display:inline-block;width:450px"><span class="datetimeset_span" style="width:410px;display:inline-block;border:1px solid #dedede"><table class="table_placeadd_time" >')
+		html.push('<tbody><tr>')
+		html.push('<td><input type="checkbox">全部</td><td><input type="checkbox">周一</td><td><input type="checkbox">周二</td><td><input type="checkbox">周三</td><td><input type="checkbox">周四</td>')
+		html.push('</tr><tr><td><input type="checkbox">周五</td><td><input type="checkbox">周六</td><td><input type="checkbox">周日</td></tr></tbody></table>')
+		html.push('<select class="time" style="width:80px;height:auto;line-height:auto;font-size:12px;margin-left:15px"></select>')
+		html.push('&nbsp;-&nbsp;')
+		html.push('<select class="time" style="width:80px;height:auto;line-height:auto;font-size:12px;"></select>')
+		html.push('<img src="./img/add_plus.png" onclick="add_datetimeset(this)" style="margin-top:-10px;margin-left:10px;cursor:pointer"></span>')
+		html.push('<img class="add_timeset_img" src="./img/minus.png" onclick="minus_timeset(this)" style="margin-top:-95px;margin-left:10px;cursor:pointer"></span>')	
+		$('#timeset').append(html.join(''))
+		
+		$('.timeset_span:last').find(".time").each(function(){
+			for (var t=0;t<24;t++){	
+				var time = ''
+				time = t + ":00"
+				if (t < 10){
+					time = "0" + time
+				}
+				$(this).append('<option value=' + t + '>' + time + '</option>')
+			}
+		})
+	}
+	
+	function minus_timeset(obj){
+		$(obj).closest('.timeset_span').remove()
+	}
+	
+	function add_datetimeset(obj){
+		var html = []
+		html.push('<span class="date_time" style="display:inline-block;width:auto"> <select class="time" style="width:80px;height:auto;line-height:auto;font-size:12px;margin-left:15px;"></select>&nbsp;-&nbsp;')
+		html.push('<select class="time" style="width:80px;height:auto;line-height:auto;font-size:12px;"></select>')
+		html.push('<img src="./img/minus.png" onclick="minus_datetimeset(this)" style="margin-top:-10px;margin-left:10px;cursor:pointer"></span>')
+		$(obj).closest(".datetimeset_span").append(html.join(''))
+		$(obj).closest('.datetimeset_span').find(".time:eq(-1),.time:eq(-2)").each(function(){
+			for (var t=0;t<24;t++){	
+				var time = ''
+				time = t + ":00"
+				if (t < 10){
+					time = "0" + time
+				}
+				$(this).append('<option value=' + t + '>' + time + '</option>')
+			}
+		})
+		var img = $(obj).closest('.timeset_span').find('.add_timeset_img')
+		var margintop = $(img).css('marginTop').replace('px','')*1 - 38
+		$(img).css('marginTop', margintop + "px")
+		//$(img).css('margin-tio')
+	}
+	
+	function minus_datetimeset(obj){
+		var img = $(obj).closest('.timeset_span').find('.add_timeset_img')
+		var margintop = $(img).css('marginTop').replace('px','')*1 + 38
+		$(img).css('marginTop', margintop + "px")
+		$(obj).closest(".date_time").remove()
+		
+	}
+	
+	$("#place_count").keyup(function(){		
+		show_place_name()
+	})
+	
+	function show_place_name(){
+		$("#place_count_detail span table tbody").empty()
+		var num = $("#place_count").val()
+		if ($.trim(num) == "" || num == 0 || !num){
+			$("#place_count_detail").hide()
+			return false
+		}
+		var type = $("input[type='radio']:checked").val()
+		if (type == "0"){
+			var name = "号场"
+			var html = []
+			for (var i=0;i<num;i++){
+				//html.push('<span style="margin:10px 10px 10px 10px;"><span>' + (i+1) + '</span><input readonly value="' + (i+1) + name + '" type="text" style="height:auto;margin-bottom:0px;width:100px;margin-left:5px;background-color:#fafafa"></span>')
+				if ((i+1)%3 == 1){
+					html.push('<tr>')
+				}
+				html.push('<td style="width:auto">' + (i+1) + '<input readonly value="' + (i+1) + name + '" type="text" style="height:auto;margin-bottom:0px;width:100px;margin-left:5px;background-color:#fafafa"></td>')
+				if ((i+1)%3 == 0){
+					html.push('</tr>')
+				}
+			}
+			$("#place_count_detail span table tbody").append(html.join(''))
+			$("#place_count_detail").show()
+		}else{
+			var html = []
+			for (var i=0;i<num;i++){
+				//html.push('<span style="margin:10px 10px 10px 10px;"><span>' + (i+1) + '</span><input readonly value="' + (i+1) + name + '" type="text" style="height:auto;margin-bottom:0px;width:100px;margin-left:5px;background-color:#fafafa"></span>')
+				if ((i+1)%3 == 1){
+					html.push('<tr>')
+				}
+				html.push('<td style="width:auto">' + (i+1) + '<input type="text" style="height:auto;margin-bottom:0px;width:100px;margin-left:5px;"></td>')
+				if ((i+1)%3 == 0){
+					html.push('</tr>')
+				}
+			}
+			$("#place_count_detail span table tbody").append(html.join(''))
+			$("#place_count_detail").show()
+		
+		}
+	}
+</script>
+</html>

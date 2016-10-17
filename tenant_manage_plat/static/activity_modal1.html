@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="title" content="Bootstrap可视化布局系统">
+	<meta name="description" content="">
+	<meta name="keywords" content="活动信息">
+	<title>活动信息</title>
+	<link href="./css/bootstrap-combined.min.css" rel="stylesheet">
+	<link href="./css/layoutit.css" rel="stylesheet">
+	
+	<link href="./css/notice.css" rel="stylesheet">
+	<link rel="stylesheet" href="http://apps.bdimg.com/libs/fontawesome/4.2.0/css/font-awesome.min.css">
+	<link rel="stylesheet" type="text/css" href="./css/activity.css">
+	<!--[if lt IE 9]>
+			<script src="js/html5shiv.js"></script>
+		<![endif]-->
+	<link rel="shortcut icon" href="img/favicon.png">
+	<script type="text/javascript" src="./js/jquery-2.1.4.js"></script>
+	<!--[if lt IE 9]>
+		<script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+		<![endif]-->
+	<script type="text/javascript" src="./js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="./js/jquery-ui.js"></script>
+	<script type="text/javascript" src="./js/jquery.ui.touch-punch.min.js"></script>
+	<script type="text/javascript" src="./js/jquery.htmlClean.js"></script>
+	
+	<script type="text/javascript" src="./js/common.js"></script>
+	<script type="text/javascript" src="./js/confirm/jquery-confirm.min.js"></script>
+	<link href="./js/confirm/jquery-confirm.min.css" rel="stylesheet">
+	<link href="./js/mCustomScrollbar/jquery.mCustomScrollbar.min.css" rel="stylesheet" type="text/css" />
+	<script src="./js/mCustomScrollbar/jquery.mousewheel.min.js"></script>
+	<script src="./js/mCustomScrollbar/jquery.mCustomScrollbar.min.js"></script>
+	<!-- jquery.datePicker.js -->
+	<script type="text/javascript" src="./js/datepicker/date.js"></script>
+	<script type="text/javascript" src="./js/datepicker/jquery.datePicker.js"></script>
+	<script type="text/javascript" src="./js/datepicker/date_addon.js"></script>
+	<!-- datePicker required styles -->
+	<link rel="stylesheet" type="text/css" media="screen" href="./js/datepicker/datePicker_new.css">
+	
+	<style type="text/css">
+		.nav-tabs>.active>a{background-color:#fff !important}
+		.
+	</style>
+</head>
+<script>
+function getUrlParam(name)
+{
+	var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
+	var r = window.location.search.substr(1).match(reg);  //匹配目标参数
+	if (r!=null) return unescape(r[2]); return null; //返回参数值
+} 
+
+$(document).ready(function(){
+	var imageSrc = ""
+	var id = getUrlParam("id")
+	  $.ajax({
+		url:'/activity/wx_detail/',
+		type:'POST',
+		dataType:'JSON',
+		async:false,
+		data:JSON.stringify({"activity_id":id}),
+		success:function(result){
+			if (result.error == 0){
+				//alert(JSON.stringify(result))
+				var detail = result.activity_detail
+				$("#stadium-preview-title").html("活动信息")
+				//alert(detail.img)
+				imageSrc = detail.img
+				$("#stadium-preview-content-title").html(detail.title)
+				$("#stadium-preview-starttime").html("开始时间：" + detail.start_time)
+				$("#stadium-preview-endtime").html("结束时间：" + detail.end_time)
+				$("#stadium-preview-price").html("活动价格：" + detail.price + "元")
+				$("#price").val(detail.price + "元")
+				$("#stadium-preview-content").html(detail.content)
+			}
+    	},error:function (XMLHttpRequest, textStatus, errorThrown)  {
+			alert('error')
+		}
+	})
+
+	$("p").css('border',"none")
+	  $("p").css("boxShadow","none")
+	  $('#stadium-preview-title').css('color','#555555')
+      //$('#stadium-preview-title').text($('#stadium-title').val());
+	  $('#stadium-preview-content-title').css('color','#ff9933')
+	   $('#stadium-preview-content-title').removeClass("radius")
+	  $('#stadium-preview-content-title').css('borderTop','1px solid #bebebe')
+	  $('#stadium-preview-content-title').css('borderBottom','1px solid #bebebe')
+     // $('#stadium-preview-content-title').text($('#stadium-content-title').val());
+	  $('#stadium-preview-content').css('lineHeight','28px')
+	  $('#stadium-preview-content').css('text-align','left')
+	  $('#stadium-preview-content').css('color','#555555')
+	  //$('#stadium-preview-content').html($('#stadium-content').val().replace(/\n|\r\n/g,'<br>'));
+	  $('#stadium-preview-image').remove()
+
+	  $("#img_preview_div").append('<div style="border:1px solid #bebebe;padding:5px;text-align:center"><img style="border:none;" src=' + imageSrc + ' id="stadium-preview-image"/></div>')
+	  $('#stadium-preview-price').css('text-align','left')
+	  $('#stadium-preview-price').css('color','#555555')
+	  //$('#stadium-preview-price').html("活动票价：" + "<b style='color:#ff9933'>" + $('#price').val() + "</b>元");
+	  $('#stadium-preview-starttime').css('text-align','left')
+	  $('#stadium-preview-starttime').css('color','#555555')
+	  //$('#stadium-preview-starttime').html("开始时间：" +$('#start_date').val());
+	  $('#stadium-preview-endtime').css('text-align','left')
+	  $('#stadium-preview-endtime').css('color','#555555')
+	  //$('#stadium-preview-endtime').html("结束时间：" +$('#end_date').val());
+})
+</script>
+
+<style>
+	p{
+		background-color:inherit !important;
+	}
+
+	input[type="text"]{
+		border: 1px solid #bebebe !important;
+    height: 28px !important;
+	line-height:28px !important;
+	text-align:center;
+	margin-top:10px;
+	width:300px;
+	}
+
+  .container {
+    margin-top: 20px;
+  }
+
+  .preview-section {
+    border: 1px solid #bebebe;
+    padding: 0px;
+	background-color:#f6f6f6;
+  }
+
+  .initialise-section {
+    border: 1px solid #bcbcbc;
+    margin-left: 10px;
+    padding: 10px;
+  }
+
+  .upload-image-section {
+    margin-top: 10px;
+  }
+
+  #stadium-title {
+    border: 1px solid #bebebe;
+    height: 28px;
+	line-height:28px;
+	text-align:center;
+	width:300px;
+  }
+
+  #stadium-content {
+    border: 1px solid #bebebe;
+    height: 28px;
+	line-height:28px;
+	text-align:left;
+	height:300px;
+	margin-top: 10px;
+    width: 100%;
+  }
+  
+   #stadium-content-title {
+    border: 1px solid #bebebe;
+    height: 28px;
+	line-height:28px;
+	text-align:center;
+	margin-top:10px;
+	width:300px;
+  }
+
+  #upload-image-show {
+    width: 100%;
+    height: 200px;
+    margin-top: 5px;
+	display:none;
+  }
+
+
+  .initialise-confirm-section {
+    margin-top: 10px;
+  }
+
+  #submit-current-event {
+    margin-left: 20px;
+  }
+
+  .preview-result-sign-up {
+    border: 1px solid #bebebe;
+    text-align: center;
+    width: 30%;
+  }
+
+  #stadium-preview-title {
+    border: 1px dashed #bebebe;
+    display: block;
+    height: 28px;
+	line-height:28px;
+	text-align:center;
+	color:#bebebe;
+  }
+
+  #stadium-preview-content-title {
+    border: 1px dashed #bebebe;
+    height: 28px;
+    margin-top: 5px;
+	margin-bottom:0px;
+	text-align:center;
+	color:#bebebe;
+	line-height:28px;
+	font-size:16px;
+	font-weight:bold;
+  }
+  
+  #stadium-preview-content{
+    border: 1px dashed #bebebe;
+    margin-top: 5px;
+	margin-bottom:0px;
+	text-align:center;
+	color:#bebebe;
+  }
+  #stadium-preview-price,#stadium-preview-starttime,#stadium-preview-endtime{
+    border: 1px dashed #bebebe;
+    height: 28px;
+    margin-top: 5px;
+	margin-bottom:0px;
+	text-align:center;
+	color:#bebebe;
+	line-height:28px;
+  }
+
+  #stadium-preview-image {
+    border: 1px dashed #bebebe;
+	color:#bebebe;
+	text-align:center;
+	margin-bottom:0px;
+  }
+</style>
+
+<body style="cursor: auto;background-color:#dedede !important;padding:0;min-width:100px;height:100%;margin:5px">
+<div class="container-fluid">
+		
+	<div class="span12 preview-section radius">
+						  <!--<div>
+							<p id="stadium-preview-title" class="radius">微页面标题</p>
+						  </div>-->
+						  <div id="img_preview_div" style="padding:5px;"><div style="background-color:inherit" id="stadium-preview-image" class="radius">活动图片</div></div>
+						  <div style="padding:5px;">
+							<p id="stadium-preview-content-title" class="radius">活动正文标题</p>
+						  </div>
+						  <div style="padding:5px;">
+							<p id="stadium-preview-starttime" class="radius">开始时间</p>
+						  </div>
+						  <div style="padding:5px;">
+							<p id="stadium-preview-endtime" class="radius">结束时间</p>
+						  </div>
+						  <div style="padding:5px;">
+							<p id="stadium-preview-price" class="radius">活动票价</p>
+						  </div>
+						  <div style="padding:5px;">
+							<p id="stadium-preview-content" class="radius">活动正文</p>
+						  </div>
+						  
+						  <div style="margin-top:20px;text-align:center">
+							<button class="btn-new" type="button" onclick="attend()" style="height:40px;cursor:default;margin-bottom:20px;" >报名参加</button>
+						  </div>
+	</div>
+</div>
+
+<div class="modal hide fade" id="attend" tabindex="-1" role="dialog" style="width:auto">
+<div class="modal-header"><button class="close" type="button" data-dismiss="modal" onclick="$('#attend').modal('hide');">×</button>
+<h3 id="myModalLabel" style="font-family:'微软雅黑';font-size:16px;">填写信息</h3>
+</div>
+<div class="modal-body" >
+<div class="container" style="height:auto;width:auto;overflow:auto;margin-bottom:20px;">
+	<div class="span12">
+		<div style="border-bottom:1px solid #dddddd;line-height:45px;"><div style="width:60px;display:inline-block">联系人</div><input id="name" style="border:none;width:70%;font-family:'微软雅黑'"></input></div>
+		<div style="border-bottom:1px solid #dddddd;line-height:45px;"><div style="width:60px;display:inline-block">手机号码</div><input id="telephone" style="border:none;width:70%;font-family:'微软雅黑'"></input></div>
+		<div style="border-bottom:1px solid #dddddd;line-height:45px;"><div style="width:60px;display:inline-block">报名费用</div><input id="price" style="border:none;width:70%;font-family:'微软雅黑';color:#ff9933"></input></div>
+	</div>
+
+	
+	
+	
+	<div style="margin-top:15px;text-align:center;">
+		<div class="span1 buttonspan" style="width:140px !important;display:inline-block">
+			<button id="start_pay" class="btn-new" type="button" onclick="confirm_attend()">确认报名</button>
+		</div>
+		
+	</div>
+	
+	
+	
+</div>
+</div>
+</div>
+
+
+<script>
+$("#name").focus(function(){
+	if ($("#name").val() == '请输入姓名'){
+		$("#name").val('')
+		$("#name").css('color',"#000")
+	}
+})
+
+$("#telephone").focus(function(){
+	if ($("#telephone").val() == '请输入手机号码' || $("#telephone").val() == '请输入有效的手机号码'){
+		$("#telephone").val('')
+		$("#telephone").css('color',"#000")
+	}
+})
+
+function attend(){
+	$('#attend').modal('show');	
+}
+
+function validate(){
+	var flag = true
+	var name = $("#name").val()
+	var telephone = $("#telephone").val()
+	
+	if ($.trim(name) == "" || name=='请输入姓名'){
+		$("#name").val('请输入姓名')
+		$("#name").css('color','red')
+		flag = false
+	}
+	if (!telephone || telephone=='请输入手机号码'){
+		$("#telephone").val('请输入手机号码')
+		$("#telephone").css('color','red')
+		flag = false
+	}else if (!/^(13[0-9]|14[0-9]|15[0-9]|18[0-9])\d{8}$/i.test(telephone)){
+		$("#telephone").val('请输入有效的手机号码')
+		$("#telephone").css('color','red')
+		flag = false
+	}
+	return flag
+}
+
+function confirm_attend(){
+	if (validate()){
+		var activity_id = getUrlParam("id")
+		var name = $("#name").val()
+		var telephone = $("#telephone").val()
+		var price = $("#price").val()
+		var apply_id = ""
+		$.ajax({
+			url:'/activity/apply/',
+			type:'POST',
+			dataType:'JSON',
+			async:false,
+			data:JSON.stringify({"activity_id":activity_id,"name":name,"telephone":telephone}),
+			success:function(result){
+				if (result.error == 0){
+					//alert(JSON.stringify(result))
+					apply_id = result.apply_id
+					$("#start_pay").html("提交中，请稍后...")
+					$("#start_pay").css("background-color","#dedede")
+					$("#start_pay").removeAttr("onclick")
+					//alert()
+				}
+			},error:function (XMLHttpRequest, textStatus, errorThrown)  {
+				alert('error')
+			}
+		})
+		
+		 setTimeout(function(){start_pay(apply_id)},200);
+	}
+}
+
+
+function start_pay(apply_id){	
+		var date = new Date();
+		var num = date.getTime() + MathRand()
+		var money = $("#price").val()
+		
+		var flag_wx = true
+		var prepay_id = ''
+		var openid = getUrlParam('openid')
+		url = "/wx/get_prepay_id?openid=" + openid + '&num=' + num + '&total_fee=' + 1
+		//(money *100)
+		//alert(url)
+		$.ajax({
+			url:url,
+			dataType:'JSON',
+			data:{},
+			async:false,
+			success:function(result){
+	        	if (result.result == 'OK'){
+	        		prepay_id = result.prepay_id
+					//alert(prepay_id)
+	        	}        		         
+	        },
+			error: function (XMLHttpRequest, textStatus, errorThrown)  {
+				alert('error')
+				flag_wx = false
+			}
+		})
+		//alert(prepay_id)
+		
+		var appid = ''
+		var timeStamp = ''
+		var nonceStr = ''
+		var paySign = ''
+		$.ajax({
+			url:"/wx/start_pay?prepay_id=" + prepay_id,
+			dataType:'JSON',
+			data:{},
+			async:false,
+			success:function(result){
+	        	
+	        		appid = result.appId
+	        		timeStamp = result.timeStamp
+	        		nonceStr = result.nonceStr
+	        		package = "prepay_id=" + prepay_id
+	        		paySign = result.paySign
+	        	       		         
+	        },
+			error: function (XMLHttpRequest, textStatus, errorThrown)  {
+				alert('error')
+				flag_wx = false
+			}
+		})
+
+		if (flag_wx){
+			if (submit_pay(prepay_id, apply_id, num) == true){
+				//alert("获取到prepayid 开始调用支付,package="+package)
+				//获取到prepayid 开始调用支付,WeixinJSBridge内置对象在其他浏览器中无效。
+				WeixinJSBridge.invoke('getBrandWCPayRequest',{
+					"appId":appid,
+					"timeStamp":timeStamp + '',
+					"nonceStr":nonceStr,
+					"package":package,
+					"signType":"MD5",
+					"paySign":paySign		
+				},function(res){
+					if (res.err_msg == "get_brand_wcpay_request:ok"){
+							window.location.href = "/sport/reserve_activity_result_wx.html"
+					}else{
+						alert("支付失败")
+						alert(res.err_msg)
+					}
+				})
+			}else{
+				alert('预定失败1')
+			}
+		}
+		
+}
+
+function submit_pay(prepay_id, apply_id, num){	
+	//alert("submit_pay, "+prepay_id+", "+apply_id+", "+num)
+	var openid = getUrlParam('openid')
+	
+	var money = $("#price").val()
+	
+	var data = JSON.stringify({'apply_id':apply_id,'openid':openid,'number':num,'money':money,'prepay_id':prepay_id})
+	
+	var flag = true
+
+	$.ajax({
+		url:'/activity/pay/',
+		type:'POST',
+		dataType:'JSON',
+		data:data,
+		async:false,
+		success:function(result){
+			//alert("activity pay success")
+    		if (result.error == 0){
+    			flag = true
+			}else{
+				flag  = false				
+			}	
+								
+								
+    	},error:function (XMLHttpRequest, textStatus, errorThrown)  {
+			alert('error')
+			flag = false
+		}
+	})
+	$("#start_pay").html("确认报名")
+	$("#start_pay").css("background-color","#ff9933")
+	$("#start_pay").attr("onclick","confirm_attend()")
+	return flag
+}
+
+function MathRand() 
+{ 
+	var Num=""; 
+	for(var i=0;i<6;i++) 
+	{ 
+		Num+=Math.floor(Math.random()*10); 
+	} 
+	return Num
+} 
+
+</script>
+</body>
+</html>

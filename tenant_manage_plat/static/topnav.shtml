@@ -1,0 +1,52 @@
+<div class="container-fluid">
+	<div class="row-fluid">
+		<div class="span12"  style="background-color:#FF9933;margin-bottom:20px;height:70px;">
+			<div class="row-fluid">
+				<div class="span3" style="margin-left:0 !important;height:70px;">
+					<a href="#" style="background:url('./img/logo.jpg') 50% 50% no-repeat;width:300px;height:70px;float:left;display:inline">
+						
+					</a>
+				</div>
+				<div class="span7" style="height:40px;">
+						<ul class="breadcrumb" >
+							<li style="min-width:120px;">
+								<a href="/sport/reserve_management.html">
+									预定管理
+								</a>
+							</li>							
+							<li style="min-width:120px;" >
+								<a href="/sport/activity_management.html" style="color:#555 !important">
+									活动管理
+								</a>
+							</li>
+							<li style="min-width:120px;">
+								<a href="/sport/stadium_management.html" >
+									
+									基础配置
+								</a>
+							</li>
+							
+							<!--<li style="min-width:120px;">
+								<a href="#">
+									数据中心
+								</a>
+							</li>-->										
+						</ul>
+				</div>
+				<div class="span2" style="height:40px;">	
+						<ul class="breadcrumb" >
+							<li class="active">
+								<a href="#" id="user_name">
+									admin
+								</a>
+								<b>|</b>
+								<a href="#" id="login_out">
+									注销
+								</a>
+							</li>
+						</ul>
+					</div>	
+			</div>
+		</div>
+	</div>
+</div>

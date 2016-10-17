@@ -1,0 +1,174 @@
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="title" content="Bootstrap可视化布局系统">
+	<meta name="description" content="">
+	<meta name="keywords" content="场地管理">
+	<title>场地管理</title>
+	<link href="./css/bootstrap-combined.min.css" rel="stylesheet">
+	<link href="./css/layoutit.css" rel="stylesheet">
+	<link rel="stylesheet" href="http://apps.bdimg.com/libs/fontawesome/4.2.0/css/font-awesome.min.css">
+	<!--[if lt IE 9]>
+			<script src="js/html5shiv.js"></script>
+		<![endif]-->
+	<link rel="shortcut icon" href="img/favicon.png">
+	<script type="text/javascript" src="./js/jquery-2.1.4.js"></script>
+	<!--[if lt IE 9]>
+		<script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+		<![endif]-->
+	<script type="text/javascript" src="./js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="./js/jquery-ui.js"></script>
+	<script type="text/javascript" src="./js/jquery.ui.touch-punch.min.js"></script>
+	<script type="text/javascript" src="./js/jquery.htmlClean.js"></script>
+	
+	
+	<style>
+
+	</style>
+</head>
+<script>
+	
+	$(window).load(function(){
+		for (var t=0;t<24;t++){	
+				var time = ''
+				time = t + ":00"
+				if (t < 10){
+					time = "0" + time
+				}
+				$(".time").append('<option value=' + t + '>' + time + '</option>')
+		}
+	})
+</script>
+<body style="cursor: auto;background-color:#fff !important;padding-bottom:0px;">
+	<div class="span12" style="margin-top:15px;">
+		<p style="margin-bottom:15px;text-align:center;font-size:15px">
+			<span>场馆：悦享源</span>
+			<span style="margin-left:30px;">项目：足球
+			</span>
+		</p>
+	</div>
+	<div id="type_set" class="span12" style="margin-top:15px;">
+		<p style="margin-bottom:15px;" id="timeset">
+			<span style="vertical-align:top">价格：</span>
+			
+			<span class="timeset_span" style="display:inline-block;width:530px">
+				<span class="datetimeset_span" style="display:inline-block;border:1px solid #dedede;width:490px">
+					<table class="table_placeadd_time" >
+						<tbody>
+							<tr>
+								<td><input type="checkbox">全部</td>
+								<td><input type="checkbox">周一</td>
+								<td><input type="checkbox">周二</td>
+								<td><input type="checkbox">周三</td>
+								<td><input type="checkbox">周四</td>
+							</tr>
+							<tr>
+								<td><input type="checkbox">周五</td>
+								<td><input type="checkbox">周六</td>
+								<td><input type="checkbox">周日</td>
+							</tr>
+						</tbody>
+					</table>
+					<span class="date_time" style="display:inline-block;width:auto;"> 
+						<select class="time" style="width:80px;height:auto;line-height:auto;font-size:12px;margin-left:15px;margin-bottom:0px;">
+						</select>	
+							-
+						<select class="time" style="width:80px;height:auto;line-height:auto;font-size:12px;margin-bottom:0px;">
+						</select>
+						
+						<select style="width:80px;height:auto;line-height:auto;font-size:12px;margin-bottom:0px;">
+							<option>1号场</option>
+							<option>2号场</option>
+							<option>3号场</option>
+						</select>
+						
+						<span style="display:inline-block;width:auto;margin-left:15px;margin-bottom:10px">
+							价格：
+							<input type="text" style="height:auto;margin-bottom:0px;width:80px;margin-left:2px;height:28px;">
+						</span>
+						<img src="./img/add_plus.png" onclick="add_datetimeset(this)" style="margin-left:5px;cursor:pointer">
+					</span>
+				</span>
+				<img class="add_timeset_img" src="./img/add_plus.png" onclick="add_timeset()" style="margin-top:-80px;margin-left:5px;cursor:pointer">
+			</span>
+			
+		</p>
+	</div>
+	<div class="row-fluid" style="margin-top:35px;text-align:center;margin-bottom:30px">
+		<div class="span1 buttonspan" style="width:170px !important;display:inline-block">
+			<button class="btn-new" type="button" >确认</button>
+		</div>
+		<div class="span1 buttonspan" style="width:170px !important;display:inline-block">
+			 <button class="btn-new" type="button" style="background-color:#dedede;color:#000" onclick="top.$('#setprice_close').click();">取消</button>
+		</div>
+	</div>
+</body>
+<script>
+	function add_timeset(){
+		var html = []
+		html.push('<span class="timeset_span" style="margin-left:46px;margin-top:10px;display:inline-block;width:530px"><span class="datetimeset_span" style="width:490px;display:inline-block;border:1px solid #dedede"><table class="table_placeadd_time" >')
+		html.push('<tbody><tr>')
+		html.push('<td><input type="checkbox">全部</td><td><input type="checkbox">周一</td><td><input type="checkbox">周二</td><td><input type="checkbox">周三</td><td><input type="checkbox">周四</td>')
+		html.push('</tr><tr><td><input type="checkbox">周五</td><td><input type="checkbox">周六</td><td><input type="checkbox">周日</td></tr></tbody></table>')
+		html.push('<select class="time" style="width:80px;height:auto;line-height:auto;font-size:12px;margin-left:15px;margin-bottom:0px;"></select>')
+		html.push('&nbsp;-&nbsp;')
+		html.push('<select class="time" style="width:80px;height:auto;line-height:auto;font-size:12px;margin-bottom:0px;"></select>')
+		html.push('<select style="width:80px;height:auto;line-height:auto;font-size:12px;margin-bottom:0px;margin-left:5px;"><option>1号场</option><option>2号场</option><option>3号场</option></select>')
+		html.push('<span style="display:inline-block;width:auto;margin-left:20px;margin-bottom:10px">价格：<input type="text" style="height:auto;margin-bottom:0px;width:80px;margin-left:5px;height:28px;"></span>')
+						
+						
+		html.push('<img src="./img/add_plus.png" onclick="add_datetimeset(this)" style="margin-left:10px;cursor:pointer"></span>')
+		html.push('<img class="add_timeset_img" src="./img/minus.png" onclick="minus_timeset(this)" style="margin-top:-80px;margin-left:10px;cursor:pointer"></span>')	
+		$('#timeset').append(html.join(''))
+		
+		$('.timeset_span:last').find(".time").each(function(){
+			for (var t=0;t<24;t++){	
+				var time = ''
+				time = t + ":00"
+				if (t < 10){
+					time = "0" + time
+				}
+				$(this).append('<option value=' + t + '>' + time + '</option>')
+			}
+		})
+	}
+	
+	function minus_timeset(obj){
+		$(obj).closest('.timeset_span').remove()
+	}
+	
+	function add_datetimeset(obj){
+		var html = []
+		html.push('<span class="date_time" style="display:inline-block;width:auto"> <select class="time" style="width:80px;height:auto;line-height:auto;font-size:12px;margin-left:15px;margin-bottom:0px;"></select>&nbsp;-&nbsp;')
+		html.push('<select class="time" style="width:80px;height:auto;line-height:auto;font-size:12px;margin-bottom:0px"></select>')
+		html.push('<select style="width:80px;height:auto;line-height:auto;font-size:12px;margin-bottom:0px;margin-left:5px;"><option>1号场</option><option>2号场</option><option>3号场</option></select>')
+		html.push('<span style="display:inline-block;width:auto;margin-left:20px;margin-bottom:10px">价格：<input type="text" style="height:auto;margin-bottom:0px;width:80px;margin-left:5px;height:28px;"></span>')
+		html.push('<img src="./img/minus.png" onclick="minus_datetimeset(this)" style="margin-left:10px;cursor:pointer"></span>')
+		$(obj).closest(".datetimeset_span").append(html.join(''))
+		$(obj).closest('.datetimeset_span').find(".time:eq(-1),.time:eq(-2)").each(function(){
+			for (var t=0;t<24;t++){	
+				var time = ''
+				time = t + ":00"
+				if (t < 10){
+					time = "0" + time
+				}
+				$(this).append('<option value=' + t + '>' + time + '</option>')
+			}
+		})
+		var img = $(obj).closest('.timeset_span').find('.add_timeset_img')
+		var margintop = $(img).css('marginTop').replace('px','')*1 - 38
+		$(img).css('marginTop', margintop + "px")
+		//$(img).css('margin-tio')
+	}
+	
+	function minus_datetimeset(obj){
+		var img = $(obj).closest('.timeset_span').find('.add_timeset_img')
+		var margintop = $(img).css('marginTop').replace('px','')*1 + 38
+		$(img).css('marginTop', margintop + "px")
+		$(obj).closest(".date_time").remove()
+		
+	}
+</script>
+</html>

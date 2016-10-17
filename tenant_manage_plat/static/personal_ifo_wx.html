@@ -1,0 +1,96 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>个人信息</title>
+	<meta name="keywords" content="" />
+	<meta name="description" content="" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" /><!-- 禁止缩放 -->
+	<!-- <meta name="format-detection" content="telephone=no" /> --><!-- 禁止将数字变为电话号码 -->
+	<meta name="apple-mobile-web-app-capable" content="yes" /><!-- iphone设备中的safari私有meta标签 -->
+	<meta name="apple-mobile-web-app-status-bar-style" content="black"><!-- iphone的私有标签 -->
+	<link rel="stylesheet" href="http://apps.bdimg.com/libs/fontawesome/4.2.0/css/font-awesome.min.css">
+	<link rel="stylesheet" type="text/css" href="css/personal_wx.css">
+	<style>
+	    body{font-size:62.5%;font-family:"Microsoft YaHei",Arial; overflow-x:hidden; overflow-y:auto;margin:0;}
+	    .viewport{ max-width:640px; min-width:300px; margin:0 auto;}
+	</style>	<p></p>
+ </head>
+ 
+<body>
+	<div class="wrapper">
+<!--     	<div class="page-back">
+    		<a href="javascript;:">
+    			<span> < </span>
+    			<span>个人信息</span>
+    		</a>
+    	</div> -->
+		<div class="personal_purse" id="personal_ifo">
+			<p>
+				<i class="fa fa-picture-o" aria-hidden="true"></i>
+				<span>头像</span>
+				<a class="right" href="#"><img id="avatar_img" src="img/basketball.png" style="display:inline;width:26px;"> <span style="vertical-align:8px;">></span> </a>
+			</p>
+<!-- 			<p>
+				<i class="fa fa-user" aria-hidden="true"></i>
+				<span>会员名</span>
+				<span class="right" id="weixin_id">weixin_id</span>
+			</p> -->
+			<p>
+				<i class="fa fa-text-width" aria-hidden="true"></i>
+				<span>账号昵称</span>
+				<a class="right" href="#"><span id="weixin_name">微信昵称</span> > </a>
+			</p>
+			<p>
+				<i class="fa fa-phone" aria-hidden="true"></i>
+				<span>手机号</span>
+				<a class="right" href="#"><span id="user_phone">12298665434</span> > </a>
+			</p>
+		</div>		
+	</div>
+
+	<script type="text/javascript" src="js/jquery-2.1.4.js"></script>
+	<script type="text/javascript">
+		function getUrlParam(name)
+		{
+			var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
+			var r = window.location.search.substr(1).match(reg);  //匹配目标参数
+			if (r!=null) return unescape(r[2]); return null; //返回参数值
+		} 
+		$(document).ready(function(){
+
+				// var code = getUrlParam('code')
+
+				$.ajax({
+					url:"/wx/getUserInfo",
+					type:'GET',
+					dataType:'JSON',
+					success:function(res){
+						if (res.error == '0') {
+							personal_ifo = res.userInfo
+							// alert(JSON.stringify(res))
+							var ifo_img_href = personal_ifo.avatar
+							// var account_number = personal_ifo.weixin_id
+							var account_name = personal_ifo.nickname
+							var telephone_number = "122897675564"
+
+							$("#avatar_img").attr("src", ifo_img_href);
+							// $("#weixin_id").text(account_number);
+							$("#weixin_name").text(account_name);
+							$("#user_phone").text(telephone_number);
+						}else if(res.error == '-1'){
+							alert('internal error！')
+						}else {
+							alert('parameter error！')
+						}
+					},error:function(){
+						alert('error')
+
+					}
+
+				})
+			}
+		)
+	</script>
+</body>
+</html>

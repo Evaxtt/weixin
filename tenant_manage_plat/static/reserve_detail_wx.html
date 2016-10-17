@@ -1,0 +1,437 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="title" content="悦享源场馆预定">
+	<meta name="description" content="">
+	<meta name="keywords" content="">
+	<title>悦享源场馆预定</title>
+	<link href="./css/bootstrap-combined.min.css" rel="stylesheet">
+	<link href="./css/layoutit.css" rel="stylesheet">
+	<link rel="stylesheet" href="http://apps.bdimg.com/libs/fontawesome/4.2.0/css/font-awesome.min.css">
+	<!--[if lt IE 9]>
+			<script src="js/html5shiv.js"></script>
+		<![endif]-->
+	<link rel="shortcut icon" href="img/favicon.png">
+	<script type="text/javascript" src="./js/jquery-2.1.4.js"></script>
+	<!--[if lt IE 9]>
+		<script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+		<![endif]-->
+	<script type="text/javascript" src="./js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="./js/jquery-ui.js"></script>
+	<script type="text/javascript" src="./js/jquery.ui.touch-punch.min.js"></script>
+	<script type="text/javascript" src="./js/jquery.htmlClean.js"></script>
+	
+	<style>
+
+	</style>
+</head>
+
+<script>
+function getUrlParam(name)
+{
+	var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
+	var r = window.location.search.substr(1).match(reg);  //匹配目标参数
+	if (r!=null) return unescape(r[2]); return null; //返回参数值
+} 
+
+	function getDaysInMonth(year,month){
+	     var d= new Date();
+		return new Date(d.getFullYear(), month,0).getDate();
+	}
+
+	$(document).ready(function(){
+		
+		var stadium_id = getUrlParam('id')
+		var sport_id = getUrlParam("sport_id")
+
+		$.ajax({
+			url:'/stadium/wx_order_summary/',
+			type:'POST',
+			dataType:'JSON',
+			data:JSON.stringify({'id':stadium_id,"sport_id":sport_id}),
+			async:false,
+			success:function(result){
+	    		if (result.error == 0){
+	    			
+	    			$("#stadium_name").html(result.stadium.name)
+	    			
+	    		}
+    		},error:function (XMLHttpRequest, textStatus, errorThrown)  {
+				alert('error')
+			}
+	    })
+	
+		var date = new Date()
+		var year = date.getFullYear() 
+		var month = date.getMonth() + 1;
+		var maxday = getDaysInMonth(year,month)
+		
+		
+		
+		var day = date.getDate();
+		var day_day = date.getDay()
+		
+		
+		for (var i=0;i<7;i++){
+			var weekday = ''
+			switch(day_day){
+				case 0:
+					weekday = '周日';
+					break;
+				case 1:
+					weekday = '周一';
+					break;
+				case 2:
+					weekday = '周二';
+					break;
+				case 3:
+					weekday = '周三';
+					break;
+				case 4:
+					weekday = '周四';
+					break;
+				case 5:
+					weekday = '周五';
+					break;
+				case 6:
+					weekday = '周六';
+					break;
+			}
+			
+			if (day > maxday){
+				day = day - maxday
+				month = month+1
+				if (month > 12){
+					month = month - 12
+					year = year + 1
+				}
+			}	
+			if (String(month).length == 1){
+				month = '0' + month
+			}
+			
+			var display_day = '' + day
+			if (display_day.length == 1){
+				display_day = '0' + day
+			}	
+		
+			/*if (i==0){
+				var html = '<li style="display:inline-block;padding-right:5px;"><a href="#"><button onclick="select(this)" class="btn-new btn-new-selected" type="button" style="text-shadow:none;background-color:#fff;color:#bdbdbd;border-color:#bdbdbd;width:100px;">' + month + '-' + display_day + ' ' + weekday + '</button></a></li>'
+			}else{*/
+				var html = '<li full_date=' + year + '-' + month + '-' + display_day + ' style="display:inline-block;padding-right:5px;"><a href="#"><button onclick="select(this)" class="btn-new" type="button" style="text-shadow:none;background-color:#fff;color:#bdbdbd;border-color:#bdbdbd;width:100px;">' + month + '-' + display_day + ' ' + weekday + '</button></a></li>'
+			//}
+			$("#date_selecter").append(html)	
+			day = day + 1	
+			day_day = day_day*1 + 1	
+			if (day_day > 6){
+				day_day = day_day - 7
+			}
+			
+			
+		}
+		
+		//自动选择指定日期
+		var date_chosen = getUrlParam('full_date')
+		//alert(date_chosen)
+		$("li .btn-new").each(function(){
+			//alert($(this).closest('li').attr('full_date'))
+			if ($(this).closest('li').attr('full_date') == date_chosen){
+				$(this).addClass("btn-new-selected")
+			}
+		})
+		//$(".btn-new").eq(6).addClass("btn-new-selected")
+		var container = $('.breadcrumb'),
+		    scrollTo = $(".btn-new-selected");
+		
+		container.scrollLeft(
+		    scrollTo.offset().left - container.offset().left + container.scrollLeft()
+		);
+		
+		// Or you can animate the scrolling:
+		container.animate({
+		    scrollLeft: scrollTo.offset().left - container.offset().left + container.scrollLeft()
+		});
+		
+		
+		for (var t=8;t<24;t++){
+			var html_time = []
+			var time = ''
+			html_time.push('<tr><td>')
+			time = t + ":00"
+			if (t < 10){
+				time = "0" + time
+			}
+			html_time.push(time)
+			html_time.push('</td></tr>')	
+			$(".reserve-table-time tbody").append(html_time.join(''))
+		}
+		
+		
+		
+		get_reserve_infos()
+	})
+	
+	function get_reserve_infos(){
+		$.ajax({
+			url:'/stadium/order/',
+			type:'POST',
+			dataType:'JSON',
+			data:JSON.stringify({'id':getUrlParam('id'),"sport_id":getUrlParam("sport_id"),'date':$(".btn-new-selected").closest("li").attr("full_date")}),
+			async:false,
+			success:function(result){
+	    		if (result.error == 0){
+	    			//预定添加列
+	    			var orders = result.orders
+	    			//alert(JSON.stringify(orders))
+	    			//增加场地数
+	    			var num = orders.length
+					var html = []
+					html.push('<tr>')
+					var business_time_tmp = []
+					var order_hours_tmp = []
+					var order_hours_dict = {}
+					for (var i=0;i<num;i++){		
+						html.push('<td class="reserve-table-head-td">')
+						html.push(orders[i].name)		
+						html.push('</td>')	
+						var order_hour_tmp2 = []
+						for (var t=0;t<orders[i].order_hours.length;t++){
+							//alert(orders[i].order_hours[t].hour)
+							order_hours_tmp.push(orders[i].order_hours[t].hour) 	
+							order_hour_tmp2.push(orders[i].order_hours[t].hour)
+						}
+						order_hours_dict[i] = order_hour_tmp2
+							for (var b=0;b<orders[i].business_time.length;b++){
+								for (var t=parseInt(orders[i].business_time[b].from_hour);t<parseInt(orders[i].business_time[b].to_hour)+1;t++){
+									//alert(orders[i].order_hours[t].hour)
+									business_time_tmp.push(t) 
+								}
+							}		
+					}
+					//alert(JSON.stringify(order_hours_dict))
+					html.push('</tr>')		
+					
+					//获取当前时间
+					var current_time = new Date();
+					hour = current_time.getHours()
+					//alert(hour)
+					var current_month = current_time.getMonth()*1 + 1 + ""
+					if (current_month.length == 1){
+						current_month = "0" + current_month
+					}
+					current_time_full = current_time.getFullYear() + '-' + current_month + '-'
+					if ((current_time.getDate()+"").length == 1){
+						current_time_full += '0' + current_time.getDate()
+					}else{
+						current_time_full += current_time.getDate()
+					}
+					//alert((current_time.getDate()+""))
+
+						for (var k=0;k<16;k++){
+						html.push('<tr time=' + (k*1 +8) + '>')
+						for (var i=0;i<num;i++){
+							//alert(k+8)
+							
+							
+							if (business_time_tmp.indexOf(k+8) == -1){
+								html.push('<td class="sold"></td>')
+							}else if ((k+8) <= hour && current_time_full == $(".btn-new-selected").closest("li").attr("full_date")){								
+								html.push('<td class="sold"></td>')									
+							}else if (order_hours_tmp.indexOf(k+8) == -1){
+								if (orders[i].price[k+8+""]){
+									html.push('<td place_name=' + orders[i].name.split("号场")[0]  +' place_id=' + orders[i].id + ' class="reserveable" onclick="reserve(this)">' + orders[i].price[k+8+""] + '</td>')	
+								}else{
+									html.push('<td class="sold"></td>')	
+								}
+							}else{
+								if (order_hours_dict[i].indexOf(k+8) == -1){
+									html.push('<td place_name=' + orders[i].name.split("号场")[0]  +' place_id=' + orders[i].id + ' class="reserveable" onclick="reserve(this)">' + orders[i].price[k+8+""] + '</td>')	
+								}else{
+									html.push('<td class="sold"></td>')	
+								}
+							}			
+						}
+						html.push('</tr>')	
+					}
+					$(".reserve-table tbody").append(html.join(''))
+					
+					
+	    		}
+    		},error:function (XMLHttpRequest, textStatus, errorThrown)  {
+				alert('error')
+			}
+		})
+		
+	}
+	
+	function select(obj){
+		$(".btn-new-selected").removeClass("btn-new-selected")
+		$(obj).addClass('btn-new-selected')
+		var chosen_date = $(obj).closest('li').attr('full_date')
+		$("#total_fee").html(0)
+		$("#start_order").hide()
+		//alert(chosen_date)
+		$(".reserve-table tbody").html('')
+		get_reserve_infos()
+	}
+	
+	function reserve(obj){
+		$("#chosen_places").html('')
+		if ($(obj).is(".reserveable")){
+			$(obj).removeClass("reserveable")	
+			$(obj).addClass("reserve")
+		}else if ($(obj).is(".reserve")){
+			$(obj).removeClass("reserve")	
+			$(obj).addClass("reserveable")
+		}
+		var total_fee = 0
+		var places = []
+		$(".reserve-table tbody tr").find(".reserve").each(function(){
+			total_fee = total_fee + ($(this).html()*1)
+		})
+		$("#total_fee").html(total_fee)
+		
+		var count = 0
+		$(".reserve-table tbody tr").find(".reserve").each(function(){
+			places.push('<b style="margin-left:31px;font-size:12px;color:#bcbcbc">' + $(this).attr('place_name').split('号场')[0] + '号场:' + $(this).closest('tr').attr('time')+":00" + '-' + ($(this).closest('tr').attr('time')*1+1)+":00" + "<br></b>")
+			
+			count++
+		})
+		$("#chosen_places").append(places.join(""))
+		if (total_fee == 0){
+			$("#start_order").hide()
+			$("#chosen_places_div").hide()
+		}else{
+			$("#start_order").show()
+			$("#chosen_places_div").show()
+		}
+	}
+	
+	
+	
+	
+		
+</script>
+
+<body style="cursor: auto;background-color:#fff !important;padding:0;min-width:100px;">
+<div class="container-fluid">
+	<div class="row-fluid">
+		<div class="span12">
+			<div class="row-fluid">
+				<div class="span12">
+					<div class="row-fluid" style="position:relative;white-space: nowrap;overflow:hidden;">
+						<div class="row-fluid" style="margin-bottom:10px;">
+							<div class="span12" style="text-align:center;background-color:#ff9933;height:40px;line-height:40px;">
+									<b style="font-size:17px;color:#fff" id="stadium_name"></b>
+							</div>
+						</div>
+					</div>		
+					
+					<div class="row-fluid" style="" >
+						<ul class="breadcrumb" style="background-color:#fff;padding:0;white-space: nowrap;overflow:scroll;padding-left:1px;" id="date_selecter">
+							
+							
+						</ul>
+					</div>
+					
+					<div class="row" style="margin-left:0px;">
+						<div class="span12" style="white-space: nowrap;">
+							<div>
+							<table class="table table-bordered table-condensed reserve-table-time">						
+								<tbody>
+									
+								</tbody>
+							</table>
+							</div>
+						
+							<div style="overflow:scroll">
+							<table class="table table-bordered table-condensed reserve-table">						
+								<tbody>
+									
+								</tbody>
+							</table>
+							</div>
+						</div>
+					</div>
+					
+					<div class="row-fluid" style="margin:0 auto 20px auto;">
+						<div class="span4 status-instruction" style="margin-left:31px;">
+							<span style="background-color:#90ea5b">可预订</span>
+						</div>
+						<div class="span4 status-instruction" style="margin-left:11px;">
+							<span style="background-color:#ededed;color:#000">已售出</span>
+						</div>
+						<div class="span4 status-instruction" style="margin-left:11px;">
+							<span style="background-color:#ff9933">我的预定</span>
+						</div>
+					</div>
+					
+					<div class="row-fluid" id="chosen_places_div" style="display:none">
+						<div class="span12" id="chosen_places" >
+								
+						</div>
+					</div>
+					
+					<div class="row-fluid" style="margin-top:10px;">
+						<div class="span12">
+							<b style="font-size:20px;color:#ff9933;margin-left:31px">总计: </b><b id="total_fee" style="color:red;font-size:20px;">0</b><b style="color:red;font-size:20px;">元</b>						
+						</div>
+					</div>
+					
+					<div class="row-fluid" style="margin-bottom:20px;margin-top:15px;">
+						<div class="span12" style="text-align:center">
+							<button id="start_order" class="btn-new" type="button" onclick="order(this)" style="display:none;text-shadow:none;background-color:#FF9933;color:#fff;border-color:#FF9933;width:95%;height:40px;">提交订单</button>				
+						</div>
+					</div>
+					
+					
+					
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script>
+	function order(obj){
+		var redirect_uri = ''
+		var appid = ''
+		var id = getUrlParam('id')
+		var sport_id = getUrlParam("sport_id")
+		var day = $(".btn-new-selected").closest("li").attr("full_date")
+		var total_fee = $("#total_fee").html()
+		var order_detail = []
+		$(".reserve").each(function(){
+			var place_id = $(this).attr('place_id')
+			var place_name = $(this).attr('place_name')
+			var order_hour = $(this).closest('tr').attr('time')
+			//var order_tmp = {'id':place_id, 'order_hours':[order_hour]}
+			order_detail.push({'id':place_id, 'order_hours':[order_hour], 'name':place_name})
+		})
+		$.ajax({
+			url:'/wx/get_openid_redirect?id=' + id + "&sport_id=" + sport_id + '&day=' + day + '&total_fee=' + total_fee + '&order_detail=' + JSON.stringify(order_detail),
+			dataType:'JSON',
+			data:{},
+			async:false,
+			success:function(result){
+	        	redirect_uri = encodeURIComponent(result.redirect_uri)
+	        	//alert(redirect_uri)
+	        	appid = result.appid  		         
+	        },
+			error: function (XMLHttpRequest, textStatus, errorThrown)  {
+				alert('error')
+			}
+		})
+		
+		//alert(redirect_uri)
+		//引导用户同意授权，获取code
+		window.location.href = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=" + appid + "&redirect_uri=" + redirect_uri + "&response_type=code&scope=snsapi_base&state=OK#wechat_redirect"
+		//window.location.href = redirect_uri
+	}
+</script>
+
+</body>
+</html>

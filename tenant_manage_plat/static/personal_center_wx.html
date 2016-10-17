@@ -1,0 +1,145 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>个人中心</title>
+	<meta name="keywords" content="" />
+	<meta name="description" content="" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" /><!-- 禁止缩放 -->
+	<!-- <meta name="format-detection" content="telephone=no" /> --><!-- 禁止将数字变为电话号码 -->
+	<meta name="apple-mobile-web-app-capable" content="yes" /><!-- iphone设备中的safari私有meta标签 -->
+	<meta name="apple-mobile-web-app-status-bar-style" content="black"><!-- iphone的私有标签 -->
+	<link rel="stylesheet" href="http://apps.bdimg.com/libs/fontawesome/4.2.0/css/font-awesome.min.css">
+	<link rel="stylesheet" type="text/css" href="./css/personal_wx.css">
+	<style>
+	    body{font-size:62.5%;font-family:"Microsoft YaHei",Arial; overflow-x:hidden; overflow-y:auto;margin:0;}
+	    .viewport{ max-width:640px; min-width:300px; margin:0 auto;}
+	</style>
+ </head>
+ 
+<body>
+    <div class="wrapper">
+    	<div class="personal_ifo clearfix">
+    		<div class="personal_left">
+    			<img src="img/basketball.png" id="avatar_img"> 
+    		</div>
+    		<div class="personal_right">
+    			<p id="weixin_name">用户名</p>
+    			<p><a id="personal_ifo_link"> 个人信息</a><span> > </span></p>
+    		</div>
+    	</div>
+    	<div class="personal_order">
+<!--     		<a class="order-title"  id="my_order " href="http://www.dabooster.com/sport/reserve_middleware_wx.html?query=yes" style="display: block;">
+    			<i class="fa fa-list" aria-hidden="true"></i>
+    			<span>我的订单</span>
+    			<span style="float: right;margin-right:20px;"> > </span>
+    		</a> -->
+    		<a class="order-title" href="sport/my_order_wx.html" style="display: block;">
+    			<i class="fa fa-list" aria-hidden="true"></i>
+    			<span>我的订单</span>
+    			<span style="float: right;margin-right:20px;"> > </span>
+    		</a>
+			<div class="ordered">
+				<img src="img/address.png">
+				<p><a id="my_order_all" href="/sport/my_order_wx.html#order_all">全部订单</a></p>
+			</div>
+			<div class="whole-order">
+				<img src="img/address.png">
+				<p><a id="my_order_already" href="/sport/my_order_wx.html#order_already">已预订</a></p>
+			</div>
+    	</div>
+		<div class="personal_purse">
+			<p>
+				<i class="fa fa-credit-card" aria-hidden="true"></i>
+				<span>我的钱包</span>
+			</p>
+			<p>
+				<i class="fa fa-jpy" aria-hidden="true"></i>
+				<span>余额</span>
+				<span class="right">￥<span id="balance">0</span>元</span>
+			</p>
+			<p>
+				<i class="fa fa-money" aria-hidden="true"></i>
+				<span>优惠券</span>
+				<a class="right" href="/sport/discount_coupon.html"> > </a>
+			</p>
+			<p>
+				<i class="fa fa-shopping-cart" aria-hidden="true"></i>
+				<span>积分商城</span>
+				<a class="right" href="#"><span id="credits">0分</span> > </a>
+			</p>
+		</div>
+    </div>
+
+	<script type="text/javascript" src="js/jquery-2.1.4.js"></script>
+	<script type="text/javascript">
+		function getUrlParam(name)
+		{
+			var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
+			var r = window.location.search.substr(1).match(reg);  //匹配目标参数
+			if (r!=null) return unescape(r[2]); return null; //返回参数值
+		} 
+
+		$(document).ready(function(){
+			appid='wx95198705de430c74'
+			// var openid = ''
+			// var code = getUrlParam('code')
+			// $.ajax({
+			// 	url:"/wx/get_openid?code=" + code,
+			// 	dataType:'JSON',
+			// 	data:{},
+			// 	async:false,
+			// 	success:function(result){
+			// 		openid = result.openid
+			// 		window.location.href = "http://www.dabooster.com/sport/personal_ifo_wx.html?openid=" + openid 
+			// 	},
+			// 	error: function (XMLHttpRequest, textStatus, errorThrown)  {
+			// 		alert('error')
+			// 	}
+			// })						
+
+			var code = getUrlParam('code')
+			$('#personal_ifo_link').click(function(){
+				window.location.href="/sport/personal_ifo_wx.html?code=" + code
+			});
+
+			// $('#my_order').click(function(){
+			// 	window.location.href="https://open.weixin.qq.com/connect/oauth2/authorize?appid=" + appid + "&redirect_uri=" + $('#my_order').href + "&response_type=code&scope=snsapi_base&state=OK#wechat_redirect"
+			// })
+			$.ajax({
+				url:"/wx/getUserInfo?code=" + code,
+				type:'get',
+				dataType:'JSON',
+				success:function(res){
+					if (res.error == '0') {
+						var personal_ifo = res.userInfo
+						var ifo_img_href = personal_ifo.avatar  //头像
+						var account_name = personal_ifo.nickname  //名称
+						var balance = personal_ifo.balance  //余额
+						var credits = personal_ifo.credits  //积分
+						var openid = personal_ifo.openid
+
+						$("#avatar_img").attr("src", ifo_img_href);
+						$("#weixin_name").text(account_name);
+						$("#balance").text(balance);
+						$("#credits").text(credits);
+						$('#my_order_all').attr("href",'/sport/my_order_wx.html?openid='+openid)
+						$("#my_order_already").attr("href",'/sport/my_order_wx.html#order_already?openid='+openid)
+						$(".order-title").attr("href",'/sport/my_order_wx.html?openid='+openid)
+						// alert($("#my_order_already").attr("href"))
+					}else if(res.error == '-1'){
+						alert('internal error!')
+					}else {
+						alert('parameter error!')
+					}
+				},error:function(){
+					alert('error!')
+
+				}
+
+			})
+			}
+		)
+	</script>
+</body>
+</html>

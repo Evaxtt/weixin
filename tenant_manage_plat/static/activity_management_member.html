@@ -1,0 +1,353 @@
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="title" content="Bootstrap可视化布局系统">
+	<meta name="description" content="">
+	<meta name="keywords" content="场地管理">
+	<title>场地管理</title>
+	<link href="./css/bootstrap-combined.min.css" rel="stylesheet">
+	<link href="./css/layoutit.css" rel="stylesheet">
+	
+	<link href="./css/notice.css" rel="stylesheet">
+	<link rel="stylesheet" href="http://apps.bdimg.com/libs/fontawesome/4.2.0/css/font-awesome.min.css">
+	<link rel="stylesheet" type="text/css" href="./css/activity.css">
+	<!--[if lt IE 9]>
+			<script src="js/html5shiv.js"></script>
+		<![endif]-->
+	<link rel="shortcut icon" href="img/favicon.png">
+	<script type="text/javascript" src="./js/jquery-2.1.4.js"></script>
+	<!--[if lt IE 9]>
+		<script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+		<![endif]-->
+	<script type="text/javascript" src="./js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="./js/jquery-ui.js"></script>
+	<script type="text/javascript" src="./js/jquery.ui.touch-punch.min.js"></script>
+	<script type="text/javascript" src="./js/jquery.htmlClean.js"></script>
+	
+	<script type="text/javascript" src="./js/common.js"></script>
+	<script type="text/javascript" src="./js/confirm/jquery-confirm.min.js"></script>
+	<link href="./js/confirm/jquery-confirm.min.css" rel="stylesheet">
+	<link href="./js/mCustomScrollbar/jquery.mCustomScrollbar.min.css" rel="stylesheet" type="text/css" />
+	<script src="./js/mCustomScrollbar/jquery.mousewheel.min.js"></script>
+	<script src="./js/mCustomScrollbar/jquery.mCustomScrollbar.min.js"></script>
+	<style type="text/css">
+		.nav-tabs>.active>a{background-color:#fff !important}
+	</style>
+</head>
+
+<body style="cursor: auto;">
+
+<div class="container-fluid">
+	<div class="row-fluid">
+		<div class="span12"  style="background-color:#FF9933;margin-bottom:20px;height:60px;">
+			<div class="row-fluid">
+				<div class="span3" style="margin-left:0 !important;height:60px;">
+					<a href="#" style="background:url('./img/logo.jpg') 50% 50% no-repeat;width:300px;height:60px;float:left;display:inline">
+						
+					</a>
+				</div>
+				<div class="span7" style="height:30px;">
+						<ul class="breadcrumb" >
+							<li style="min-width:120px;">
+								<a href="/sport/reserve_management.html">
+									预定管理
+								</a>
+							</li>							
+							<li style="min-width:120px;" >
+								<a href="/sport/activity_management.html" style="color:#555 !important">
+									活动管理
+								</a>
+							</li>
+							<li style="min-width:120px;">
+								<a href="/sport/stadium_management.html" >
+									
+									基础配置
+								</a>
+							</li>
+							<li style="min-width:120px;">
+								<a href="/sport/marketing_activity.html" style="color:#555">	
+									营销活动
+								</a>
+							</li>							
+							<li style="min-width:120px;">
+								<a href="/sport/vip_ifo.html" style="color:#555">								
+									会员信息
+								</a>
+							</li>								
+							<!--<li style="min-width:120px;">
+								<a href="#">
+									数据中心
+								</a>
+							</li>-->										
+						</ul>
+				</div>
+				<div class="span2" style="height:30px;">	
+						<ul class="breadcrumb" >
+							<li class="active">
+								<a href="#" id="user_name">
+									admin
+								</a>
+								<b>|</b>
+								<a href="#" id="login_out">
+									注销
+								</a>
+							</li>
+						</ul>
+					</div>	
+			</div>
+		</div>
+	</div>
+</div>
+<div class="container-fluid">
+<!-- 			<div class="row-fluid" style="margin-bottom:30px;border-bottom:1px solid #e6e7ec;margin-top:10px;position:relative">
+				<div class="span1">
+				</div>
+				<div class="span11">
+					<ul style="line-height:30px;height:31px;margin:0;padding:0">
+					<li style="line-height:30px;float:left;">
+						<a href="/sport/activity_management.html" style="color:#FF9933;border-bottom:2px solid #FF9933;text-align:center;display:block;font-size:15px;">活动管理</a>
+					</li>
+					</ul>
+				</div>
+			</div> -->
+			<div class="content-main">
+<!-- 				<div class="sub-nav">
+					<ul class="nav nav-pills">
+								
+						<li>
+							<a href="activity_management_info.html">
+								活动概述
+							</a>
+						</li>
+						<li class="active">
+							<a href="activity_management_member.html">
+								报名名单
+							</a>
+						</li>						
+						<li>
+							<a href="activity_popularize.html">
+								活动推广
+							</a>
+						</li>	
+					</ul>
+				</div> -->
+				<div class="content-main radius">
+							<div class="span12 tablespan">	
+								<div class="span5">
+								<input type="text" style="width:100px;height:30px;margin-bottom:0px;" placeholder="手机/用户名">
+								<select id="attend_select" style="margin-bottom:0px;width:100px;" onchange="query()">
+									<option value=""></option>
+									<option value="1">已签到</option>
+									<option value="0">未签到</option>
+								</select>
+								<select id="payment_select" style="margin-bottom:0px;width:100px;" onchange="query()">
+									<option value=""></option>
+									<option value="1">已付款</option>
+									<option value="0">未付款</option>
+								</select>
+								</div>
+								
+								<div class="span5">
+								<button class="btn-new" type="button" style="height:30px;width:100px" onclick="query()">查询</button>
+								</div>
+							</div>
+							<div class="span12 tablespan" style="margin-left:0px !important">							
+							<table class="table table-striped" style="height:auto;border-bottom:1px solid #dddddd">
+								<thead>
+									<tr>
+										<th>
+											<!-- <input onclick="checkbox_all(this)" type="checkbox"></input> -->
+										</th>
+										<th>
+											姓名
+										</th>
+										<th>
+											电话
+										</th>
+										<th>
+											报名时间
+										</th>
+										<th>
+											付款状态
+										</th>
+										<th>
+											签到状态
+										</th>											
+									</tr>
+<!-- 									<tr>
+										<td>
+											<input type="checkbox"></input>
+										</td>
+										<td>张三</td>
+										<td>152019291829</td>
+										<td>2015-01-04 21:00:00</td>
+										<td><img src="./img/status_ok.png"></img></td>
+										<td><img src="./img/status_fail.png"></img></td>
+									</tr> -->
+										
+								</thead>
+								<tbody id="place_list" >															
+									
+								</tbody>
+							</table>
+							<div class="row-fluid" style="margin-top:55px;">
+								
+								<!--<div class="span4 buttonspan">
+									 <button class="btn-new" type="button" onclick="settype()">设置场地类型</button>
+								</div>-->
+								<div class="span6 buttonspan">
+									 <button class="btn-new" onclick="attend()" type="button">签到</button>
+								</div>
+								<div class="span6 buttonspan">
+									 <button class="btn-new" type="button" onclick="export()">导出</button>
+								</div>
+							</div>
+							</div>
+						</div>
+					
+				<div class="span1">
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+<div id="loadingCover">
+        <p><img src="./img/loading.gif"/><span>请稍后</span></p>
+ </div>
+<div class="qb_quick_tip qb_none" id="bubble"></div>
+<script>
+(function($){
+         $(window).load(function(){
+            //$(".custom_scrollbar").mCustomScrollbar();
+			$(".container").mCustomScrollbar({
+				axis:"y", // horizontal scrollbar
+				theme:"3d-dark"
+			});		
+			
+			
+        });		
+		
+    })(jQuery);
+	
+function getUrlParam(name)
+{
+	var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
+	var r = window.location.search.substr(1).match(reg);  //匹配目标参数
+	if (r!=null) return unescape(r[2]); return null; //返回参数值
+} 
+
+$(document).ready(function(){
+	//获取session的登录用户信息		
+	$.ajax({
+		url:"/user/get_login_info",
+        dataType:'JSON',
+        type: 'GET',
+        success:function(result){
+        	if (result.error == "0") {
+        		var login_info = result.login_info;
+        		var user_name = login_info.user;
+        		$("#user_name").text(user_name);
+        	}else if(result.error == "1"){
+        		window.location.href="/sport/login.html"
+        	}else{
+        		alert("internal error!")
+        	}
+        },
+        error:function(e){
+        	alert("this error")
+        }
+	})	
+
+	$("#login_out").click(function(){
+		$.ajax({
+			url:"/login_out/",
+            dataType:'JSON',
+            type: 'GET',
+            success:function(result){
+            	if (result.error == "0") {
+            		window.location.href="/sport/login.html"
+            	}else{
+        			alert("注销失败！")
+        		}
+            },
+            error:function(e){
+            	alert("error")
+            }
+		})	
+	})
+
+	var activity_id = getUrlParam("id")
+	// var storage = window.sessionStorage;
+	// var activity_id = storage.getItem("activity_id")
+
+	// $(".activity_link").click(function(){
+	// 	$(".activity_link").attr('href',$(this).attr('href')+activity_id)
+	// })
+	// alert(activity_id)
+	$.ajax({
+		url:"/activity/applicant_list/",
+        dataType:'JSON',
+        type: 'post',
+        data:JSON.stringify({'activity_id':activity_id}),
+        success:function(result){
+        	if (result.error == "0") {
+        		var applicants = result.applicants
+        		for(var i=0;i<applicants.length;i++){
+	        		var name = applicants[i].name
+	        		var telephone_number = applicants[i].telephone
+	        		var apply_time = applicants[i].apply_time
+	        		var pay_state = applicants[i].is_payed
+	        		var sign_state = applicants[i].checked
+
+	        		if (pay_state == true) {
+	        			var pay_img_src = "./img/status_ok.png"
+	        		}else{
+	        			pay_img_src = "./img/status_fail.png"
+	        		}
+
+	        		if (sign_state == '0') {
+	        			var sign_img_src = "./img/status_fail.png"
+	        		}else{
+	        			sign_img_src = "./img/status_ok.png"
+	        		}
+
+	        		var activity_member = '<tr><td><input type="checkbox"></input></td><td>'+name+'</td><td>'+telephone_number+'</td><td>'+apply_time+'</td><td><img src="'+pay_img_src+'"></img></td><td><img class="sign_state_img" src="'+sign_img_src+'"></img></td></tr>'
+
+	        		$(activity_member).appendTo("#place_list")
+        		}
+
+        	}else{
+        		alert("this error!")
+        	}
+        },
+        error:function(e){
+        	alert("error")
+        }
+	})	
+})	
+
+
+	var timeout
+	function showBubble(a) {
+		var c = $("#bubble");
+			c.css("opacity", 1), c.hasClass("qb_none") || c.html(a), c.html(a).removeClass("qb_none")
+			timeout = 	setTimeout("disapper()", 1300 )
+	}
+
+	function disapper(){
+		$("#bubble").addClass("qb_none").removeAttr("style")
+		clearTimeout(timeout)
+	}	
+
+	function attend(){
+		$("#place_list").find('input[type="checkbox"]:checked').closest("tr").find(".sign_state_img").attr('src',"./img/status_ok.png");
+	}
+</script>
+
+</body>
+</html>

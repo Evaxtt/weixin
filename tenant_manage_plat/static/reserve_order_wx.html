@@ -1,0 +1,451 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="title" content="悦享源场馆预定">
+	<meta name="description" content="">
+	<meta name="keywords" content="">
+	<title>悦享源场馆预定</title>
+	<link href="./css/bootstrap-combined.min.css" rel="stylesheet">
+	<link href="./css/layoutit.css" rel="stylesheet">
+	<link rel="stylesheet" href="http://apps.bdimg.com/libs/fontawesome/4.2.0/css/font-awesome.min.css">
+	<!--[if lt IE 9]>
+			<script src="js/html5shiv.js"></script>
+		<![endif]-->
+	<link rel="shortcut icon" href="img/favicon.png">
+	<script type="text/javascript" src="./js/jquery-2.1.4.js"></script>
+	<!--[if lt IE 9]>
+		<script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+		<![endif]-->
+	<script type="text/javascript" src="./js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="./js/jquery-ui.js"></script>
+	<script type="text/javascript" src="./js/jquery.ui.touch-punch.min.js"></script>
+	<script type="text/javascript" src="./js/jquery.htmlClean.js"></script>
+	<script type="text/javascript" src="./js/jquery.blockUI.js"></script>
+	
+	<style>
+
+	</style>
+</head>
+<script>
+	function getUrlParam(name)
+	{
+		var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
+		var r = window.location.search.substr(1).match(reg);  //匹配目标参数
+		if (r!=null) return unescape(r[2]); return null; //返回参数值
+	} 
+	
+	$(document).ready(function(){
+		var stadium_id = getUrlParam('id')
+		var sport_id = getUrlParam("sport_id")
+		$.ajax({
+			url:'/stadium/wx_order_summary/',
+			type:'POST',
+			dataType:'JSON',
+			data:JSON.stringify({'id':stadium_id, "sport_id":sport_id}),
+			async:false,
+			success:function(result){
+	    		if (result.error == 0){	   
+	    			
+	    			$("#name").html(result.stadium.name)
+	    			$("#total_fee").html('¥' + ' ' + getUrlParam('total_fee') )	    			
+	    			var html = []
+	    			var order_detail = getUrlParam('order_detail')
+					var places = JSON.parse(order_detail)
+					for (var i=0;i<places.length;i++){
+						time = places[i].order_hours[0]
+						if (time.length == 1){
+							time = '0' + time
+						}
+						time = time + ":00 - " + (time*1 + 1) + ":00"
+						place_name = places[i].name + "号场"
+						html.push(place_name + ":" + time + '<br>')
+					}
+					$("#time").html(getUrlParam('day'))
+	    			$("#places").html(html.join(''))
+	    		}
+    		},error:function (XMLHttpRequest, textStatus, errorThrown)  {
+				alert('error')
+			}
+	    })
+	    
+	    var openid = getUrlParam('openid')
+	    var type = ''
+	    $.ajax({
+			url:'/order/list/',
+			type:'POST',
+			dataType:'JSON',
+			data:JSON.stringify({'openid':openid, 'type':type}),
+			async:false,
+			success:function(result){
+				if (result.error == 0){
+					var orders = result.orders
+					//alert(JSON.stringify(orders))
+					if (orders.length > 0){					
+						var contact = orders[0].contact
+						var telephone = orders[0].telephone
+						var member_card_number = orders[0].member_card_number
+						var terms_of_payment = orders[0].terms_of_payment
+						$("#applicant").val(contact)
+						$("#telephone").val(telephone)
+						$("#member_card_number").val(member_card_number)
+						if (terms_of_payment == 1){
+							$("#online").removeAttr('checked')
+							$("#offline").attr('checked','checked')
+							$("#member_card_number_div").show()
+						}
+					}
+				}
+	    	},error:function (XMLHttpRequest, textStatus, errorThrown)  {
+				alert('error')
+			}
+		})
+	    
+	})
+	
+	
+</script>
+
+
+<body style="cursor: auto;background-color:#fff !important;padding:0;min-width:100px;">
+<input type="hidden" id="openid">
+<div id="cover" class="cover"></div>
+<div class="container-fluid">
+	<div class="row-fluid">
+		<div class="span12">
+			<div class="row-fluid">
+				<div class="span12" style="padding:0 5px 0 5px"">
+					<div class="row-fluid" style="position:relative;min-height:120px;">
+						<div style="float:left;margin-top:20px;line-height:24px;">
+							<p style="background:url('./img/football_24_24.png') 0 0 no-repeat;padding-left:28px;height:24px;width:140px">
+								<b style="font-size:15px;" id="name"></b>
+							</p>
+							
+							<p style="background:url('./img/time_24_24.png') 0 0 no-repeat;padding-left:28px;height:24px;width:120px">
+								<b style="font-weight:normal;color:#b2b2b2;font-size:12px" id="time"></b>
+							</p>
+							<p style="background:url('./img/football_field_24_24.png') 4px 0 no-repeat;padding-left:28px;min-height:24px;width:150px">
+								<b style="font-weight:normal;color:#b2b2b2;font-size:12px" id="places"></b>
+							</p>
+						</div>
+						<div style="float:right;line-height:120px;">
+							
+								<b style="color:red;font-size:24px" id="total_fee"></b>
+							
+						</div>
+					</div>
+					<div class="row-fluid" style="margin-top:20px;">
+						<div class="span12">
+							<div style="border-bottom:1px solid #dddddd;line-height:45px;"><div style="width:70px;display:inline-block">联系人</div><input id="applicant" style="border:none;width:70%;font-family:'微软雅黑'"></div>
+							<div style="border-bottom:1px solid #dddddd;line-height:45px;"><div style="width:70px;display:inline-block">手机号码</div><input id="telephone" style="border:none;width:70%;font-family:'微软雅黑'"></div>
+							<div style="border-bottom:1px solid #dddddd;line-height:45px;"><div style="width:70px;display:inline-block">订场备注</div><input maxlength="16" id="memo" style="border:none;width:70%;font-family:'微软雅黑'" placeholder="请输入备注（限16个字）"></div>
+							<div style="line-height:45px;"><div style="width:70px;display:inline-block">付款方式</div>
+								<input type="radio" name="pay_method" id="online" value="online" checked="checked" style="margin:0px" onclick="show_member_card(0)">&nbsp;&nbsp;&nbsp;微信支付 
+								<b style="font-weight:normal;color:#acacac">请于5分钟内完成付款</b>
+							</div>
+							<div style="border-bottom:1px solid #dddddd;line-height:45px;"><div style="width:70px;display:inline-block"></div>
+								<input type="radio" name="pay_method" id="offline" value="offline" style="margin:0px" onclick="show_member_card(1)">&nbsp;&nbsp;&nbsp;会员卡支付
+							</div>
+							<div id="member_card_number_div" style="display:none;border-bottom:1px solid #dddddd;line-height:45px;"><div style="width:70px;display:inline-block">会员卡号</div><input id="member_card_number" style="border:none;width:70%;font-family:'微软雅黑'"></div>
+						</div>
+					</div>
+					<div class="row-fluid" style="margin-top:20px;margin-bottom:20px">
+						<div class="span12 buttonspan">
+							 <button class="btn-new" id="start_pay" type="button" style="text-shadow:none;font-family:'微软雅黑';width:95%" onclick="validate()">提交</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script>
+$("#applicant").focus(function(){
+	if ($("#applicant").val() == '请输入联系人'){
+		$("#applicant").val('')
+		$("#applicant").css('color',"#000")
+	}
+})
+
+$("#telephone").focus(function(){
+	if ($("#telephone").val() == '请输入手机号码' || $("#telephone").val() == '请输入有效的手机号码'){
+		$("#telephone").val('')
+		$("#telephone").css('color',"#000")
+	}
+})
+
+$("#member_card_number").focus(function(){
+	if ($("#member_card_number").val() == '请输入会员卡号'){
+		$("#member_card_number").val('')
+		$("#member_card_number").css('color',"#000")
+	}
+})
+
+function show_member_card(status){
+	if (status == 1){
+		$("#member_card_number_div").show()
+	}else{
+		$("#member_card_number_div").hide()
+	}
+}
+
+function validate(){
+	var applicant = $("#applicant").val()
+	var telephone = $("#telephone").val()
+	var member_card_number = $("#member_card_number").val()
+	var memo = $("#memo").val()
+	var flag = true
+	
+	
+	if (!applicant || applicant=='请输入联系人'){
+		$("#applicant").val('请输入联系人')
+		$("#applicant").css('color','red')
+		flag = false
+	}
+	if (!telephone || telephone=='请输入手机号码'){
+		$("#telephone").val('请输入手机号码')
+		$("#telephone").css('color','red')
+		flag = false
+	}else if (!/^(13[0-9]|14[0-9]|15[0-9]|18[0-9])\d{8}$/i.test(telephone)){
+		$("#telephone").val('请输入有效的手机号码')
+		$("#telephone").css('color','red')
+		flag = false
+	}
+	
+	if ($("#member_card_number_div").is(':visible')){		
+		if (!member_card_number || member_card_number=='请输入会员卡号'){
+			$("#member_card_number").val('请输入会员卡号')
+			$("#member_card_number").css('color','red')
+			flag = false
+		}
+	}
+	
+	if (flag){		
+		$("#start_pay").html("提交中，请稍后...")
+		$("#start_pay").css("background-color","#dedede")
+		$("#start_pay").removeAttr("onclick")
+	}
+	setTimeout(function(){start_pay(flag)},200);
+}
+
+function start_pay(flag){	
+	
+	var applicant = $("#applicant").val()
+	var telephone = $("#telephone").val()
+	var member_card_number = $("#member_card_number").val()
+	var memo = $("#memo").val()
+	//var flag = validate()
+	
+	
+	
+	
+	if (flag){
+		var pay_method = $("input[type='radio']:checked").val();
+		//订单号
+		var date = new Date();
+		var num = date.getTime() + MathRand()
+		var money = getUrlParam('total_fee') 
+		if (pay_method == "offline"){
+			if (submit_pay('',1, num) == true){
+				//if (change_pay_status(num,getUrlParam('total_fee')) == true){
+					window.location.href = "/sport/reserve_result_wx.html"
+				//}
+			}else{
+				//alert('预定失败')
+			}
+		}else{
+			var flag_wx = true
+			var prepay_id = ''
+			var openid = getUrlParam('openid')
+			url = "/wx/get_prepay_id?openid=" + openid + '&num=' + num + '&total_fee=' + 1
+			//(money *100)
+			//alert(url)
+			$.ajax({
+				url:url,
+				dataType:'JSON',
+				data:{},
+				async:false,
+				success:function(result){
+		        	if (result.result == 'OK'){
+		        		prepay_id = result.prepay_id
+		        	}        		         
+		        },
+				error: function (XMLHttpRequest, textStatus, errorThrown)  {
+					alert('error')
+					flag_wx = false
+				}
+			})
+			//alert(prepay_id)
+			
+			var appid = ''
+			var timeStamp = ''
+			var nonceStr = ''
+			var paySign = ''
+			$.ajax({
+				url:"/wx/start_pay?prepay_id=" + prepay_id,
+				dataType:'JSON',
+				data:{},
+				async:false,
+				success:function(result){
+		        	
+		        		appid = result.appId
+		        		timeStamp = result.timeStamp
+		        		nonceStr = result.nonceStr
+		        		package = "prepay_id=" + prepay_id
+		        		paySign = result.paySign
+		        	       		         
+		        },
+				error: function (XMLHttpRequest, textStatus, errorThrown)  {
+					alert('error')
+					flag_wx = false
+				}
+			})
+			
+			if (flag_wx){
+				if (submit_pay(prepay_id, 0, num) == true){
+					
+					//获取到prepayid 开始调用支付
+					WeixinJSBridge.invoke('getBrandWCPayRequest',{
+						"appId":appid,
+						"timeStamp":timeStamp + '',
+						"nonceStr":nonceStr,
+						"package":package,
+						"signType":"MD5",
+						"paySign":paySign		
+					},function(res){
+						//alert()
+						if (res.err_msg == "get_brand_wcpay_request:ok"){
+							//alert(1)
+							if (change_pay_status(num,money)==true){
+								window.location.href = "/sport/reserve_result_wx.html"
+							}else{
+								window.location.href = '/sport/reserve_errorinfo_wx.html?errcode=paymenterror2'
+							}
+						}else{
+							$.ajax({
+						 		url:'/order/cancel/',
+						 		type:'POST',
+						 		dataType:'json',
+						 		data:JSON.stringify({'number':num}),
+						 		async:false,
+						 		success:function(result){		        	
+								    if (result.error == 0){
+								    	
+								    }
+								},
+								error: function (XMLHttpRequest, textStatus, errorThrown)  {
+									alert('cancelerror')
+								}
+						 	})
+						}
+					})
+				}else{
+					//alert('预定失败1')
+				}
+			}
+		}
+	}
+	
+	
+}
+
+function submit_pay(prepay_id, terms_of_payment, num){	
+	
+
+	var id = getUrlParam('id')
+	var contact = $("#applicant").val()
+	var openid = getUrlParam('openid')
+	
+	
+	
+	
+	var telephone = $("#telephone").val()
+	var member_card_number = $("#member_card_number").val()
+	var note = $("#memo").val()
+	var type = 0
+	var day = getUrlParam('day')
+	var money = getUrlParam('total_fee')
+	var order_detail = getUrlParam('order_detail')
+	var places = JSON.parse(order_detail)
+	
+	if (!$("#member_card_number_div").is(':visible')){	
+		member_card_number = ''
+	}
+	
+	var data = JSON.stringify({'id':id,'contact':contact,'openid':openid,'number':num,'telephone':telephone,'note':note,'member_card_number':member_card_number,'type':type,'day':day,'money':money,'terms_of_payment':terms_of_payment,'places':places, 'prepay_id':prepay_id})
+	//alert(data)
+	
+	var flag = true
+	
+	//alert(JSON.stringify(places))
+	$.ajax({
+		url:'/stadium/submit_order/',
+		type:'POST',
+		dataType:'JSON',
+		data:data,
+		async:false,
+		success:function(result){
+    		if (result.error == 0){
+    			flag = true
+			}else{
+				flag  = false
+				if (result.error == 2){
+					window.location.href = '/sport/reserve_errorinfo_wx.html?errcode=duplicate'
+				}
+				if (result.error == 3){
+					window.location.href = '/sport/reserve_errorinfo_wx.html?errcode=notpaid'
+				}
+			}	
+								
+								
+    	},error:function (XMLHttpRequest, textStatus, errorThrown)  {
+			alert('error')
+			flag = false
+		}
+	})
+	$("#start_pay").html("提交")
+	$("#start_pay").css("background-color","#ff9933")
+	$("#start_pay").attr("onclick","validate()")
+	return flag
+}
+
+function change_pay_status(num,money){
+	//alert()
+	var flag = true
+	$.ajax({
+		url:'/order/pay/',
+		type:'POST',
+		dataType:'JSON',
+		data:JSON.stringify({"number":num,"money":money}),
+		async:false,
+		success:function(result){
+			//alert(result.error)
+			if (result.error == 0){
+				flag = true
+			}else{
+				window.location.href = '/sport/reserve_errorinfo_wx.html?errcode=paymenterror'
+				flag = false
+			}
+    	},error:function (XMLHttpRequest, textStatus, errorThrown)  {
+			flag = false
+		}
+	})
+	return flag
+}
+
+function MathRand() 
+{ 
+	var Num=""; 
+	for(var i=0;i<6;i++) 
+	{ 
+		Num+=Math.floor(Math.random()*10); 
+	} 
+	return Num
+} 
+</script>
+
+</body>
+</html>

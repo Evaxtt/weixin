@@ -1,0 +1,116 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="title" content="悦享源场馆预定">
+	<meta name="description" content="">
+	<meta name="keywords" content="">
+	<title>悦享源场馆预定</title>
+	<script type="text/javascript" src="./js/jquery-2.1.4.js"></script>
+</head>
+<script>
+	function getUrlParam(name)
+	{
+		var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
+		var r = window.location.search.substr(1).match(reg);  //匹配目标参数
+		if (r!=null) return unescape(r[2]); return null; //返回参数值
+	} 
+	
+	
+	$(document).ready(function(){
+		
+		if (!getUrlParam('query')){
+	
+			var openid = ''
+			var code = getUrlParam('code')
+			var id = getUrlParam('id')
+			var sport_id = getUrlParam("sport_id")
+			//var place_id = getUrlParam('place_id')
+			var day = getUrlParam('day')
+			var total_fee = getUrlParam('total_fee')
+			var order_detail = getUrlParam('order_detail')
+			$.ajax({
+				url:"/wx/get_openid?code=" + code,
+				dataType:'JSON',
+				data:{},
+				async:false,
+				success:function(result){
+					openid = result.openid
+					window.location.href = "http://www.dabooster.com/sport/reserve_order_wx.html?openid=" + openid + "&id=" + id + "&sport_id=" + sport_id + '&day=' + day + '&total_fee=' + total_fee + '&order_detail=' + order_detail
+				},
+				error: function (XMLHttpRequest, textStatus, errorThrown)  {
+					alert('this error')
+				}
+			})
+		}else{
+			//var appid = getUrlParam("appid")
+			var openid = ''
+			var code = getUrlParam('code')
+			var appid = getUrlParam("appid")
+			var mch_id = ""
+			var secret = ""
+			var key = ""
+			//alert(appid)
+			$.ajax({
+				url:"/tenant/detail/",
+				dataType:'JSON',
+				data:JSON.stringify({"appid":appid}),
+				type:"post",
+				async:false,
+				success:function(result){
+					//alert(JSON.stringify(result))
+					mch_id = result.tenant.mch_id
+					secret = result.tenant.secret
+					key = result.tenant.key
+				},
+				error: function (XMLHttpRequest, textStatus, errorThrown)  {
+					alert('数据异常,detail')
+					alert(errorThrown)
+					return false
+				}
+			})
+			
+			$.ajax({
+				url:"/wx/save_appid?appid=" + appid + "&mch_id=" + mch_id + "&key=" + key + "&secret=" + secret,
+				dataType:'JSON',
+				type:"GET",
+				async:false,
+				success:function(result){
+					//alert(JSON.stringify(result))	
+					if (result.result != "ok"){
+						alert("获取id失败")
+					}
+				},
+				error: function (XMLHttpRequest, textStatus, errorThrown)  {
+					alert('数据异常,save_appid')
+					alert(errorThrown)
+					return false
+				}
+			})
+			
+			$.ajax({
+				url:"/wx/get_openid?code=" + code,
+				dataType:'JSON',
+				data:{},
+				async:false,
+				success:function(result){
+					openid = result.openid
+					if (getUrlParam('query') != "yes"){
+						window.location.href = "http://www.dabooster.com/sport/activities_wx.html?openid=" + openid + "&appid=" + appid
+					}else{
+						window.location.href = "http://www.dabooster.com/sport/reserve_personnel_wx.html?openid=" + openid + "&appid=" + appid
+					}
+				},
+				error: function (XMLHttpRequest, textStatus, errorThrown)  {
+					alert('error')
+				}
+			})
+		
+		}
+	})
+</script>
+<body>
+</body>
+</html>

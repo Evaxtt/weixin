@@ -1,0 +1,222 @@
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="title" content="Bootstrap可视化布局系统">
+	<meta name="description" content="">
+	<meta name="keywords" content="场地管理">
+	<title>场地管理</title>	
+	<link href="./css/bootstrap-combined.min.css" rel="stylesheet">	
+	<link href="./css/layoutit.css" rel="stylesheet">
+	
+	<link href="./css/notice.css" rel="stylesheet">
+	<link rel="stylesheet" href="http://apps.bdimg.com/libs/fontawesome/4.2.0/css/font-awesome.min.css">
+	<link rel="stylesheet" type="text/css" href="./css/activity.css">
+	<!--[if lt IE 9]>
+			<script src="js/html5shiv.js"></script>
+		<![endif]-->
+	<link rel="shortcut icon" href="img/favicon.png">
+	<script type="text/javascript" src="./js/jquery-2.1.4.js"></script>
+	<!--[if lt IE 9]>
+		<script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+		<![endif]-->
+	<script type="text/javascript" src="./js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="./js/jquery-ui.js"></script>
+	<script type="text/javascript" src="./js/jquery.ui.touch-punch.min.js"></script>
+	<script type="text/javascript" src="./js/jquery.htmlClean.js"></script>
+	
+	<!-- <script type="text/javascript" src="./js/common.js"></script>
+	<script type="text/javascript" src="./js/confirm/jquery-confirm.min.js"></script>
+	<link href="./js/confirm/jquery-confirm.min.css" rel="stylesheet">
+	<link href="./js/mCustomScrollbar/jquery.mCustomScrollbar.min.css" rel="stylesheet" type="text/css" />
+	<script src="./js/mCustomScrollbar/jquery.mousewheel.min.js"></script>
+	<script src="./js/mCustomScrollbar/jquery.mCustomScrollbar.min.js"></script> -->
+
+	<style type="text/css">
+		.nav-tabs>.active>a{background-color:#fff !important}
+		.config{padding-left:30px;background:url('./img/config.png') 0 no-repeat;text-decoration:none;color:inherit !important}
+		.list{padding-left:30px;background:url('./img/list.png') 0 center no-repeat;text-decoration:none;color:inherit !important}
+	
+	</style>
+</head>
+
+<body style="cursor: auto;">
+
+<div class="container-fluid">
+	<div class="row-fluid">
+		<div class="span12"  style="background-color:#FF9933;margin-bottom:20px;height:60px;">
+			<div class="row-fluid">
+				<div class="span3" style="margin-left:0 !important;height:60px;">
+					<a href="#" style="background:url('./img/logo.jpg') 50% 50% no-repeat;width:300px;height:60px;float:left;display:inline">						
+					</a>
+				</div>
+				<div class="span7" style="height:30px;">
+						<ul class="breadcrumb" >
+							<li style="min-width:120px;">
+								<a href="/sport/reserve_management.html">
+									预定管理
+								</a>
+							</li>							
+							<li style="min-width:120px;" >
+								<a href="/sport/activity_management.html" style="color:#555 !important">
+									活动管理
+								</a>
+							</li>
+							<li style="min-width:120px;">
+								<a href="/sport/stadium_management.html" >									
+									基础配置
+								</a>
+							</li>
+							<li style="min-width:120px;">
+								<a href="/sport/marketing_activity.html" style="color:#555">	
+									营销活动
+								</a>
+							</li>							
+							<li style="min-width:120px;">
+								<a href="/sport/vip_ifo.html" style="color:#555">								
+									会员信息
+								</a>
+							</li>							
+							<!--<li style="min-width:120px;">
+								<a href="#">
+									数据中心
+								</a>
+							</li>-->										
+						</ul>
+				</div>
+				<div class="span2" style="height:30px;">	
+						<ul class="breadcrumb" >
+							<li class="active">
+								<a href="#" id="user_name">
+									admin
+								</a>
+								<b>|</b>
+								<a href="#" id="login_out">
+									注销
+								</a>
+							</li>
+						</ul>
+					</div>	
+			</div>
+		</div>
+	</div>
+</div>
+<div class="container-fluid">
+<!-- 			<div class="row-fluid" style="margin-bottom:30px;border-bottom:1px solid #e6e7ec;margin-top:10px;position:relative">
+				<div class="span1">
+				</div>
+				<div class="span11">
+					<ul style="line-height:30px;height:31px;margin:0;padding:0">
+					<li style="line-height:30px;float:left;">
+						<a href="/sport/activity_management.html" style="color:#FF9933;border-bottom:2px solid #FF9933;text-align:center;display:block;font-size:15px;">活动管理</a>
+					</li>
+					</ul>
+				</div>
+			</div> -->
+		<div class="content-main"">
+			<div class="sub-nav">
+				<ul class="nav nav-pills">		
+					<li>
+						<a href="/sport/activity_management.html">
+							<!-- <i class="icon-chevron-right"></i> -->
+							活动发布
+						</a>
+					</li>
+<!-- 					<li>
+						<a href="/sport/activity_management_history.html">
+							活动历史
+						</a>
+					</li> -->
+					<li class="active">
+						<a href="/sport/activity_wxpage.html">
+							<!-- <i class="icon-chevron-right"></i> -->
+							微页面
+						</a>
+					</li>								
+				</ul>
+			</div>
+			<div class="content-main radius">
+			  	<div class="activityattend-liveapp">
+			  		<div></div>
+			  		<iframe id="iframe" src="/sport/activities_wx.html"  frameborder="0" id="wechatActivityIframe"></iframe>
+			  		<div id="set_style">
+			  			<label>活动分组模板：</label>
+			  			<input type="radio" name="style_choice" id="large-img">大图模式
+			  			<input type="radio" name="style_choice" id="small-img">小图模式
+			  			<input type="radio" name="style_choice" id="large-small">一大两小
+			  		</div>		
+			  	</div>					
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+<div id="loadingCover">
+        <p><img src="./img/loading.gif"/><span>请稍后</span></p>
+ </div>
+<div class="qb_quick_tip qb_none" id="bubble"></div>
+<script>
+$(document).ready(function(){
+	//获取session的登录用户信息		
+	$.ajax({
+		url:"/user/get_login_info",
+        dataType:'JSON',
+        type: 'GET',
+        success:function(result){
+        	if (result.error == "0") {
+        		var login_info = result.login_info;
+        		var user_name = login_info.user;
+        		$("#user_name").text(user_name);
+        	}else if(result.error == "1"){
+        		window.location.href="/sport/login.html"
+        	}else{
+        		alert("internal error!")
+        	}
+        },
+        error:function(e){
+        	alert("this error")
+        }
+	})	
+
+	$("#login_out").click(function(){
+		$.ajax({
+			url:"/login_out/",
+            dataType:'JSON',
+            type: 'GET',
+            success:function(result){
+            	if (result.error == "0") {
+            		window.location.href="/sport/login.html"
+            	}else{
+        			alert("注销失败！")
+        		}
+            },
+            error:function(e){
+            	alert("error")
+            }
+		})	
+	})
+
+	var parameter = 1
+	$("#iframe",parent.document.body).attr("src","/sport/activities_wx.html?style="+parameter)
+	
+	$("#large-img").click(function(){
+		parameter = 1
+		$("#iframe",parent.document.body).attr("src","/sport/activities_wx.html?style="+parameter)
+	})	
+	$("#small-img").click(function(){
+		parameter = 2
+		$("#iframe",parent.document.body).attr("src","/sport/activities_wx.html?style="+parameter)
+	})	
+	$("#large-small").click(function(){
+		parameter = 3
+		$("#iframe",parent.document.body).attr("src","/sport/activities_wx.html?style="+parameter)
+	})
+})
+	
+</script>
+
+</body>
+</html>

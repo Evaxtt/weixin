@@ -1,0 +1,389 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="title" content="悦享源场馆预定">
+	<meta name="description" content="">
+	<meta name="keywords" content="">
+	<title>悦享源场馆预定</title>
+	<link href="./css/bootstrap-combined.min.css" rel="stylesheet">
+	<link href="./css/layoutit.css" rel="stylesheet">
+	<link rel="stylesheet" href="http://apps.bdimg.com/libs/fontawesome/4.2.0/css/font-awesome.min.css">
+	<!--[if lt IE 9]>
+			<script src="js/html5shiv.js"></script>
+		<![endif]-->
+	<link rel="shortcut icon" href="img/favicon.png">
+	<script type="text/javascript" src="./js/jquery-2.1.4.js"></script>
+	<!--[if lt IE 9]>
+		<script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+		<![endif]-->
+	<script type="text/javascript" src="./js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="./js/jquery-ui.js"></script>
+	<script type="text/javascript" src="./js/jquery.ui.touch-punch.min.js"></script>
+	<script type="text/javascript" src="./js/jquery.htmlClean.js"></script>
+	
+	<style type="text/css">
+		table td {text-align:center;line-height:35px;}		
+	</style>
+</head>
+
+<script>
+function getUrlParam(name)
+	{
+		var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
+		var r = window.location.search.substr(1).match(reg);  //匹配目标参数
+		if (r!=null) return unescape(r[2]); return null; //返回参数值
+	} 
+
+$(document).ready(function(){
+	query(2)
+	
+})
+
+function query(type){
+	var openid = getUrlParam('openid')
+	var data = ""
+	if (type == 2){
+		data = {'openid':openid,  'terms_of_payment':1}
+	}else{
+		data = {'openid':openid, 'is_done':type, 'terms_of_payment':0}
+	}
+	$("#list").empty()
+	$.ajax({
+		url:'/order/list/',
+		type:'POST',
+		dataType:'JSON',
+		data:JSON.stringify(data),
+		success:function(result){
+			if (result.error == 0){
+				var orders = result.orders
+				//alert(JSON.stringify(orders))
+				for (var i=0;i<orders.length;i++){
+					//alert(JSON.stringify(orders[i]))
+					var number = orders[i].number
+					var prepay_id = orders[i].prepay_id
+					var stadium_name = orders[i].stadium_name
+					var order_time = orders[i].order_time
+					var money = orders[i].money
+					var terms_of_payment = (orders[i].terms_of_payment==0?'微信支付':'会员卡')
+					var contact = orders[i].contact
+					var telephone = orders[i].telephone
+					var note = orders[i].note
+					var is_payed = orders[i].is_payed
+					var html = []
+					
+					
+					if (prepay_id){
+						html.push('<div money=' + money + ' number=' + number + ' prepay_id=' + prepay_id + ' style="width:90%;margin:0 auto 25px auto;background-color:#fff;-moz-border-radius: 15px;-webkit-border-radius: 15px; border-radius:15px;">')
+					}else{
+						html.push('<div money=' + money + ' number=' + number + ' style="width:90%;margin:0 auto 25px auto;background-color:#fff;-moz-border-radius: 15px;-webkit-border-radius: 15px; border-radius:15px;">')
+					}
+					html.push('<p style="height:50px;line-height:50px;border-bottom:1px solid #bcbcbc;text-align:center;color:#ff9933;font-size:16px">' + stadium_name + '</p>')
+					html.push('<table style="width:100%">')
+					
+					
+					/*html.push('<tr><td style="color:#adadad;width:25%">订单号</td>')
+					html.push('<td style="width:75%">' + number + '</td></tr>')*/
+					html.push('<tr><td style="color:#adadad;width:25%">下单时间</td>')
+					html.push('<td style="width:75%">' + order_time + '</td></tr>')
+					html.push('<tr><td style="color:#adadad;width:25%">预定时间</td>')
+					html.push('<td style="width:75%">' + orders[i].places[0].day + '</td></tr>')
+					
+					/*html.push('<tr><td style="color:#adadad;width:25%">联系人</td>')
+					html.push('<td style="width:75%">' + contact + '</td></tr>')
+					html.push('<tr><td style="color:#adadad;width:25%">手机号码</td>')
+					html.push('<td style="width:75%">' + telephone + '</td></tr>')*/
+					if (is_payed == true){
+						is_payed = "已完成"
+					}else{
+						is_payed = "未完成"
+					}
+					if (type == 2){
+						html.push('<tr><td style="color:#adadad;width:25%">订场状态</td>')
+						html.push('<td style="width:75%">' + is_payed + '</td></tr>')
+					}
+					html.push('<tr><td style="color:#adadad;width:25%">金额</td>')
+					html.push('<td style="width:75%">¥ ' + money + '</td></tr>')
+					html.push('<tr><td style="color:#adadad;width:25%">支付方式</td>')
+					html.push('<td style="width:75%">' + terms_of_payment + '</td></tr>')
+					html.push('<tr><td style="color:#adadad;width:25%">场地</td>')
+					
+					html.push('<td style="width:75%">')
+					for (var k=0;k<orders[i].places.length;k++){
+						var hour_tmp = orders[i].places[k].order_hours
+						for (var h=0;h<hour_tmp.length;h++){
+							var hour = hour_tmp[h]
+							var hour_plus = hour*1+1
+							if (hour.length == 1){
+								hour = '0' + hour
+							}
+							if (hour_plus.length == 1){
+								hour_plus = '0' + hour_plus
+							}
+							var order_hours = hour + ":00-" + hour_plus + ":00"
+							html.push(orders[i].places[k].name + " " + order_hours  + '<br>')
+						}
+					}
+					html.push('</td></tr>')
+					html.push('</table>')
+					
+					if ($(".active").attr('id') == 'notpaid'){					
+						html.push('<p style="margin-top:10px;height:50px;line-height:50px;border-top:1px solid #bcbcbc;text-align:center;color:#ff9933;font-size:16px">')
+						html.push('<button type="button" onclick="pay(this)" class="btn-new" style="width:auto;height:30px;">确认支付</button>')
+						html.push('<button type="button" onclick="cancel(this)" class="btn-new" style="height:30px;background-color:#aeaeae;margin-left:20px;width:auto">取消订单</button>')
+						html.push('</p>')
+					}
+					
+					html.push('</div>')
+					$('#list').append(html.join(''))
+					//var order_detail = 
+				}
+			}
+    	},error:function (XMLHttpRequest, textStatus, errorThrown)  {
+			alert('error')
+		}
+	})
+}
+
+function notpaid(){
+	$(".active").removeClass('active')
+	$("#notpaid").addClass('active')
+	$("#paid").css('border-bottom','none')
+	$("#paid").css('color','#bcbcbc')
+	$("#member_card").css('border-bottom','none')
+	$("#member_card").css('color','#bcbcbc')
+	$("#notpaid").css('border-bottom','2px solid #FF9933')
+	$("#notpaid").css('color','#ff9933')
+	$("#info").show()
+	query(0)
+	
+}
+
+function paid(){
+	$(".active").removeClass('active')
+	$("#paid").addClass('active')
+	$("#notpaid").css('border-bottom','none')
+	$("#notpaid").css('color','#bcbcbc')
+	$("#member_card").css('border-bottom','none')
+	$("#member_card").css('color','#bcbcbc')
+	$("#paid").css('border-bottom','2px solid #FF9933')
+	$("#paid").css('color','#ff9933')
+	$("#info").hide()
+	query(1)
+}
+
+function member_card(){
+	$(".active").removeClass('active')
+	$("#member_card").addClass('active')
+	$("#notpaid").css('border-bottom','none')
+	$("#notpaid").css('color','#bcbcbc')
+	$("#paid").css('border-bottom','none')
+	$("#paid").css('color','#bcbcbc')
+	$("#member_card").css('border-bottom','2px solid #FF9933')
+	$("#member_card").css('color','#ff9933')
+	$("#info").hide()
+	query(2)
+}
+
+function pay(obj){
+	var num = $(obj).closest('div').attr('number')	
+	var prepay_id = $(obj).closest('div').attr('prepay_id')
+	var money = $(obj).closest('div').attr('money')
+	var flag_wx = true
+	var appid = ''
+	var timeStamp = ''
+	var nonceStr = ''
+	var paySign = ''
+	var package = ''
+	$.ajax({
+		url:"/wx/start_pay?prepay_id=" + prepay_id,
+		dataType:'JSON',
+		data:{},
+		async:false,
+		success:function(result){		        	
+		    appid = result.appId
+		    timeStamp = result.timeStamp
+		    nonceStr = result.nonceStr
+		    package = "prepay_id=" + prepay_id
+		    paySign = result.paySign
+		},
+		error: function (XMLHttpRequest, textStatus, errorThrown)  {
+			alert('error')
+			flag_wx = false
+		}
+	})
+			
+	if (flag_wx){
+		//获取到prepayid 开始调用支付
+		WeixinJSBridge.invoke('getBrandWCPayRequest',{
+			"appId":appid,
+			"timeStamp":timeStamp + '',
+			"nonceStr":nonceStr,
+			"package":package,
+			"signType":"MD5",
+			"paySign":paySign		
+		},function(res){
+		if (res.err_msg == "get_brand_wcpay_request:ok"){
+			change_pay_status(num,money)
+			window.location.href = "/sport/reserve_result_wx.html"
+		}
+		})
+	}
+}
+
+function cancel(obj){
+	var number = $(obj).closest('div').attr('number')
+	var prepay_id = $(obj).closest('div').attr('prepay_id')
+	if(confirm("确定取消该订单？"))
+	 {
+	 	$.ajax({
+	 		url:'/order/cancel/',
+	 		type:'POST',
+	 		dataType:'json',
+	 		data:JSON.stringify({'number':number}),
+	 		async:false,
+	 		success:function(result){		
+	 			//alert(result.error)        	
+			    if (result.error == 0){
+			    	window.location.href = "/sport/reserve_result_wx.html?code=cancel"
+			    }
+			},
+			error: function (XMLHttpRequest, textStatus, errorThrown)  {
+				alert('error')
+			}
+	 	})
+	 	
+	 }
+}
+
+function change_pay_status(num,money){
+	//alert()
+	$.ajax({
+		url:'/stadium/pay_order/',
+		type:'POST',
+		dataType:'JSON',
+		data:JSON.stringify({"number":num,"money":money}),
+		async:false,
+		success:function(result){
+			//alert(JSON.stringify(result))
+    	},error:function (XMLHttpRequest, textStatus, errorThrown)  {
+			
+		}
+	})
+}
+</script>
+
+
+<body style="cursor: auto;background-color:#dedede !important;padding:0;min-width:100px;">
+
+<div class="container-fluid">
+	<div class="row-fluid">
+		<div class="span12">
+			<div class="row-fluid" style="margin-bottom:20px;">
+				<div class="span12" style="text-align:center;background-color:#ff9933;height:40px;line-height:40px;">
+						<b style="font-size:17px;color:#fff">我的订单</b>
+				</div>
+				
+				<div class="span12" style="margin-left:0px">
+					<ul style="line-height:30px;height:31px;margin:0;padding:0;background-color:#fafafa">
+						<li style="line-height:30px;float:left;width:33.3%">
+							<a class="active" id="member_card" href="javascript:member_card()" style="text-decoration:none;color:#FF9933;border-bottom:2px solid #FF9933;text-align:center;display:block;font-size:15px">会员卡</a>
+						</li>
+						<li style="line-height:30px;float:left;width:33.3%">
+							<a  id="notpaid" href="javascript:notpaid()" style="text-decoration:none;color:#bcbcbc;text-align:center;display:block;font-size:15px;">未付款</a>
+						</li>
+						<li style="line-height:30px;float:left;width:33.3%">
+							<a id="paid" href="javascript:paid()" style="text-decoration:none;color:#bcbcbc;text-align:center;display:block;font-size:15px;">已支付</a>
+						</li>
+						
+					</ul>
+				</div>
+				
+				
+				<!--<div class="span12" style="text-align:center;height:80px;line-height:80px;margin-left:0px">
+					<div id="image">
+						<img src="./img/user.png">
+					</div>
+					<div style="line-height:40px;">
+						<p>用户id：12345678</p>
+					</div>
+				</div>-->
+			</div>
+			
+			<div id="info" class="span12" style="margin-left:10px;width:90%;display:none">
+				<b style="margin-top:10px;color:red">*未支付的订单将会在5分钟后自动取消</b>
+				</div>
+			
+			<div class="row">
+				<div class="span12" id="list">
+					<!--<table class="table table_new" style="min-width:620px">												
+						<tbody id="time_list">
+							<tr style="height:40px">
+								<td colspan='5' style="line-height:40px;">
+									<span style="font-size:14px;color:#ff9933;font-size:20px;font-weight:bold;padding-left:30px;background:url('./img/order.png') no-repeat">订单信息</span>
+								</td>
+							</tr>
+							<tr>
+								<td style="line-height:40px;text-align:center"><b style="color:#ff9933">下单时间</b></td>
+								<td style="line-height:40px;text-align:center"><b style="color:#ff9933">场馆名称</td>
+								<td style="line-height:40px;text-align:center"><b style="color:#ff9933">预约时间</td>
+								<td style="line-height:40px;text-align:center"><b style="color:#ff9933">金额</td>
+								<td style="line-height:40px;text-align:center"><b style="color:#ff9933">支付方式</td>
+							</tr>
+							<tr>
+								<td style="line-height:40px;text-align:center">2015/10/30 22:00:00</b></td>
+								<td style="line-height:40px;text-align:center">悦享源足球场</td>
+								<td style="line-height:40px;text-align:center">
+									2015/11/01 15:00-16:00<br>
+									2015/11/01 16:00-17:00</br>
+								</td>
+								<td style="line-height:40px;text-align:center">¥200</td>
+								<td style="line-height:40px;text-align:center">微信支付</td>
+							</tr>
+						</tbody>
+					</table>-->
+					<!--<div style="width:90%;margin:0 auto;background-color:#fff;-moz-border-radius: 15px;-webkit-border-radius: 15px; border-radius:15px;">
+						<p style="height:50px;line-height:50px;border-bottom:1px solid #bcbcbc;text-align:center;color:#ff9933;font-size:16px">悦享源足球场</p>
+						<table style="width:100%">
+							<tr>
+								<td style="color:#adadad;width:25%">项目</td>
+								<td style="width:75%">足球场</td>
+							</tr>							
+							<tr>
+								<td style="color:#adadad;width:25%">下单时间</td>
+								<td style="width:75%">2015/10/30 22:00:00</td>
+							</tr>
+							<tr>
+								<td style="color:#adadad;width:25%">金额</td>
+								<td style="width:75%">¥200</td>
+							</tr>
+							<tr>
+								<td style="color:#adadad;width:25%">支付方式</td>
+								<td style="width:75%">微信支付</td>
+							</tr>
+							<tr>
+								<td style="color:#adadad;line-height:auto;width:25%">场地</td>
+								<td style="width:75%">11/01 1号场  15:00-16:00<br>
+									11/01 1号场  16:00-17:00</td>
+							</tr>
+						</table>
+					</div>-->
+					
+					
+				</div>
+			</div>
+			
+		</div>
+	</div>
+</div>
+
+<script>
+
+
+
+
+
+</body>
+</html>

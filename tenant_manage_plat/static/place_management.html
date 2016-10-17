@@ -1,0 +1,1181 @@
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="title" content="Bootstrap可视化布局系统">
+	<meta name="description" content="">
+	<meta name="keywords" content="场地管理">
+	<title>场地管理</title>
+	<link href="./css/bootstrap-combined.min.css" rel="stylesheet">
+	<link href="./css/layoutit.css" rel="stylesheet">
+	<link href="./css/notice.css" rel="stylesheet">
+	<link rel="stylesheet" href="http://apps.bdimg.com/libs/fontawesome/4.2.0/css/font-awesome.min.css">
+	<link rel="stylesheet" type="text/css" href="./css/activity.css">
+	<!--[if lt IE 9]>
+			<script src="js/html5shiv.js"></script>
+		<![endif]-->
+	<link rel="shortcut icon" href="img/favicon.png">
+	<script type="text/javascript" src="./js/jquery-2.1.4.js"></script>
+	<!--[if lt IE 9]>
+		<script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+		<![endif]-->
+	<script type="text/javascript" src="./js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="./js/jquery-ui.js"></script>
+	<script type="text/javascript" src="./js/jquery.ui.touch-punch.min.js"></script>
+	<script type="text/javascript" src="./js/jquery.htmlClean.js"></script>
+	
+	<script type="text/javascript" src="./js/common.js"></script>
+	
+	<script type="text/javascript" src="./js/confirm/jquery-confirm.min.js"></script>
+	<link href="./js/confirm/jquery-confirm.min.css" rel="stylesheet">
+	
+	<link href="./js/mCustomScrollbar/jquery.mCustomScrollbar.min.css" rel="stylesheet" type="text/css" />
+	<script src="./js/mCustomScrollbar/jquery.mousewheel.min.js"></script>
+	<script src="./js/mCustomScrollbar/jquery.mCustomScrollbar.min.js"></script>
+	
+	<style>
+
+	</style>
+</head>
+
+<script>
+(function($){
+        $(window).load(function(){
+            //$(".custom_scrollbar").mCustomScrollbar();
+			$(".container").mCustomScrollbar({
+				axis:"y", // horizontal scrollbar
+				theme:"3d-dark"
+			});
+			
+			for (var t=8;t<25;t++){	
+				var time = ''
+				time = t + ":00"
+				if (t < 10){
+					time = "0" + time
+				}
+				$(".time").append('<option value=' + t + '>' + time + '</option>')
+			}
+			
+        });		
+		
+    })(jQuery);
+	
+	$(document).ready(function(){
+		//获取session的登录用户信息		
+		$.ajax({
+			url:"/user/get_login_info",
+	        dataType:'JSON',
+	        type: 'GET',
+	        success:function(result){
+	        	if (result.error == "0") {
+	        		var login_info = result.login_info;
+	        		var user_name = login_info.user;
+	        		$("#user_name").text(user_name);
+	        	}else if(result.error == "1"){
+	        		window.location.href="/sport/login.html"
+	        	}else{
+	        		alert("internal error!")
+	        	}
+	        },
+	        error:function(e){
+	        	alert("this error")
+	        }
+		})	
+
+		$("#login_out").click(function(){
+			$.ajax({
+				url:"/login_out/",
+	            dataType:'JSON',
+	            type: 'GET',
+	            success:function(result){
+	            	if (result.error == "0") {
+	            		window.location.href="/sport/login.html"
+	            	}else{
+	        			alert("注销失败！")
+	        		}
+	            },
+	            error:function(e){
+	            	alert("error")
+	            }
+			})	
+		})
+
+		$("#loadingCover").show()
+		$("#stadium_select").empty()
+		$.ajax({
+			url:'/stadium/list/',
+			type:'POST',
+			data:JSON.stringify({}),
+			dataType:'json',
+			async:false,
+			success:function(result){
+				if (result.error == 0){
+					var html=[]
+					var list = result.stadium_list
+					for (var i=0;i<list.length;i++){
+						html.push("<option value=" + list[i].id + ">" + list[i].name + "</option>")	
+					}
+					$("#loadingCover").hide()
+					$("#stadium_select").append(html.join(''))
+				}else{
+					$("#loadingCover").hide()
+					$(".qb_quick_tip").css('background','#e96262')
+					showBubble("获取信息失败")
+				}			
+				},error:function (XMLHttpRequest, textStatus, errorThrown)  {
+					$("#loadingCover").hide()
+					$(".qb_quick_tip").css('background','#e96262')
+					showBubble("获取信息失败")
+				}
+		
+		})
+		
+		//$("#loadingCover").show()
+		$("#place_type").empty()
+		$.ajax({
+			url:'/place_type/list/',
+				type:'get',
+				data:JSON.stringify({}),
+				dataType:'json',
+				asnyc:false,
+				success:function(result){
+					//alert(result)
+					if (result.error == 0){
+						types = result.place_types
+						var html = []
+						for (var i=0;i<types.length;i++){
+							var id = types[i].id
+							var name = types[i].name
+							html.push("<option value=" + id + ">" + name + "</option>")						
+						}
+						
+						$("#place_type").append(html.join(""))
+					}else{
+						//$("#loadingCover").hide()
+						$(".qb_quick_tip").css('background','#e96262')
+						showBubble("获取数据失败")
+					}	
+					},error:function (XMLHttpRequest, textStatus, errorThrown)  {
+						//$("#loadingCover").hide()
+						$(".qb_quick_tip").css('background','#e96262')
+						showBubble("获取数据失败")
+					}
+		})
+		
+		//$("#loadingCover").show()
+		$("#sport_types").empty()
+		$.ajax({
+			url:'/sport_type/list/',
+				type:'get',
+				data:JSON.stringify({}),
+				dataType:'json',
+				success:function(result){
+					//alert(result)
+					if (result.error == 0){
+						types = result.sport_types
+						var html = []
+						for (var i=0;i<types.length;i++){
+							var id = types[i].id
+							var name = types[i].name
+							html.push("<option value=" + id + ">" + name + "</option>")						
+						}
+						$("#sport_types").append(html.join(""))
+					}else{
+						//$("#loadingCover").hide()
+						$(".qb_quick_tip").css('background','#e96262')
+						showBubble("获取数据失败")
+					}	
+					},error:function (XMLHttpRequest, textStatus, errorThrown)  {
+						//$("#loadingCover").hide()
+						$(".qb_quick_tip").css('background','#e96262')
+						showBubble("获取数据失败")
+					}
+		})
+	
+		query()
+	})
+	
+	function query(){
+		//$("#loadingCover").show()
+		$("input[type='checkbox']").prop("checked",false)
+		$("#place_list").empty()
+		var stadium_id = $("#stadium_select").val()
+		$("#loadingCover").show()
+		$.ajax({
+			url:'/place/list/',
+			type:'POST',
+			data:JSON.stringify({ "stadium_id":stadium_id}),
+			dataType:'json',
+			success:function(result){
+				if (result.error == 0){
+					//alert(JSON.stringify(result.places))
+					var html = []
+					var list = result.places
+					for (var i=0;i<list.length;i++){
+						var type_id = list[i].place_type.id
+						var type = list[i].place_type.name
+						var sport = list[i].sport.name
+						var sport_id = list[i].sport.id
+						var place_count = list[i].places.length
+						var time_unit = list[i].time_unit
+						var place_name = ""
+						for (var m=0;m<place_count;m++){
+							place_name += (list[i].places)[m].name + ";"
+						}
+						var business_time = ""
+						var html_business_time = []
+						for (var k=0;k<list[i].business_time.length;k++){
+							var from_weekday = list[i].business_time[k].from_weekday
+							switch (from_weekday){
+								case 1:
+									from_weekday = "周一";
+									break;
+								case 2:
+									from_weekday = "周二";
+									break;
+								case 3:
+									from_weekday = "周三";
+									break;
+								case 4:
+									from_weekday = "周四";
+									break;
+								case 5:
+									from_weekday = "周五";
+									break;
+								case 6:
+									from_weekday = "周六";
+									break;
+								case 7:
+									from_weekday = "周日";
+									break;
+							}
+							var to_weekday = list[i].business_time[k].to_weekday
+							switch (to_weekday){
+								case 1:
+									to_weekday = "周一";
+									break;
+								case 2:
+									to_weekday = "周二";
+									break;
+								case 3:
+									to_weekday = "周三";
+									break;
+								case 4:
+									to_weekday = "周四";
+									break;
+								case 5:
+									to_weekday = "周五";
+									break;
+								case 6:
+									to_weekday = "周六";
+									break;
+								case 7:
+									to_weekday = "周日";
+									break;
+							}
+							html_business_time.push(from_weekday + '到' + to_weekday + "&nbsp;")
+							for (var n=0;n<list[i].business_time[k].time_of_day.length;n++){
+								var from_hour = list[i].business_time[k].time_of_day[n].from_hour + ":00"
+								var to_hour = list[i].business_time[k].time_of_day[n].to_hour + ":00"
+								if (from_hour == "-1:00"){
+									from_hour = "不开放"
+								}
+								if (to_hour == "-1:00"){
+									to_hour = "不开放"
+								}
+								if (n==0){
+									html_business_time.push("上午: " + from_hour + "-" + to_hour + "&nbsp;")
+								}else{
+									html_business_time.push("下午: " + from_hour + "-" + to_hour + "&nbsp;")
+								}
+								
+							}
+							if (k!= list[i].business_time.length-1){
+								html_business_time.push('<br>')
+							}
+						}
+						
+						html.push('<tr sport_id=' + sport_id + ' place_type=' + type_id +'>')
+						html.push('<td style="display:none">' + JSON.stringify(list[i]) + '</td>')
+						html.push('<td><input type="checkbox"></input></td>')
+						html.push('<td>' + sport + '</td>')
+						html.push('<td>' + type + '</td>')
+						html.push('<td>' + place_count + '</td>')
+						html.push('<td>' + html_business_time.join('') + '</td></tr>')	
+					
+					}
+					$("#place_list").append(html.join(""))
+					$("#loadingCover").hide()
+				}else{
+					$("#loadingCover").hide()
+					$(".qb_quick_tip").css('background','#e96262')
+					showBubble("获取数据失败")
+				}			
+				},error:function (XMLHttpRequest, textStatus, errorThrown)  {
+					$("#loadingCover").hide()
+					$(".qb_quick_tip").css('background','#e96262')
+					showBubble("获取数据失败")
+				}
+		
+		})
+	}
+</script>
+
+
+<body style="cursor: auto;">
+
+<div class="container-fluid">
+	<div class="row-fluid">
+		<div class="span12"  style="background-color:#FF9933;margin-bottom:20px;height:60px;">
+			<div class="row-fluid">
+				<div class="span3" style="margin-left:0 !important;height:60px;">
+					<a href="#" style="background:url('./img/logo.jpg') 50% 50% no-repeat;width:300px;height:60px;float:left;display:inline">
+						
+					</a>
+				</div>
+				<div class="span7" style="height:30px;">
+						<ul class="breadcrumb" >
+							<li style="min-width:120px;">
+								<a href="/sport/reserve_management.html">
+									预定管理
+								</a>
+							</li>							
+							<li style="min-width:120px;" >
+								<a href="/sport/activity_management.html">
+									活动管理
+								</a>
+							</li>
+							<li style="min-width:120px;">
+								<a href="/sport/stadium_management.html" style="color:#555 !important" >									
+									基础配置
+								</a>
+							</li>
+							<li style="min-width:120px;">
+								<a href="/sport/marketing_activity.html" style="color:#555">	
+									营销活动
+								</a>
+							</li>							
+							<li style="min-width:120px;">
+								<a href="/sport/vip_ifo.html" style="color:#555">								
+									会员信息
+								</a>
+							</li>							
+							<!--<li style="min-width:120px;">
+								<a href="#">
+									数据中心
+								</a>
+							</li>-->										
+						</ul>
+				</div>
+				<div class="span2" style="height:30px;">	
+						<ul class="breadcrumb" >
+							<li class="active">
+								<a href="#" id="user_name">
+									admin
+								</a>
+								<b>|</b>
+								<a href="#" id="login_out">
+									注销
+								</a>
+							</li>
+						</ul>
+					</div>	
+			</div>
+		</div>
+	</div>
+</div>
+<div class="container-fluid">
+<!-- 			<div class="row-fluid" style="margin-bottom:30px;border-bottom:1px solid #e6e7ec;margin-top:10px;position:relative">
+				<div class="span1">
+				</div>
+				<div class="span11">
+					<ul style="line-height:30px;height:31px;margin:0;padding:0">
+					<li style="line-height:30px;float:left;">
+						<a href="/stadium/stadium_management.html" style="color:#FF9933;border-bottom:2px solid #FF9933;text-align:center;display:block;font-size:15px;">基础配置</a>
+					</li>
+					</ul>
+				</div>
+			</div> -->
+			<div class="content-main">
+				<div class="sub-nav">
+					<ul class="nav nav-pills">
+								
+						<li>
+							<a href="/sport/stadium_management.html">
+								<!-- <i class="icon-chevron-right"></i> -->
+								场馆管理
+							</a>
+						</li>
+						<li class="active">
+							<a href="/sport/place_management.html">
+								<!-- <i class="icon-chevron-right"></i> -->
+								场地管理
+							</a>
+						</li>
+						<li>
+							<a href="/sport/price_management.html">
+								<!-- <i class="icon-chevron-right"></i> -->
+								价格管理
+							</a>
+						</li>
+						<li>
+							<a href="/sport/account_management.html">
+								<!-- <i class="icon-chevron-right"></i> -->
+								账号管理
+							</a>
+						</li>
+								
+					</ul>
+				</div>
+				<div class="span12 radius">
+							<div class="span12 tablespan" style="margin-left:0 !important;padding: 20px 0 !important">							
+							<div class="span12 tablespan" style="padding: 20px 0 !important">	
+								<div class="span5">
+								选择场馆：
+								<select id="stadium_select" style="margin-bottom:0px" onchange="query()">
+									
+								</select>
+								</div>
+								
+								<div class="span5">
+								<button class="btn-new" type="button" style="height:30px;" onclick="openAddItem()">添加场地</button>
+								<button class="btn-new" type="button" style="height:30px;" onclick="openSetType()">场地类型维护</button>
+								</div>
+							</div>
+							<div class="span12 tablespan" style="margin-left:0px !important;padding: 20px 0 !important">							
+							<table class="table table-striped" style="height:auto;border-bottom:1px solid #dddddd">
+								<thead>
+									<tr>
+									<th>
+										<input type="checkbox" onclick="checkbox_all(this)"></input>
+									</th>
+										<th>
+											项目
+										</th>
+										<th>
+											场地类型
+										</th>
+										<th>
+											场地数量
+										</th>
+										<th>
+											开放时间
+										</th>										
+									</tr>
+								</thead>
+								<tbody id="place_list" >								
+									
+								</tbody>
+							</table>
+							<div class="row-fluid" style="margin-top:55px;">
+								
+								<!--<div class="span4 buttonspan">
+									 <button class="btn-new" type="button" onclick="settype()">设置场地类型</button>
+								</div>-->
+								<div class="span6 buttonspan">
+									 <button class="btn-new" onclick="openModifyItem()" type="button">编辑</button>
+								</div>
+								<div class="span6 buttonspan">
+									 <button class="btn-new" type="button" onclick="delItem()">删除</button>
+								</div>
+							</div>
+							</div>
+						</div>
+				<div class="span1">
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal hide fade" id="settype" tabindex="-1" role="dialog">
+<div class="modal-header"><button class="close" type="button" data-dismiss="modal" onclick="$('#settype').modal('hide');query()">×</button>
+<h3 id="myModalLabel" style="font-family:'微软雅黑'">设置场地类型</h3>
+</div>
+<div class="modal-body">
+	<div class="container" style="height:400px;width:530px;overflow:auto;margin-bottom:20px;">
+	<!--<div>
+		<p style="margin-bottom:15px;text-align:center;font-size:15px">
+			<span>场馆：<b class="chosen_stadium_name"></b></span>
+			<span style="margin-left:30px;">项目：
+				<select id="sport" style="margin-bottom:0px;width:100px;">
+					<option value=1>足球</option>
+					<option value=2>篮球</option>
+					<option value=3>羽毛球</option>					
+				</select>
+			</span>
+		</p>
+	</div>-->
+	<div id="type_set" style="margin-top:15px;">
+		<div class="type_set_span">
+			<span style="display:inline-block;border:1px solid #dedede;width:410px;padding:10px;margin-bottom:10px;">
+				<span style="margin-left:17px">类型名称<input name="type_name" type="text" style="height:auto;margin-bottom:0px;width:200px;margin-left:5px;"></span>
+				<!--<br>
+				<table class="table_placeadd_time" style="margin-top:10px;">
+					<tbody>
+						<tr>
+							<td><input type="checkbox" style="margin:0;padding:0">vip1</td>
+							<td><input type="checkbox" style="margin:0;padding:0">vip2</td>
+							<td><input type="checkbox" style="margin:0;padding:0">pt1</td>
+							<td><input type="checkbox" style="margin:0;padding:0">pt2</td>
+						</tr>
+					</tbody>
+				</table>-->
+			</span>
+			<img class="add_timeset_img" src="./img/add_plus.png" onclick="add_type()" style="margin-left:5px;cursor:pointer">
+		</div>
+	</div>
+	<div style="margin-top:35px;text-align:center;margin-bottom:30px">
+		<div class="span1 buttonspan" style="width:170px !important;display:inline-block;margin-left:80px;">
+			<button class="btn-new" type="button" onclick="confirm()">确认</button>
+		</div>
+		<div class="span1 buttonspan" style="width:170px !important;display:inline-block">
+			 <button class="btn-new" type="button" style="background-color:#dedede;color:#000" onclick="$('#settype').modal('hide');query()">取消</button>
+		</div>
+	</div>
+	
+	</div>
+</div>
+</div>
+
+<div class="modal hide fade" id="additem" tabindex="-1" role="dialog" style="width:570px;">
+<div class="modal-header"><button class="close" type="button" data-dismiss="modal" onclick="$('#additem').modal('hide');query()">×</button>
+<h3 id="additem_label" style="font-family:'微软雅黑'">新增场地</h3>
+</div>
+<div class="modal-body" >
+<div class="container" style="height:400px;width:470px;overflow:auto;margin-bottom:20px;">
+	<div>
+		<p style="margin-bottom:15px;">
+			<span>场馆：<b class="chosen_stadium_name"></b></span>
+			<span style="margin-left:30px;">项目：
+				<select id="sport_types" style="margin-bottom:0px;width:100px;">
+					<option value=1>足球</option>
+					<option value=2>篮球</option>
+					<option value=3>羽毛球</option>					
+				</select>
+			</span>
+		</p>
+		<p style="margin-bottom:15px;">
+			<span>场地类型：
+				<select id="place_type" style="margin-bottom:0px;width:80px">
+				</select>
+			</span>
+		</p>
+		<p style="margin-bottom:15px;">
+			<span>单位时间：
+				<select id="time_unit" style="margin-bottom:0px;width:80px">
+					<option value=60>60</option>
+					<option value=120>120</option>
+					<option value=180>180</option>
+					<option value=240>240</option>
+					<option value=300>300</option>
+					<option value=360>360</option>
+				</select>
+			</span>
+		</p>
+		<p style="margin-bottom:15px;">
+			<span>场地数量：
+				<input type="text" style="height:auto;margin-bottom:0px;width:100px;" id="place_count">
+				<input type="radio" name="name_type" value="0" onclick="show_place_name()" checked style="margin:0 auto;margin-left:15px;">默认名称</input>
+				<input type="radio" name="name_type" value="1" onclick="show_place_name()" style="margin:0 auto;margin-left:5px;">自定义名称</input>
+			</span>
+		</p>
+		
+		<p id="place_count_detail" style="margin-bottom:15px;display:none">
+			<span style="display:inline-block;border:1px solid #dedede;background-color:#efefef;width:95%;padding:10px;">
+				<table class="table_placeadd_time" >
+						<tbody>
+						</tbody>
+				</table>
+			</span>
+		</p>
+		
+		<p style="margin-bottom:15px;" id="timeset">
+			<span style="vertical-align:top;display:inline-block;float:left">开放时间：</span>
+			
+			<span class="timeset_span" style="display:inline-block;width:450px;float:left;margin-left:3px;margin-bottom:15px;">
+				<span class="datetimeset_span" style="display:inline-block;border:1px solid #dedede;width:410px;float:left;margin-left:0px;">
+					<table class="table_placeadd_time" >
+						<tbody>
+							<tr>
+								<td><input value="0" type="checkbox">全部</td>
+								<td><input value="1" type="checkbox">周一</td>
+								<td><input value="2" type="checkbox">周二</td>
+								<td><input value="3" type="checkbox">周三</td>
+								<td><input value="4" type="checkbox">周四</td>
+							</tr>
+							<tr>
+								<td><input value="5" type="checkbox">周五</td>
+								<td><input value="6" type="checkbox">周六</td>
+								<td><input value="7" type="checkbox">周日</td>
+							</tr>
+						</tbody>
+					</table>
+					<span class="date_time" style="display:inline-block;width:auto"> 
+						<select class="time" style="width:80px;height:auto;line-height:auto;font-size:12px;margin-left:15px;">
+						</select>	
+							-
+						<select class="time" style="width:80px;height:auto;line-height:auto;font-size:12px;">
+						</select>
+						<img src="./img/add_plus.png" onclick="add_datetimeset(this)" style="margin-top:-10px;margin-left:5px;cursor:pointer;display:">
+					</span>
+				</span>
+				<img class="add_timeset_img" src="./img/add_plus.png" onclick="add_timeset()" style="margin-top:50px;margin-left:5px;cursor:pointer;display:inline-block;float:right">
+			</span>
+			
+		</p>
+	</div>
+	
+	<div class="span1 buttonspan" style="width:170px !important;display:inline-block;margin-left:40px;">
+		<button class="btn-new" type="button" onclick="confirm_add()">确认</button>
+	</div>
+	<div class="span1 buttonspan" style="width:170px !important;display:inline-block">
+		<button class="btn-new" type="button" style="background-color:#dedede;color:#000" onclick="$('#additem').modal('hide');query()">取消</button>
+	</div>
+	
+	</div>
+</div>
+</div>
+
+
+
+<div id="loadingCover">
+        <p><img src="./img/loading.gif"/><span>请稍后</span></p>
+ </div>
+<div class="qb_quick_tip qb_none" id="bubble"></div>
+
+<script>
+	
+	function openAddItem(){	
+		
+		
+		$(".chosen_stadium_name").html($("#stadium_select").find("option:selected").text())
+		$("#additem_label").html("新增场地")
+		$("#place_count").val('')
+		$(".timeset_span").remove()
+		$("#place_count_detail span table tbody").empty()
+		$("#place_count_detail").hide()
+		$("#place_type").removeAttr('disabled')
+		$("#sport_types").removeAttr('disabled')
+		var html = []
+		html.push('<span class="timeset_span" style="display:inline-block;width:350px;float:left;margin-left:3px;margin-bottom:15px;"><span class="datetimeset_span" style="display:inline-block;border:1px solid #dedede;width:310px;float:left;margin-left:0px;padding-top:10px;">')
+		/*html.push('<tbody><tr>')
+		html.push('<td><input value="0" type="checkbox">全部</td><td><input value="1" type="checkbox">周一</td><td><input value="2" type="checkbox">周二</td><td><input value="3" type="checkbox">周三</td><td><input value="4" type="checkbox">周四</td>')
+		html.push('</tr><tr><td><input value="5" type="checkbox">周五</td><td><input value="6" type="checkbox">周六</td><td><input value="7" type="checkbox">周日</td></tr></tbody></table>')
+		*/
+		html.push('<select class="from_weekday" style="width:80px;height:auto;line-height:auto;font-size:12px;margin-left:15px"></select>')
+		html.push('&nbsp;-&nbsp;')
+		html.push('<select class="to_weekday" style="width:80px;height:auto;line-height:auto;font-size:12px;"></select>')
+		html.push('<br><span style="margin-left:15px;">上午:</span><select class="from_daytime time" style="width:80px;height:auto;line-height:auto;font-size:12px;margin-left:15px"></select>')
+		html.push('&nbsp;-&nbsp;')
+		html.push('<select class="to_daytime time" style="width:80px;height:auto;line-height:auto;font-size:12px;"></select>')
+		html.push('<br><span style="margin-left:15px;">下午:</span><select class="from_nighttime time" style="width:80px;height:auto;line-height:auto;font-size:12px;margin-left:15px"></select>')
+		html.push('&nbsp;-&nbsp;')
+		html.push('<select class="to_nighttime time" style="width:80px;height:auto;line-height:auto;font-size:12px;"></select></span>')
+		//html.push('<img src="./img/add_plus.png" onclick="add_datetimeset(this)" style="margin-top:-10px;margin-left:10px;cursor:pointer">')
+		html.push('<img class="add_timeset_img" src="./img/add_plus.png" onclick="add_timeset(this)" style="margin-top:50px;margin-left:10px;cursor:pointer;display:inline-block;float:right"></span>')	
+		$('#timeset').append(html.join(''))
+		$('.timeset_span:last').find(".from_weekday, .to_weekday").each(function(){
+			for (var t=1;t<8;t++){	
+				var content = ''
+				switch (t){
+					case 1:
+						content = "周一";
+						break;
+					case 2:
+						content = "周二";
+						break;
+					case 3:
+						content = "周三";
+						break;
+					case 4:
+						content = "周四";
+						break;
+					case 5:
+						content = "周五";
+						break;
+					case 6:
+						content = "周六";
+						break;
+					case 7:
+						content = "周日";
+						break;
+				}
+				if ($(this).is(".to_weekday") && t==7){
+					$(this).append('<option selected value=' + t + '>' + content + '</option>')
+				}else{
+					$(this).append('<option value=' + t + '>' + content + '</option>')
+				}
+			}
+		})
+		
+		$('.timeset_span:last').find(".from_daytime,.to_daytime").each(function(){
+			$(this).append('<option value="-1">不开放</option>')
+			for (var t=8;t<13;t++){	
+				var time = ''
+				time = t + ":00"
+				if (t < 10){
+					time = "0" + time
+				}
+				$(this).append('<option value=' + t + '>' + time + '</option>')
+			}
+		})
+		
+		$('.timeset_span:last').find(".from_nighttime,.to_nighttime").each(function(){
+			$(this).append('<option value="-1">不开放</option>')
+			for (var t=12;t<25;t++){	
+				var time = ''
+				time = t + ":00"
+				if (t < 10){
+					time = "0" + time
+				}
+				$(this).append('<option value=' + t + '>' + time + '</option>')
+			}
+		})
+		$('#additem').modal('show');	
+	}
+	
+	function openModifyItem(){
+		var ids = []
+		$("#place_list tr").find('input[type="checkbox"]:checked').each(function(){
+			ids.push($(this).closest('tr').attr('sport_id') + ";" + $(this).closest('tr').attr('place_type'))
+		})
+		if (ids.length > 1){
+			$(".qb_quick_tip").css('background','#e96262')
+			showBubble("一次只能编辑一条记录")
+		}else if (ids.length == 0){
+			$(".qb_quick_tip").css('background','#e96262')
+			showBubble("请选择要编辑的记录")
+		}else{
+			openAddItem()
+			$("#additem_label").html("编辑场地")
+			$("#place_type").attr('disabled','disabled')
+			$("#sport_types").attr('disabled','disalbed')
+			var info = $("#place_list tr").find('input[type="checkbox"]:checked').closest("tr").find("td:first").html()
+			//alert(info)
+			info = JSON.parse(info)
+			$("#sport").val(info.sport.id)
+			$("#place_type").val(info.place_type.id)
+			$("#sport_types").val(info.sport.id)
+			$("#time_unit").val(info.time_unit)
+			$("#place_count").val(info.places.length)
+			show_place_name()
+			for (var i=0;i<info.places.length;i++){
+				$(".place_name:eq(" + i +")").val(info.places[i].name)
+			}
+			var business_time = info.business_time
+			for (var n=0;n<business_time.length;n++){
+				if (n != 0){
+					$(".add_timeset_img").click()
+				}
+				$(".datetimeset_span:eq(" + n + ")").find(".from_weekday").val(business_time[n].from_weekday + "")
+				$(".datetimeset_span:eq(" + n + ")").find(".to_weekday").val(business_time[n].to_weekday + "")
+				$(".datetimeset_span:eq(" + n + ")").find(".from_daytime").val(business_time[n].time_of_day[0].from_hour + "")
+				$(".datetimeset_span:eq(" + n + ")").find(".to_daytime").val(business_time[n].time_of_day[0].to_hour + "")
+				$(".datetimeset_span:eq(" + n + ")").find(".from_nighttime").val(business_time[n].time_of_day[1].from_hour + "")
+				$(".datetimeset_span:eq(" + n + ")").find(".to_nighttime").val(business_time[n].time_of_day[1].to_hour + "")
+				
+			}
+			
+			
+			
+		}
+		
+	}
+	
+	function openSetType(){
+		//$(".chosen_stadium_name").html($("#stadium_select").find("option:selected").text())
+		$("#loadingCover").show()
+		$("#type_set").empty()
+		var data = {}
+		$.ajax({
+			url:'/place_type/list/',
+			type:'get',
+			data:JSON.stringify(data),
+			dataType:'json',
+			success:function(result){
+				//alert(result)
+				if (result.error == 0){
+					types = result.place_types
+					var html = []
+					for (var i=0;i<types.length;i++){
+						var id = types[i].id
+						var name = types[i].name
+						html.push('<div id="' + id + '" class="type_set_span"><span style="display:inline-block;border:1px solid #dedede;width:410px;padding:10px;margin-bottom:10px;">')
+						html.push('<span style="margin-left:17px">类型名称<input value="' + name + '" name="type_name" type="text" style="height:auto;margin-bottom:0px;width:200px;margin-left:5px;"></span><br>')
+						html.push('</span>')
+						if (i==0){
+							html.push('<img class="add_timeset_img" src="./img/add_plus.png" onclick="add_type(this)" style="margin-left:10px;cursor:pointer"></div>')
+						}else{
+							html.push('<img class="add_timeset_img" src="./img/minus.png" onclick="minus_type(this)" style="margin-left:10px;cursor:pointer"></div>')
+						}
+					}
+					$("#loadingCover").hide()
+					$("#type_set").append(html.join(''))
+					$('#settype').modal('show');
+				}else{
+					$("#loadingCover").hide()
+					$(".qb_quick_tip").css('background','#e96262')
+					showBubble("获取数据失败")
+				}	
+				},error:function (XMLHttpRequest, textStatus, errorThrown)  {
+					$("#loadingCover").hide()
+					$(".qb_quick_tip").css('background','#e96262')
+					showBubble("获取数据失败")
+				}
+		
+		})
+	}
+	
+	function add_type(){
+		
+		var html = []
+		html.push('<div class="type_set_span"><span style="display:inline-block;border:1px solid #dedede;width:410px;padding:10px;margin-bottom:10px;">')
+		html.push('<span style="margin-left:17px">类型名称<input name="type_name" type="text" style="height:auto;margin-bottom:0px;width:200px;margin-left:5px;"></span><br>')
+		
+		html.push('</span>')
+		html.push('<img class="add_timeset_img" src="./img/minus.png" onclick="minus_type(this)" style="margin-left:10px;cursor:pointer"></div>')
+		$("#type_set").append(html.join(''))
+	}
+	
+	function minus_type(obj){
+		$(obj).closest('.type_set_span').remove()
+	}
+	
+	function confirm(){
+		var names = []
+		$("input[name='type_name']").each(function(){
+			names.push($(this).val())
+		})
+		var data = {'type_names':names}
+		$.ajax({
+			url:'/place_type/set/',
+			type:'POST',
+			data:JSON.stringify(data),
+			dataType:'json',
+			success:function(result){
+				//alert(result)
+				if (result.error == 0){
+					$(".qb_quick_tip").css('background','#44b549')
+					showBubble("更新成功")
+				}else{
+					$(".qb_quick_tip").css('background','#e96262')
+					showBubble("更新失败")
+				}
+				},error:function (XMLHttpRequest, textStatus, errorThrown)  {
+					$(".qb_quick_tip").css('background','#e96262')
+					showBubble("更新失败")
+				}	
+		
+		})
+	}
+	
+	function add_timeset(){
+		var html = []
+		html.push('<span class="timeset_span" style="display:inline-block;width:350px;float:left;margin-left:73px;margin-bottom:15px;"><span class="datetimeset_span" style="display:inline-block;border:1px solid #dedede;width:310px;float:left;margin-left:0px;padding-top:10px;">')
+		/*html.push('<tbody><tr>')
+		html.push('<td><input value="0" type="checkbox">全部</td><td><input value="1" type="checkbox">周一</td><td><input value="2" type="checkbox">周二</td><td><input value="3" type="checkbox">周三</td><td><input value="4" type="checkbox">周四</td>')
+		html.push('</tr><tr><td><input value="5" type="checkbox">周五</td><td><input value="6" type="checkbox">周六</td><td><input value="7" type="checkbox">周日</td></tr></tbody></table>')
+		*/
+		html.push('<select class="from_weekday" style="width:80px;height:auto;line-height:auto;font-size:12px;margin-left:15px"></select>')
+		html.push('&nbsp;-&nbsp;')
+		html.push('<select class="to_weekday" style="width:80px;height:auto;line-height:auto;font-size:12px;"></select>')
+		html.push('<br><span style="margin-left:15px;">上午:</span><select class="from_daytime time" style="width:80px;height:auto;line-height:auto;font-size:12px;margin-left:15px"></select>')
+		html.push('&nbsp;-&nbsp;')
+		html.push('<select class="to_daytime time" style="width:80px;height:auto;line-height:auto;font-size:12px;"></select>')
+		html.push('<br><span style="margin-left:15px;">下午:</span><select class="from_nighttime time" style="width:80px;height:auto;line-height:auto;font-size:12px;margin-left:15px"></select>')
+		html.push('&nbsp;-&nbsp;')
+		html.push('<select class="to_nighttime time" style="width:80px;height:auto;line-height:auto;font-size:12px;"></select></span>')
+		//html.push('<img src="./img/add_plus.png" onclick="add_datetimeset(this)" style="margin-top:-10px;margin-left:10px;cursor:pointer">')
+		html.push('<img class="add_timeset_img" src="./img/minus.png" onclick="minus_timeset(this)" style="margin-top:50px;margin-left:10px;cursor:pointer;display:inline-block;float:right"></span>')	
+		$('#timeset').append(html.join(''))
+		$('.timeset_span:last').find(".from_weekday, .to_weekday").each(function(){
+			for (var t=1;t<8;t++){	
+				var content = ''
+				switch (t){
+					case 1:
+						content = "周一";
+						break;
+					case 2:
+						content = "周二";
+						break;
+					case 3:
+						content = "周三";
+						break;
+					case 4:
+						content = "周四";
+						break;
+					case 5:
+						content = "周五";
+						break;
+					case 6:
+						content = "周六";
+						break;
+					case 7:
+						content = "周日";
+						break;
+				}
+				if ($(this).is(".to_weekday") && t==7){
+					$(this).append('<option selected value=' + t + '>' + content + '</option>')
+				}else{
+					$(this).append('<option value=' + t + '>' + content + '</option>')
+				}
+			}
+		})
+		
+		$('.timeset_span:last').find(".from_daytime,.to_daytime").each(function(){
+			$(this).append('<option value="-1">不开放</option>')
+			for (var t=0;t<13;t++){	
+				var time = ''
+				time = t + ":00"
+				if (t < 10){
+					time = "0" + time
+				}
+				$(this).append('<option value=' + t + '>' + time + '</option>')
+			}
+		})
+		
+		$('.timeset_span:last').find(".from_nighttime,.to_nighttime").each(function(){
+			$(this).append('<option value="-1">不开放</option>')
+			for (var t=12;t<25;t++){	
+				var time = ''
+				time = t + ":00"
+				if (t < 10){
+					time = "0" + time
+				}
+				$(this).append('<option value=' + t + '>' + time + '</option>')
+			}
+		})
+	}
+	
+	function minus_timeset(obj){
+		$(obj).closest('.timeset_span').remove()
+	}
+	
+	function add_datetimeset(obj){
+		var html = []
+		html.push('<span class="date_time" style="display:inline-block;width:auto"> <select class="time" style="width:80px;height:auto;line-height:auto;font-size:12px;margin-left:15px;"></select>&nbsp;-&nbsp;')
+		html.push('<select class="time" style="width:80px;height:auto;line-height:auto;font-size:12px;"></select>')
+		html.push('<img src="./img/minus.png" onclick="minus_datetimeset(this)" style="margin-top:-10px;margin-left:10px;cursor:pointer"></span>')
+		$(obj).closest(".datetimeset_span").append(html.join(''))
+		$(obj).closest('.datetimeset_span').find(".time:eq(-1),.time:eq(-2)").each(function(){
+			for (var t=0;t<25;t++){	
+				var time = ''
+				time = t + ":00"
+				if (t < 10){
+					time = "0" + time
+				}
+				$(this).append('<option value=' + t + '>' + time + '</option>')
+			}
+		})
+		var img = $(obj).closest('.timeset_span').find('.add_timeset_img')
+		var margintop = $(img).css('marginTop').replace('px','')*1 + 18
+		$(img).css('marginTop', margintop + "px")
+		//$(img).css('margin-tio')
+	}
+	
+	function minus_datetimeset(obj){
+		var img = $(obj).closest('.timeset_span').find('.add_timeset_img')
+		var margintop = $(img).css('marginTop').replace('px','')*1 - 18
+		$(img).css('marginTop', margintop + "px")
+		$(obj).closest(".date_time").remove()
+		
+	}
+	
+	$("#place_count").keyup(function(){		
+		show_place_name()
+	})
+	
+	function show_place_name(){
+		
+		$("#place_count_detail span table tbody").empty()
+		var num = $("#place_count").val()
+		if ($.trim(num) == "" || num == 0 || !num){
+			$("#place_count_detail").hide()
+			return false
+		}
+		var type = $("input[type='radio']:checked").val()
+		if (type == "0"){
+			var name = "号场"
+			var html = []
+			for (var i=0;i<num;i++){
+				//html.push('<span style="margin:10px 10px 10px 10px;"><span>' + (i+1) + '</span><input readonly value="' + (i+1) + name + '" type="text" style="height:auto;margin-bottom:0px;width:100px;margin-left:5px;background-color:#fafafa"></span>')
+				if ((i+1)%3 == 1){
+					html.push('<tr>')
+				}
+				html.push('<td style="width:auto">' + (i+1) + '<input class="place_name" readonly value="' + (i+1) + name + '" type="text" style="height:auto;margin-bottom:0px;width:100px;margin-left:5px;background-color:#fafafa"></td>')
+				if ((i+1)%3 == 0){
+					html.push('</tr>')
+				}
+			}
+			$("#place_count_detail span table tbody").append(html.join(''))
+			$("#place_count_detail").show()
+		}else{
+			var html = []
+			for (var i=0;i<num;i++){
+				//html.push('<span style="margin:10px 10px 10px 10px;"><span>' + (i+1) + '</span><input readonly value="' + (i+1) + name + '" type="text" style="height:auto;margin-bottom:0px;width:100px;margin-left:5px;background-color:#fafafa"></span>')
+				if ((i+1)%3 == 1){
+					html.push('<tr>')
+				}
+				html.push('<td style="width:auto">' + (i+1) + '<input class="place_name" type="text" style="height:auto;margin-bottom:0px;width:100px;margin-left:5px;"></td>')
+				if ((i+1)%3 == 0){
+					html.push('</tr>')
+				}
+			}
+			$("#place_count_detail span table tbody").append(html.join(''))
+			$("#place_count_detail").show()
+		
+		}
+	}
+	
+	function confirm_add(){
+		var stadium_id = $("#stadium_select").val()
+		var sport_id = $("#sport_types").val()*1
+		var time_unit = $("#time_unit").val() *1
+		var place_type = $("#place_type").val()*1
+		var places = []
+		$(".place_name").each(function(){
+			places.push($(this).val())
+		})
+		var business_time = []
+		$(".datetimeset_span").each(function(){
+			var weekday = []
+			var time_of_day = []
+			var that = $(this)
+			var from_weekday = that.find(".from_weekday").val() *1
+			var to_weekday = that.find(".to_weekday").val() *1
+			/*that.find('input[type="checkbox"]:checked').each(function(){
+				if ($(this).attr('value') == "0"){
+					weekday.push([1,2,3,4,5,6,7])
+				}else{
+					weekday.push(($(this).attr('value'))*1)
+				}
+			})*/
+			//that.find(".time").each(function(){
+			
+			var length = that.find(".time").length
+			//alert(length)
+			for (var i=0;i<length;i=i+2){
+				if (that.find(".time:eq(" + i + ")").val() == "-1" || that.find(".time:eq(" + (i+1) +")").val() == "-1"){
+					time_of_day.push({"from_hour":-1, "to_hour":-1})
+				}else{
+					time_of_day.push({"from_hour":(that.find(".time:eq(" + i + ")").val())*1, "to_hour":(that.find(".time:eq(" + (i+1) +")").val())*1})
+				}
+				//alert(that.find(".time:eq(" + i + ")").val())
+				//alert(i)
+			}
+			business_time.push({"from_weekday":from_weekday, "to_weekday":to_weekday,"time_of_day":time_of_day})
+			//})
+		})
+		var data = {"stadium_id":stadium_id,"sport_id":sport_id,"time_unit":time_unit,"place_type":place_type,"places":places,"business_time":business_time}
+		//alert(JSON.stringify(data))
+		if ($("#additem_label").html() == "编辑场地"){
+			$.ajax({
+				url:'/place/edit/',
+				type:'POST',
+				data:JSON.stringify(data),
+				dataType:'json',
+				success:function(result){
+					if (result.error == 0){
+						$(".qb_quick_tip").css('background','#44b549')
+						showBubble('编辑成功')
+						
+					}else{
+						$(".qb_quick_tip").css('background','#e96262')
+						showBubble("编辑失败")
+					}			
+					},error:function (XMLHttpRequest, textStatus, errorThrown)  {
+						$(".qb_quick_tip").css('background','#e96262')
+						showBubble("编辑失败")
+					}
+			
+			})
+		}else{
+			$.ajax({
+				url:'/place/add/',
+				type:'POST',
+				data:JSON.stringify(data),
+				dataType:'json',
+				success:function(result){
+					if (result.error == 0){
+						$(".qb_quick_tip").css('background','#44b549')
+						showBubble('新增成功')
+						
+					}else{
+						$(".qb_quick_tip").css('background','#e96262')
+						showBubble("新增失败")
+					}			
+					},error:function (XMLHttpRequest, textStatus, errorThrown)  {
+						$(".qb_quick_tip").css('background','#e96262')
+						showBubble("新增失败")
+					}
+			
+			})
+		}
+	}
+	
+	function delItem(){
+		var ids = []
+		$("#place_list tr").find('input[type="checkbox"]:checked').each(function(){
+			ids.push($(this).closest('tr').attr('sport_id') + ";" + $(this).closest('tr').attr('place_type'))
+		})
+		if (ids.length == 0){
+			$(".qb_quick_tip").css('background','#e96262')
+			showBubble("请选择要删除的记录")
+		}else{
+			$.confirm({
+				title: ' ',
+				content: '确定要删除所选记录么',
+				confirmButton: '确认',
+				cancelButton: '取消',
+				confirmButtonClass: 'btn-warning',
+				confirm: function(){
+					$("#place_list tr").find('input[type="checkbox"]:checked').each(function(){
+						var stadium_id = $("#stadium_select").val()
+						var sport_id = $(this).closest('tr').attr('sport_id')*1
+						var place_type = $(this).closest('tr').attr('place_type')*1
+						var that = $(this)
+						$.ajax({
+							url:'/place/delete/',
+							type:'POST',
+							data:JSON.stringify({"stadium_id":stadium_id,"sport_id":sport_id,"place_type":place_type}),
+							dataType:'json',
+							success:function(result){
+								if (result.error == 0){
+									that.closest('tr').remove()
+									$(".qb_quick_tip").css('background','#44b549')
+									showBubble('删除成功')
+									
+								}else{
+									$(".qb_quick_tip").css('background','#e96262')
+									showBubble("删除失败")
+								}			
+								},error:function (XMLHttpRequest, textStatus, errorThrown)  {
+									$(".qb_quick_tip").css('background','#e96262')
+									showBubble("删除失败")
+								}
+						
+						})
+					})
+				}
+			});
+		
+			
+		}
+	}
+	
+	var timeout
+	function showBubble(a) {
+		var c = $("#bubble");
+			c.css("opacity", 1), c.hasClass("qb_none") || c.html(a), c.html(a).removeClass("qb_none")
+			timeout = 	setTimeout("disapper()", 1300 )
+	}
+
+	function disapper(){
+		$("#bubble").addClass("qb_none").removeAttr("style")
+		clearTimeout(timeout)
+	}	
+</script>
+</body>
+</html>

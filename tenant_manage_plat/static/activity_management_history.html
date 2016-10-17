@@ -1,0 +1,307 @@
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="title" content="Bootstrap可视化布局系统">
+	<meta name="description" content="">
+	<meta name="keywords" content="场地管理">
+	<title>场地管理</title>
+	<link href="./css/bootstrap-combined.min.css" rel="stylesheet">
+	<link href="./css/layoutit.css" rel="stylesheet">
+	
+	<link href="./css/notice.css" rel="stylesheet">
+	<link rel="stylesheet" href="http://apps.bdimg.com/libs/fontawesome/4.2.0/css/font-awesome.min.css">
+	<link rel="stylesheet" type="text/css" href="./css/activity.css">
+	<!--[if lt IE 9]>
+			<script src="js/html5shiv.js"></script>
+		<![endif]-->
+	<link rel="shortcut icon" href="img/favicon.png">
+	<script type="text/javascript" src="./js/jquery-2.1.4.js"></script>
+	<!--[if lt IE 9]>
+		<script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+		<![endif]-->
+	<script type="text/javascript" src="./js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="./js/jquery-ui.js"></script>
+	<script type="text/javascript" src="./js/jquery.ui.touch-punch.min.js"></script>
+	<script type="text/javascript" src="./js/jquery.htmlClean.js"></script>
+	
+	<script type="text/javascript" src="./js/common.js"></script>
+	<script type="text/javascript" src="./js/confirm/jquery-confirm.min.js"></script>
+	<link href="./js/confirm/jquery-confirm.min.css" rel="stylesheet">
+	<link href="./js/mCustomScrollbar/jquery.mCustomScrollbar.min.css" rel="stylesheet" type="text/css" />
+	<script src="./js/mCustomScrollbar/jquery.mousewheel.min.js"></script>
+	<script src="./js/mCustomScrollbar/jquery.mCustomScrollbar.min.js"></script>
+	<style>
+
+	</style>
+</head>
+
+<body style="cursor: auto;">
+
+<div class="container-fluid">
+	<div class="row-fluid">
+		<div class="span12"  style="background-color:#FF9933;margin-bottom:20px;height:60px;">
+			<div class="row-fluid">
+				<div class="span3" style="margin-left:0 !important;height:60px;">
+					<a href="#" style="background:url('./img/logo.jpg') 50% 50% no-repeat;width:300px;height:60px;float:left;display:inline">
+						
+					</a>
+				</div>
+				<div class="span7" style="height:30px;">
+						<ul class="breadcrumb" >
+							<li style="min-width:120px;">
+								<a href="/sport/reserve_management.html">
+									预定管理
+								</a>
+							</li>
+							<li style="min-width:120px;" >
+								<a href="/sport/activity_management.html" style="color:#555 !important">
+									活动管理
+								</a>
+							</li>	
+							<li style="min-width:120px;">
+								<a href="/sport/stadium_management.html" >
+									
+									基础配置
+								</a>
+							</li>
+							<li style="min-width:120px;">
+								<a href="/sport/marketing_activity.html" style="color:#555">	
+									营销活动
+								</a>
+							</li>							
+							<li style="min-width:120px;">
+								<a href="/sport/vip_ifo.html" style="color:#555">								
+									会员信息
+								</a>
+							</li>													
+							<!--<li style="min-width:120px;">
+								<a href="#">
+									数据中心
+								</a>
+							</li>-->								
+						</ul>
+				</div>
+				<div class="span2" style="height:30px;">	
+						<ul class="breadcrumb" >
+							<li class="active">
+								<a href="#" id="user_name">
+									admin
+								</a>
+								<b>|</b>
+								<a href="#" id="login_out">
+									注销
+								</a>
+							</li>
+						</ul>
+					</div>	
+			</div>
+		</div>
+	</div>
+</div>
+<div class="container-fluid">
+<!-- 			<div class="row-fluid" style="margin-bottom:30px;border-bottom:1px solid #e6e7ec;margin-top:10px;position:relative">
+				<div class="span1">
+				</div>
+				<div class="span11">
+					<ul style="line-height:30px;height:31px;margin:0;padding:0">
+					<li style="line-height:30px;float:left;">
+						<a href="/sport/activity_management.html" style="color:#FF9933;border-bottom:2px solid #FF9933;text-align:center;display:block;font-size:15px;">活动管理</a>
+					</li>
+					</ul>
+				</div>
+			</div> -->
+			<div class="content-main">
+				<div class="sub-nav">
+					<ul class="nav nav-pills">
+								
+						<li>
+							<a href="/sport/activity_management.html">
+								<!-- <i class="icon-chevron-right"></i> -->
+								活动发布
+							</a>
+						</li>
+						<li  class="active">
+							<a href="/sport/activity_management_history.html">
+								<!-- <i class="icon-chevron-right"></i> -->
+								活动历史
+							</a>
+						</li>
+						<li>
+							<a href="/sport/activity_wxpage.html">
+								<!-- <i class="icon-chevron-right"></i> -->
+								微页面
+							</a>
+						</li>								
+					</ul>
+				</div>
+				<div class="content-main radius">
+						<div class="tabbable" style="margin-left:30px;" id="tabs-483419" >
+								<ul class="nav nav-tabs" style="padding-left:10px;margin-bottom:0px;margin-top:25px;">
+									<li class="active" style="display:inline-block;float:none">
+										<a href="#panel-published" data-toggle="tab" style="color:#bdbdbd">已经发布</a>
+									</li>
+									<li style="display:inline-block;float:none">
+										<a href="#panel-notpublished" data-toggle="tab" style="color:#bdbdbd">草稿</a>
+									</li>									
+									<li style="display:inline-block;float:none">
+										<a href="#panel-finished" data-toggle="tab" style="color:#bdbdbd">已结束</a>
+									</li>
+								</ul>
+								<div class="tab-content">
+									<div class="tab-pane active" id="panel-published">										
+									    <div style="padding:20px 10px 20px 10px;" class="span11 web-function-tab">
+											<div class="radius" style="border:1px solid #dedede;height:100px;margin-left:0px;margin-bottom:20px;">
+												<table style="width:100%">
+													<tr style="height:50px">
+														<td colspan="2" style="text-align:left;padding-left:10px;">测试活动1</td>
+														<td colspan="2" style="text-align:right;padding-right:10px;color:#bcbcbc">报名人数：0/100</td>
+													</tr>
+													<tr style="height:50px">
+														<td colspan="2" style="text-align:left;padding-left:10px;color:#bcbcbc">开始时间：2015-12-16 00:00:00</td>
+														<td style="text-align:right;color:#bcbcbc;background:url('./img/config.png') 42% center no-repeat"><a href="/sport/activity_management_info.html" style="text-decoration:none;color:inherit !important">活动编辑</a></td>
+														<td style="text-align:right;color:#bcbcbc;"><a href="/sport/activity_management_info.html" style="padding-left:30px;background:url('./img/config.png') 0 no-repeat;text-decoration:none;color:inherit !important">活动设置</a></td>
+														<td style="text-align:right;padding-right:10px;color:#bcbcbc;"><a href="/sport/activity_management_member.html" style="padding-left:30px;background:url('./img/list.png') 0 center no-repeat;text-decoration:none;color:inherit !important">名单管理</a></td>
+													</tr>
+												</table>
+											</div>
+											<div class="radius" style="border:1px solid #dedede;height:50px;margin-left:0px;margin-bottom:20px;"></div>
+										
+										</div>
+									</div>
+									<div class="tab-pane" id="panel-notpublished">
+										<div style="padding:20px 10px 20px 10px;" class="span11 web-function-tab">
+											<div class="radius" style="border:1px solid #dedede;height:100px;margin-left:0px;margin-bottom:20px;">
+												<table style="width:100%">
+													<tr style="height:50px">
+														<td colspan="2" style="text-align:left;padding-left:10px;">测试活动1</td>
+														<td colspan="2" style="text-align:right;padding-right:10px;color:#bcbcbc">报名人数：0/100</td>
+													</tr>
+													<tr style="height:50px">
+														<td colspan="2" style="text-align:left;padding-left:10px;color:#bcbcbc">开始时间：2015-12-16 00:00:00</td>		
+
+														<td style="padding-right:20px;text-align:right;color:#bcbcbc;background:url('./img/config.png') 70% center no-repeat"><a href="/sport/activity_management_info.html" style="text-decoration:none;color:inherit !important">活动编辑</a></td>
+													</tr>
+												</table>
+											</div>
+										</div>
+									</div>
+									<div class="tab-pane" id="panel-finished">
+										<div style="padding:20px 10px 20px 10px;" class="span11 web-function-tab">
+											<div class="radius" style="border:1px solid #dedede;height:100px;margin-left:0px;margin-bottom:20px;">
+												<table style="width:100%">
+													<tr style="height:50px">
+														<td colspan="2" style="text-align:left;padding-left:10px;">测试活动1</td>
+														<td colspan="2" style="text-align:right;padding-right:10px;color:#bcbcbc">报名人数：0/100</td>
+													</tr>
+													<tr style="height:50px">
+														<td colspan="2" style="text-align:left;padding-left:10px;color:#bcbcbc">开始时间：2015-12-16 00:00:00</td>		
+
+														<td style="padding-right:20px;text-align:right;color:#bcbcbc;background:url('./img/config.png') 38% center no-repeat"><a href="/sport/activity_management_info.html" style="text-decoration:none;color:inherit !important">活动预览</a></td>		
+
+														<td style="text-align:right;color:#bcbcbc;background:url('./img/config.png') 38% center no-repeat"><a href="/sport/activity_management_publish.html" style="text-decoration:none;color:inherit !important">活动编辑</a></td>
+														<td style="text-align:right;padding-right:10px;color:#bcbcbc;background:url('./img/list.png') 38% center no-repeat"><a href="/sport/activity_management_member.html" style="text-decoration:none;color:inherit !important">名单管理</a></td>
+														<td style="text-align:right;padding-right:10px;color:#bcbcbc;background:url('./img/list.png') 38% center no-repeat"><a href="/sport/activity_popularize.html" style="text-decoration:none;color:inherit !important">活动推广</a></td>
+													</tr>
+												</table>
+											</div>
+										</div>
+									</div>
+								</div>
+						</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+<div id="loadingCover">
+        <p><img src="./img/loading.gif"/><span>请稍后</span></p>
+ </div>
+<div class="qb_quick_tip qb_none" id="bubble"></div>
+<script>
+(function($){
+         $(window).load(function(){
+            //$(".custom_scrollbar").mCustomScrollbar();
+			$(".container").mCustomScrollbar({
+				axis:"y", // horizontal scrollbar
+				theme:"3d-dark"
+			});		
+			
+			
+        });		
+		
+    })(jQuery);
+$(document).ready(function(){
+	//获取session的登录用户信息		
+	$.ajax({
+		url:"/user/get_login_info",
+        dataType:'JSON',
+        type: 'GET',
+        success:function(result){
+        	if (result.error == "0") {
+        		var login_info = result.login_info;
+        		var user_name = login_info.user;
+        		$("#user_name").text(user_name);
+        	}else if(result.error == "1"){
+        		window.location.href="/sport/login.html"
+        	}else{
+        		alert("internal error!")
+        	}
+        },
+        error:function(e){
+        	alert("this error")
+        }
+	})	
+
+	$("#login_out").click(function(){
+		$.ajax({
+			url:"/login_out/",
+            dataType:'JSON',
+            type: 'GET',
+            success:function(result){
+            	if (result.error == "0") {
+            		window.location.href="/sport/login.html"
+            	}else{
+        			alert("注销失败！")
+        		}
+            },
+            error:function(e){
+            	alert("error")
+            }
+		})	
+	})
+})	
+function query(){
+
+	var html = []
+	html.push('<div class="span12 radius" style="border:1px solid #dedede;height:100px;margin-left:0px;margin-bottom:20px;">')
+	html.push('<table style="width:100%"><tr style="height:50px">')
+	html.push('<td colspan="2" style="text-align:left;padding-left:10px;">测试活动1</td><td colspan="2" style="text-align:right;padding-right:10px;color:#bcbcbc">报名人数：0/100</td>')
+	html.push('</tr>')
+	html.push('<tr style="height:50px">')
+	html.push('<td colspan="2" style="text-align:left;padding-left:10px;color:#bcbcbc">开始时间：2015-12-16 00:00:00</td>')
+	html.push('<td style="text-align:right;color:#bcbcbc;"><a class="config" href="/sport/activity_management_info.html">活动设置</a></td><td style="text-align:right;padding-right:10px;color:#bcbcbc;"><a class="list" href="/sport/activity_management_member.html">名单管理</a></td>')
+	html.push('</tr></table></div>')
+}
+	
+
+
+var timeout
+	function showBubble(a) {
+		var c = $("#bubble");
+			c.css("opacity", 1), c.hasClass("qb_none") || c.html(a), c.html(a).removeClass("qb_none")
+			timeout = 	setTimeout("disapper()", 1300 )
+	}
+
+	function disapper(){
+		$("#bubble").addClass("qb_none").removeAttr("style")
+		clearTimeout(timeout)
+	}	
+
+</script>
+
+</body>
+</html>

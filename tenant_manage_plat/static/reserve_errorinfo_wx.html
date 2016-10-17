@@ -1,0 +1,106 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="title" content="悦享源场馆预定">
+	<meta name="description" content="">
+	<meta name="keywords" content="">
+	<title>悦享源场馆预定</title>
+	<link href="./css/bootstrap-combined.min.css" rel="stylesheet">
+	<link href="./css/layoutit.css" rel="stylesheet">
+	<link rel="stylesheet" href="http://apps.bdimg.com/libs/fontawesome/4.2.0/css/font-awesome.min.css">
+	<!--[if lt IE 9]>
+			<script src="js/html5shiv.js"></script>
+		<![endif]-->
+	<link rel="shortcut icon" href="img/favicon.png">
+	<script type="text/javascript" src="./js/jquery-2.1.4.js"></script>
+	<!--[if lt IE 9]>
+		<script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+		<![endif]-->
+	<script type="text/javascript" src="./js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="./js/jquery-ui.js"></script>
+	<script type="text/javascript" src="./js/jquery.ui.touch-punch.min.js"></script>
+	<script type="text/javascript" src="./js/jquery.htmlClean.js"></script>
+	
+</head>
+<script>
+function getUrlParam(name)
+	{
+		var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
+		var r = window.location.search.substr(1).match(reg);  //匹配目标参数
+		if (r!=null) return unescape(r[2]); return null; //返回参数值
+	} 
+
+$(document).ready(function(){
+	var errcode= getUrlParam('errcode')	
+	if (errcode == 'duplicate'){
+		$("#err_desc").html('抱歉，您所选的场地已经被预定了')
+		$("#err_operate").html('请您重新预订')
+	}
+	if (errcode == 'notpaid'){
+		$("#err_desc").html('抱歉，您还有未支付的订单')
+		$("#err_operate").css('width','320px')
+		$("#err_operate").html('请您前往<a href="javascript:my_order()">我的订单</a>进行付款或取消')
+	}
+	if (errcode == 'paymenterror'){
+		$("#err_desc").css('width','320px')
+		$("#err_desc").css('height','auto')
+		$("#err_desc").html('抱歉，<br>由于您付款时间超过五分钟，预定失败')
+		$("#err_operate").css('width','280px')
+		$("#err_operate").html('请拨打客服电话 <br>021-33811039 <br>联系客服人员来获得帮助')
+	}
+	if (errcode == 'paymenterror2'){
+		$("#err_desc").css('width','320px')
+		$("#err_desc").css('height','auto')
+		$("#err_desc").html('抱歉，<br>支付出现问题')
+		$("#err_operate").css('width','280px')
+		$("#err_operate").html('请拨打客服电话 <br>021-33811039 <br>联系客服人员来获得帮助')
+	}
+})
+
+function my_order(){
+		var appid = ''
+		var redirect_uri = ''
+		$.ajax({
+			url:'/wx/get_openid_redirect_query',
+			dataType:'JSON',
+			data:{},
+			async:false,
+			success:function(result){
+			   redirect_uri = encodeURIComponent(result.redirect_uri)
+			   appid = result.appid  
+			   window.location.href = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=" + appid + "&redirect_uri=" + redirect_uri + "&response_type=code&scope=snsapi_base&state=OK#wechat_redirect"		         
+			},
+			error: function (XMLHttpRequest, textStatus, errorThrown)  {
+				alert('error')
+			}
+		})	
+	}
+	
+
+</script>
+
+<body style="cursor: auto;background-color:#fff !important;padding:0;min-width:100px;">
+
+<div class="container-fluid">
+	<div class="row-fluid">
+		<div class="span12">
+			<div class="row-fluid" style="margin-bottom:30px;">
+				<div class="span12" style="text-align:center;background-color:#ff9933;height:40px;line-height:40px;">
+						<b style="font-size:17px;color:#fff">预定出现问题</b>
+				</div>
+			</div>
+			<p style="text-align:center;width:130px;height:130px;line-height:130px;margin:0 auto;background:url('./img/warning.png') 0 0 no-repeat"></p>
+			<p id="err_desc" style="text-align:center;width:250px;height:50px;line-height:50px;margin:0 auto;font-size:16px;"></p>
+			<p id="err_operate" style="text-align:center;width:250px;height:50px;line-height:50px;margin:0 auto;font-size:16px;"></p>
+		</div>
+	</div>
+</div>
+	
+<script>
+	
+</script>
+</body>
+</html>

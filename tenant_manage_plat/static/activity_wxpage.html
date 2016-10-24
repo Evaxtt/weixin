@@ -138,14 +138,19 @@
 			</div>
 			<div class="content-main radius">
 			  	<div class="activityattend-liveapp">
-			  		<div></div>
+			  		<div id="titlebar">
+						<h1><span></span></h1>			  			
+			  		</div>
 			  		<iframe id="iframe" src="/sport/activities_wx.html"  frameborder="0" id="wechatActivityIframe"></iframe>
 			  		<div id="set_style">
 			  			<label>活动分组模板：</label>
 			  			<input type="radio" name="style_choice" id="large-img">大图模式
 			  			<input type="radio" name="style_choice" id="small-img">小图模式
 			  			<input type="radio" name="style_choice" id="large-small">一大两小
-			  		</div>		
+				  		<div>
+				  			<button id="save-style">保存</button>
+				  		</div>				  			
+			  		</div>	
 			  	</div>					
 			</div>
 		</div>
@@ -199,8 +204,24 @@ $(document).ready(function(){
 		})	
 	})
 
-	var parameter = 1
-	$("#iframe",parent.document.body).attr("src","/sport/activities_wx.html?style="+parameter)
+	var parameter = ""
+	$.ajax({
+		url:"/tenantSettings/list/",
+        dataType:'JSON',
+        type: 'post',
+        data:JSON.stringify({"name":"style"}),
+        success:function(result){
+        	if (result.error == "0") {
+        		parameter = result.value
+        		$("#iframe",parent.document.body).attr("src","/sport/activities_wx.html?style="+parameter)
+        	}else{
+    			alert("error")
+    		}
+        },
+        error:function(e){
+        	alert("error")
+        }
+	})	
 	
 	$("#large-img").click(function(){
 		parameter = 1
@@ -214,8 +235,27 @@ $(document).ready(function(){
 		parameter = 3
 		$("#iframe",parent.document.body).attr("src","/sport/activities_wx.html?style="+parameter)
 	})
+
+	$("#save-style").click(function(){
+		$.ajax({
+			url:'/tenantSettings/edit/',
+	        dataType:'JSON',
+	        type: 'post',
+	        data: JSON.stringify({'name':"style",'value':parameter}),
+	        success:function(result){
+	        	if (result.error == "0") {
+	        		alert("保存成功！")
+	        	}else{
+	    			alert("保存失败！")
+	    		}
+	        },
+	        error:function(e){
+	        	alert("error")
+	        }			
+		})
+	})
 })
-	
+
 </script>
 
 </body>

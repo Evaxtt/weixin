@@ -68,7 +68,31 @@ def list(request):
         log.exception(e)
         result['error'] = -1
         return HttpResponse(json.dumps(result,ensure_ascii=False))
-
+'''
+method:post
+url:http://115.28.111.96/user/delete/
+request:
+    {
+        'id':,
+    }
+response:
+    {
+        'error':0--success,1--invalid parameter
+    }
+'''
+def delete(request):
+    result={'error':0}
+    try:
+        content = json.loads(request.body)
+        if not content.has_key('id'):
+            result['error'] = 1
+            return HttpResponse(json.dumps(result,ensure_ascii=False))
+        Activity.objects.filter(id__exact=content['id']).delete()
+        return HttpResponse(json.dumps(result,ensure_ascii=False))
+    except Exception,e:
+        result['error'] = -1
+        print traceback.format_exc()
+        return HttpResponse(json.dumps(result,ensure_ascii=False))
 '''
 url:http://115.28.111.96/activity/wx_list/
 method:post

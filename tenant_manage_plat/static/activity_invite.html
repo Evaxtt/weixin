@@ -29,30 +29,46 @@
 			color: #fff;
 		}
 		.section:first-child {
-		    background-color: #7B68EE;
+		    background-color: #9940e0;
 		}
 
 		.section:nth-child(2) {
-		    background-color: #00BFFF;
+		    background-color: #9940e0;
+		    background: -webkit-linear-gradient(rgba(153,61,224,0.7), rgba(153,61,224,0.8), rgba(153,61,224,1));
+		    background: -o-linear-gradient(rgba(153,61,224,0.7), rgba(153,61,224,0.8), rgba(153,61,224,1));
+		    background: linear-gradient(rgba(153,61,224,0.7), rgba(153,61,224,0.8), rgba(153,61,224,1));
 		}
 
 		.section:nth-child(3) {
-		    background-color: #ff8c81;
+		    background-color: #9940e0;
+		    background: -webkit-linear-gradient(rgba(153,61,224,0.7), rgba(153,61,224,0.8), rgba(153,61,224,1));
+		    background: -o-linear-gradient(rgba(153,61,224,0.7), rgba(153,61,224,0.8), rgba(153,61,224,1));
+		    background: linear-gradient(rgba(153,61,224,0.7), rgba(153,61,224,0.8), rgba(153,61,224,1));
 		}
 
 		.section:last-child {
-		    background-color: #40E0D0;
+		    background-color: #9940e0;
 		}
-
+		.content{
+			position: relative;
+			width: 100%;
+		}
 		.title {
+			position: absolute;
+		    top: 15%;
+		    left: 15%;
 		    width: 100%;
-		    font-size: 26px;
+		    background-image: url(./img/main.png);
+		    width: 232px;
+		    height: 142px;
+		    /* z-index: -1; */
+		    background-position: 0 0;
 		}
 
 		.subtitle {
 		    width: 100%;
-		    padding-top: 20px;
-		    font-size: 20px;
+		    padding-top: 50px;
+		    font-size: 22px;
 		}
 
 		.arrow{
@@ -78,48 +94,148 @@
 		    background-color:#FF9933;
 		    border:none;
 		}
+		p.activity_detail{
+		    text-align: left;
+		    margin-left: 20px;
+		}
+		.title_img{
+			background-image: url(./img/main.png);
+			background-position: -233px 0;
+			width: 115px;
+			height: 115px;
+			margin:0 auto;
+		}
+		.activity_detail >span.date{
+			position: relative;
+			top: 25px;
+			display: inline-block;
+			vertical-align: text-bottom;
+		    margin-right: 10px;
+			width: 42px;
+			height: 42px;
+			background-image: url(./img/main.png);
+			background-position: -349px -46px;
+		}
+		.activity_detail >span.address{
+			display: inline-block;
+		    vertical-align: text-bottom;
+		    margin-right: 10px;
+			width: 42px;
+			height: 42px;
+			background-image: url(./img/main.png);
+			background-position: -349px 0;		
+		}
+		.activity_detail >span.intro{
+			display: inline-block;
+		    float: left;
+		    clear: both;
+		    margin-left: 7px;
+		    margin-right: 18px;
+		    margin-bottom: 40px;
+			width: 34px;
+			height: 41px;
+			background-image: url(./img/main.png);
+			background-position: -349px -89px;		
+		}
+		#activity-intro{
+			line-height: 42px;
+		}
+		#page4 .attention_detail{
+		 font-size: 20px;
+		 margin:0 10px 50px;
+		}
 	</style>
 </head>
 <body>
 	<div id="fullpage">
-    <div class="section">
-        <div class="title">活动邀请函</div>
-        <div class="subtitle">活动标题</div>
-        <div class="arrow"></div>
-    </div>
+	    <div class="section">
+	        <div class="title"></div>   	
+	        <div class="subtitle" id="activity-title">活动标题</div>
+	        <div class="arrow"></div>
+	    </div>
 
-    <div class="section" id="page2">
-        <div class="activity_img">
-            <img src="img/basketball.png">
-        </div>
-        <p>
-            <i class="fa fa-calendar-o" aria-hidden="true"></i>
-            <span>10月8日08:00 - 10月11日20:00</span>
-        </p>
-        <p>
-            <i class="fa fa-cubes" aria-hidden="true"></i>
-            <span>上海市宝山区 友谊路</span>
-        </p>
-        <p>
-            <i class="fa fa-file" aria-hidden="true"></i>
-            <span>活动简介：哈哈哈哈</span>
-        </p>
-        <div class="arrow"></div>
-    </div>
-    <div class="section">
-        <div class="title_img">
-            <img src="img/basketball.png">
-        </div>
-        <div class="subtitle">已经有<span>10</span>个人参加了这个活动</div>
-        <button class="enroll">报名参加</button>
-        <div class="arrow"></div>
-    </div>
+	    <div class="section" id="page2">
+	        <div class="activity_img">
+	            <img id="activity-img" src="img/basketball.png" style=" width:300px;max-height:210px;padding: 2px;
+	    box-shadow: 0 0 15px rgba(250,211,218,.8);">
+	        </div>
+			<p class="activity_detail">
+			    <span class="date"></span>
+			    <span id="start-time">2016-01-16 16:00:00</span>
+			</p>
+			<p class="activity_detail">
+			    <span id="end-time" style="margin-left: 56px">2016-01-18 16:00:00</span>
+			</p>
+	        <p class="activity_detail">
+	            <span class="address"></span>
+	            <span id="activity-address">上海市宝山区 友谊路</span>
+	        </p>
+	        <p class="activity_detail">
+	            <span class="intro"></span>
+	            <span id="activity-intro">哈哈哈哈</span>
+	        </p>
+	        <div class="arrow"></div>
+	    </div>
+	    <div class="section" id="page3">
+	        <div class="title_img">
+	        </div>
+	        <div class="subtitle">已经有<span id="attendant_count">10</span>个人参加了这个活动</div>
+	       		<a href="#page4"><button class="enroll" id="register">报名参加</button></a>
+	        <div class="arrow"></div>
+	    </div>
+	    <div class="section" id="page4">
+	        <div class="attention_detail">识别图中二维码关注服务号即刻立即报名参加活动！</div>
+	        <div>
+	        	<img src="./img/kuchuan.jpg">
+	        </div>
+	        <div class="arrow"></div>
+	    </div>
 	</div>	
 
 <script>
+	// $(function(){
+	    
+	// });
+	function getUrlParam(name)
+	{
+		var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
+		var r = window.location.search.substr(1).match(reg);  //匹配目标参数
+		if (r!=null) return unescape(r[2]); return null; //返回参数值
+	}
+
 	$(function(){
-	    $('#fullpage').fullpage();
-	});
+		$('#fullpage').fullpage({
+			loopBottom:true,
+			resize:true,
+			css3:true
+		});
+
+		var activity_id = getUrlParam("id")
+		$.ajax({
+			url:'/activity/list/',
+			type:'POST',
+			data:JSON.stringify({"id":activity_id}),
+			dataType:'json',
+			success:function(result){
+				if (result.error == 0){
+					activity_detail = result.activity_list
+					$("#activity-title").text(activity_detail[0].title)
+					$("#activity-img").attr("src",activity_detail[0].img)
+					$("#start-time").text(activity_detail[0].start_time)
+					$("#end-time").text(activity_detail[0].end_time)
+					$("#activity-address").text(activity_detail[0].stadium_name)
+					$("#activity-intro").text(activity_detail[0].content)
+					$("#attendant_count").text(activity_detail[0].attendant_count)
+					// $(document.getElementById('activity-invite').contentWindow.document.body).find("#attendant_count").text(activity_detail[0].attendant_count)
+				}
+			},error:function(e){
+				alert("error")
+			}
+		})	
+		$("#register").click(function(){
+
+		})
+	})
 </script>
 </body>
 </html>

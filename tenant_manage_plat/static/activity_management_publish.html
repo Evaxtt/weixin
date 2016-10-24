@@ -43,60 +43,361 @@
 	
 	<style type="text/css">
 		.nav-tabs>.active>a{background-color:#fff !important}
-		.
+		p{
+			background-color:inherit !important;
+		}
+
+		input[type="text"]{
+			border: 1px solid #bebebe !important;
+	    height: 28px !important;
+		line-height:28px !important;
+		text-align:center;
+		margin-top:10px;
+		}
+
+		.container {
+		margin-top: 20px;
+		}
+
+		.preview-section {
+		border: 1px solid #bebebe;
+		padding: 0px;
+		background-color:#f6f6f6;
+		}
+
+		.initialise-section {
+		border: 1px solid #bcbcbc;
+		margin-left: 10px;
+		padding: 10px;
+		}
+
+		.upload-image-section {
+		margin-top: 10px;
+		}
+
+		#stadium-title {
+		border: 1px solid #bebebe;
+		height: 28px;
+		line-height:28px;
+		text-align:center;
+		}
+
+		#stadium-content {
+		border: 1px solid #bebebe;
+		height: 28px;
+		line-height:28px;
+		text-align:left;
+		height:300px;
+		margin-top: 10px;
+		width: 100%;
+		}
+
+		#stadium-content-title {
+		border: 1px solid #bebebe;
+		height: 28px;
+		line-height:28px;
+		text-align:center;
+		margin-top:10px;
+		}
+
+		#upload-image-show {
+		width: 100%;
+		height: 200px;
+		margin-top: 5px;
+		display:none;
+		}
+
+
+		.initialise-confirm-section {
+		margin-top: 10px;
+		}
+
+		#submit-current-event {
+		margin-left: 20px;
+		}
+
+		.preview-result-sign-up {
+		border: 1px solid #bebebe;
+		text-align: center;
+		width: 30%;
+		}
+
+		#stadium-preview-title {
+		border: 1px dashed #bebebe;
+		display: block;
+		height: 28px;
+		line-height:28px;
+		text-align:center;
+		color:#bebebe;
+		}
+
+		#stadium-preview-content-title {
+		border: 1px dashed #bebebe;
+		height: 28px;
+		margin-top: 5px;
+		margin-bottom:0px;
+		text-align:center;
+		color:#bebebe;
+		line-height:28px;
+		font-size:16px;
+		font-weight:bold;
+		}
+
+		#stadium-preview-content{
+		border: 1px dashed #bebebe;
+		min-height: 150px;
+		margin-top: 5px;
+		margin-bottom:0px;
+		text-align:center;
+		color:#bebebe;
+		line-height:150px;
+		}
+		#stadium-preview-price,#stadium-preview-count,#stadium-preview-starttime,#stadium-preview-endtime{
+		border: 1px dashed #bebebe;
+		height: 28px;
+		margin-top: 5px;
+		margin-bottom:0px;
+		text-align:center;
+		color:#bebebe;
+		line-height:28px;
+		}
+
+		#stadium-preview-image {
+		border: 1px dashed #bebebe;
+		min-height: 190px;
+		line-height:190px;
+		color:#bebebe;
+		text-align:center;
+		margin-bottom:0px;
+		}
 	</style>
 </head>
+<body style="cursor: auto;">
 
-<script type="text/javascript">
-  $(document).ready(function() {
-	//获取session的登录用户信息		
-	$.ajax({
-		url:"/user/get_login_info",
-        dataType:'JSON',
-        type: 'GET',
-        success:function(result){
-        	if (result.error == "0") {
-        		var login_info = result.login_info;
-        		var user_name = login_info.user;
-        		$("#user_name").text(user_name);
-        	}else if(result.error == "1"){
-        		window.location.href="/sport/login.html"
-        	}else{
-        		alert("internal error!")
-        	}
-        },
-        error:function(e){
-        	alert("this error")
-        }
-	})	
+<div class="container-fluid">
+	<div class="row-fluid">
+		<div class="span12"  style="background-color:#FF9933;margin-bottom:20px;height:60px;">
+			<div class="row-fluid">
+				<div class="span3" style="margin-left:0 !important;height:60px;">
+					<a href="#" style="background:url('./img/logo.jpg') 50% 50% no-repeat;width:300px;height:60px;float:left;display:inline">
+						
+					</a>
+				</div>
+				<div class="span7" style="height:30px;">
+						<ul class="breadcrumb" >
+							<li style="min-width:120px;">
+								<a href="/sport/reserve_management.html">
+									预定管理
+								</a>
+							</li>							
+							<li style="min-width:120px;" >
+								<a href="/sport/activity_management.html" style="color:#555 !important">
+									活动管理
+								</a>
+							</li>
+							<li style="min-width:120px;">
+								<a href="/sport/stadium_management.html" >
+									
+									基础配置
+								</a>
+							</li>
+							<li style="min-width:120px;">
+								<a href="/sport/marketing_activity.html" style="color:#555">	
+									营销活动
+								</a>
+							</li>							
+							<li style="min-width:120px;">
+								<a href="/sport/vip_ifo.html" style="color:#555">								
+									会员信息
+								</a>
+							</li>										
+						</ul>
+				</div>
+				<div class="span2" style="height:30px;">	
+						<ul class="breadcrumb" >
+							<li class="active">
+								<a href="#" id="user_name">
+									admin
+								</a>
+								<b>|</b>
+								<a href="#" id="login_out">
+									注销
+								</a>
+							</li>
+						</ul>
+					</div>	
+			</div>
+		</div>
+	</div>
+</div>
+<div class="container-fluid">
+<!-- 			<div class="row-fluid" style="margin-bottom:30px;border-bottom:1px solid #e6e7ec;margin-top:10px;position:relative">
+				<div class="span1">
+				</div>
+				<div class="span11">
+					<ul style="line-height:30px;height:31px;margin:0;padding:0">
+					<li style="line-height:30px;float:left;">
+						<a href="/sport/activity_management.html" style="color:#FF9933;border-bottom:2px solid #FF9933;text-align:center;display:block;font-size:15px;">活动管理</a>
+					</li>
+					</ul>
+				</div>
+			</div> -->
+			<div class="content-main">
+<!-- 				<div class="sub-nav">
+					<ul class="nav nav-pills">
+								
+						<li class="active">
+							<a href="/sport/activity_management.html">
+								活动发布
+							</a>
+						</li>
+						<li>
+							<a href="/sport/activity_management_history.html">
+								活动历史
+							</a>
+						</li>
+						
+								
+					</ul>
+				</div> -->
+				<div class="content-main radius">
+				<form method="post" action="/activity/add/" name="activity_form" enctype="multipart/form-data" onsubmit="return addActivity();">
+					<div class="span12 tablespan">	
+						<div class="span5">
+						选择场馆：
+						<select id="stadium_select" style="margin-bottom:0px" name="stadium">
+							
+						</select>
+						</div>
+						
+						<!--<div class="span5">
+						<button class="btn-new" type="button" style="height:30px;float:right" onclick="openAddItem()">设置活动票价</button>
+						</div>-->
+					</div>
+				
+					<div class="span12 tablespan" style="margin-left:0px !important">	
+						<div class="col-md-5 preview-section radius">
+						  <div>
+							<p id="stadium-preview-title" class="radius">微页面标题</p>
+						  </div>
+						  <div id="img_preview_div" style="padding:5px;"><div style="background-color:inherit" id="stadium-preview-image" class="radius"/>活动图片</div></div>
+						  <div>
+							<p id="stadium-preview-content-title" class="radius">活动正文标题</p>
+						  </div>
+						  <div>
+							<p id="stadium-preview-starttime" class="radius">开始时间</p>
+						  </div>
+						  <div>
+							<p id="stadium-preview-endtime" class="radius">结束时间</p>
+						  </div>
+						  <div>
+							<p id="stadium-preview-count" class="radius">总人数</p>
+						  </div>
+						  <div>
+							<p id="stadium-preview-price" class="radius">活动票价</p>
+						  </div>
+						  <div>
+							<p id="stadium-preview-content" class="radius">活动正文</p>
+						  </div>
+						  
+						  <div style="margin-top:20px;text-align:center">
+							<button class="btn-new" type="button" style="height:40px;cursor:default" >报名参加</button>
+						  </div>
+						</div>
+							<div class="col-md-6 initialise-section radius">
+							<div>设置起始时间：<input name="start_time" onchange="set_starttime()" type="text" class="date-pick" style="font-size:12px;background:url('./img/date_time.png') 1px 1px no-repeat;height:28px;line-height:28px;width:200px;text-align:center" id="start_date" readonly='readonly' value=""></div>
+							<div>设置结束时间：<input name="end_time" onchange="set_endtime()" type="text" class="date-pick" style="font-size:12px;background:url('./img/date_time.png') 1px 1px no-repeat;height:28px;line-height:28px;width:200px;text-align:center" id="end_date" readonly='readonly' value=""></div>
+							<div>设置报名人数：<input name="attendant_count" onkeyup="set_count()" style="width:100px" id='attendant_count' type="text" placeholder="输入报名人数">&nbsp;人</div>
+							<div>设置活动票价：<input name="price" onkeyup="set_price()" style="width:100px" id='price' type="text" placeholder="输入活动票价">&nbsp;元</div>
+						  <div>设置页面标题：<input name="wx_title" onkeyup="set_page_title()" id='stadium-title' type="text" placeholder="输入微页面标题"></div>
+						  <div class="upload-image-section">
+							设置活动图片：<input id="upload-image-button" name="img" type='file' />
+							  <img id="upload-image-show"/>
+						  </div>
+						  <div>设置正文标题：<input name="title" onkeyup="set_content_title()" id='stadium-content-title' type="text" placeholder="输入活动正文标题"></div>
+						  <div>设置活动正文：<textarea name="content" onkeyup="set_content()" id='stadium-content' placeholder="输入活动正文"></textarea></div>
+						  <div style="display:none">
+						  	<input name="publish" id="publish" value="false">
+						  </div>
+						  <tr id="result" style="display:none">
+							<td colspan="2" id="result_text"></td>
+						  </tr>
+						  <div style="margin-top:20px;text-align:center">
+							<button class="btn-new" type="submit" style="height:40px;" name="action" onclick="$('#publish').val(0);return true"  value="save">保存</button>
+							<button class="btn-new" type="submit" style="height:40px;margin-left:30px;background-color:#44b549" name="action" onclick="$('#publish').val(1);return true"  value="publish">确认发布</button>
+						  </div>
+						</div>
+					</form>	
+					</div>
+				<div class="span1">
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
 
-	$("#login_out").click(function(){
+
+
+<div id="loadingCover">
+        <p><img src="./img/loading.gif"/><span>请稍后</span></p>
+ </div>
+<div class="qb_quick_tip qb_none" id="bubble"></div>
+<script>
+	function getUrlParam(name)
+	{
+		var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
+		var r = window.location.search.substr(1).match(reg);  //匹配目标参数
+		if (r!=null) return unescape(r[2]); return null; //返回参数值
+	} 
+
+	var id = getUrlParam("id")
+	$(document).ready(function() {
+		//获取session的登录用户信息		
 		$.ajax({
-			url:"/login_out/",
-            dataType:'JSON',
-            type: 'GET',
-            success:function(result){
-            	if (result.error == "0") {
-            		window.location.href="/sport/login.html"
-            	}else{
-        			alert("注销失败！")
-        		}
-            },
-            error:function(e){
-            	alert("error")
-            }
+			url:"/user/get_login_info",
+	        dataType:'JSON',
+	        type: 'GET',
+	        success:function(result){
+	        	if (result.error == "0") {
+	        		var login_info = result.login_info;
+	        		var user_name = login_info.user;
+	        		$("#user_name").text(user_name);
+	        	}else if(result.error == "1"){
+	        		window.location.href="/sport/login.html"
+	        	}else{
+	        		alert("internal error!")
+	        	}
+	        },
+	        error:function(e){
+	        	alert("this error")
+	        }
 		})	
-	})
-	new nicEditor({ fullPanel: true }).panelInstance('stadium-content');
-  
-	var title = $(".nicEdit-main");//the element I want to monitor 
-	title.bind('DOMNodeInserted', function(e) { 
-		set_content_new()
-		set_interval()
-	}); 
-	
-  
-	
+
+		$("#login_out").click(function(){
+			$.ajax({
+				url:"/login_out/",
+	            dataType:'JSON',
+	            type: 'GET',
+	            success:function(result){
+	            	if (result.error == "0") {
+	            		window.location.href="/sport/login.html"
+	            	}else{
+	        			alert("注销失败！")
+	        		}
+	            },
+	            error:function(e){
+	            	alert("error")
+	            }
+			})	
+		})
+		new nicEditor({ fullPanel: true }).panelInstance('stadium-content');
+	  
+		var title = $(".nicEdit-main");//the element I want to monitor 
+		title.bind('DOMNodeInserted', function(e) { 
+			set_content_new()
+			set_interval()
+		}); 
+			
 		var reader = new FileReader();
 		var imageSrc;
 
@@ -113,27 +414,24 @@
 			reader.readAsDataURL(this.files[0]);
 		  };
 		});
+ 
 
-  
-  
-
-	$(".date-pick").datepicker({
-				clickInput: true,
-				showTime: true,
-				createButton: false,
-				currentText:"今天",
-				startDate:'2000-1-1',
-				dateFormat: 'yy-mm-dd',
-				monthNames: ['一月','二月','三月','四月','五月','六月','七月','八月','九月','十月','十一月','十二月'],
-				 dayNames: ['星期日','星期一','星期二','星期三','星期四','星期五','星期六'],  
-            dayNamesShort: ['周日','周一','周二','周三','周四','周五','周六'],  
-            dayNamesMin: ['日','一','二','三','四','五','六'],  
-			closeText:"确认",
-			})
-  
-    
-	
-	$("#loadingCover").show()
+		$(".date-pick").datepicker({
+					clickInput: true,
+					showTime: true,
+					createButton: false,
+					currentText:"今天",
+					startDate:'2000-1-1',
+					dateFormat: 'yy-mm-dd',
+					monthNames: ['一月','二月','三月','四月','五月','六月','七月','八月','九月','十月','十一月','十二月'],
+					 dayNames: ['星期日','星期一','星期二','星期三','星期四','星期五','星期六'],  
+	            dayNamesShort: ['周日','周一','周二','周三','周四','周五','周六'],  
+	            dayNamesMin: ['日','一','二','三','四','五','六'],  
+				closeText:"确认",
+				})
+   
+		
+		$("#loadingCover").show()
 		$("#stadium_select").empty()
 		$.ajax({
 			url:'/stadium/list/',
@@ -162,7 +460,7 @@
 				}
 		
 		})
-	
+		
 	})
 
 	
@@ -249,354 +547,37 @@
 	
 	}
 	
-	function set_img(){
-		
-		
+	function set_img(){		
 	
 	}
-</script>
-
-<style>
-	p{
-		background-color:inherit !important;
-	}
-
-	input[type="text"]{
-		border: 1px solid #bebebe !important;
-    height: 28px !important;
-	line-height:28px !important;
-	text-align:center;
-	margin-top:10px;
-	}
-
-  .container {
-    margin-top: 20px;
-  }
-
-  .preview-section {
-    border: 1px solid #bebebe;
-    padding: 0px;
-	background-color:#f6f6f6;
-  }
-
-  .initialise-section {
-    border: 1px solid #bcbcbc;
-    margin-left: 10px;
-    padding: 10px;
-  }
-
-  .upload-image-section {
-    margin-top: 10px;
-  }
-
-  #stadium-title {
-    border: 1px solid #bebebe;
-    height: 28px;
-	line-height:28px;
-	text-align:center;
-  }
-
-  #stadium-content {
-    border: 1px solid #bebebe;
-    height: 28px;
-	line-height:28px;
-	text-align:left;
-	height:300px;
-	margin-top: 10px;
-    width: 100%;
-  }
-  
-   #stadium-content-title {
-    border: 1px solid #bebebe;
-    height: 28px;
-	line-height:28px;
-	text-align:center;
-	margin-top:10px;
-  }
-
-  #upload-image-show {
-    width: 100%;
-    height: 200px;
-    margin-top: 5px;
-	display:none;
-  }
-
-
-  .initialise-confirm-section {
-    margin-top: 10px;
-  }
-
-  #submit-current-event {
-    margin-left: 20px;
-  }
-
-  .preview-result-sign-up {
-    border: 1px solid #bebebe;
-    text-align: center;
-    width: 30%;
-  }
-
-  #stadium-preview-title {
-    border: 1px dashed #bebebe;
-    display: block;
-    height: 28px;
-	line-height:28px;
-	text-align:center;
-	color:#bebebe;
-  }
-
-  #stadium-preview-content-title {
-    border: 1px dashed #bebebe;
-    height: 28px;
-    margin-top: 5px;
-	margin-bottom:0px;
-	text-align:center;
-	color:#bebebe;
-	line-height:28px;
-	font-size:16px;
-	font-weight:bold;
-  }
-  
-  #stadium-preview-content{
-    border: 1px dashed #bebebe;
-    min-height: 150px;
-    margin-top: 5px;
-	margin-bottom:0px;
-	text-align:center;
-	color:#bebebe;
-	line-height:150px;
-  }
-  #stadium-preview-price,#stadium-preview-count,#stadium-preview-starttime,#stadium-preview-endtime{
-   border: 1px dashed #bebebe;
-    height: 28px;
-    margin-top: 5px;
-	margin-bottom:0px;
-	text-align:center;
-	color:#bebebe;
-	line-height:28px;
-  }
-
-  #stadium-preview-image {
-    border: 1px dashed #bebebe;
-    min-height: 190px;
-	line-height:190px;
-	color:#bebebe;
-	text-align:center;
-	margin-bottom:0px;
-  }
-</style>
-
-<body style="cursor: auto;">
-
-<div class="container-fluid">
-	<div class="row-fluid">
-		<div class="span12"  style="background-color:#FF9933;margin-bottom:20px;height:60px;">
-			<div class="row-fluid">
-				<div class="span3" style="margin-left:0 !important;height:60px;">
-					<a href="#" style="background:url('./img/logo.jpg') 50% 50% no-repeat;width:300px;height:60px;float:left;display:inline">
-						
-					</a>
-				</div>
-				<div class="span7" style="height:30px;">
-						<ul class="breadcrumb" >
-							<li style="min-width:120px;">
-								<a href="/sport/reserve_management.html">
-									预定管理
-								</a>
-							</li>							
-							<li style="min-width:120px;" >
-								<a href="/sport/activity_management.html" style="color:#555 !important">
-									活动管理
-								</a>
-							</li>
-							<li style="min-width:120px;">
-								<a href="/sport/stadium_management.html" >
-									
-									基础配置
-								</a>
-							</li>
-							<li style="min-width:120px;">
-								<a href="/sport/marketing_activity.html" style="color:#555">	
-									营销活动
-								</a>
-							</li>							
-							<li style="min-width:120px;">
-								<a href="/sport/vip_ifo.html" style="color:#555">								
-									会员信息
-								</a>
-							</li>							
-							<!--<li style="min-width:120px;">
-								<a href="#">
-									数据中心
-								</a>
-							</li>-->										
-						</ul>
-				</div>
-				<div class="span2" style="height:30px;">	
-						<ul class="breadcrumb" >
-							<li class="active">
-								<a href="#" id="user_name">
-									admin
-								</a>
-								<b>|</b>
-								<a href="#" id="login_out">
-									注销
-								</a>
-							</li>
-						</ul>
-					</div>	
-			</div>
-		</div>
-	</div>
-</div>
-<div class="container-fluid">
-<!-- 			<div class="row-fluid" style="margin-bottom:30px;border-bottom:1px solid #e6e7ec;margin-top:10px;position:relative">
-				<div class="span1">
-				</div>
-				<div class="span11">
-					<ul style="line-height:30px;height:31px;margin:0;padding:0">
-					<li style="line-height:30px;float:left;">
-						<a href="/sport/activity_management.html" style="color:#FF9933;border-bottom:2px solid #FF9933;text-align:center;display:block;font-size:15px;">活动管理</a>
-					</li>
-					</ul>
-				</div>
-			</div> -->
-			<div class="content-main">
-<!-- 				<div class="sub-nav">
-					<ul class="nav nav-pills">
-								
-						<li class="active">
-							<a href="/sport/activity_management.html">
-								活动发布
-							</a>
-						</li>
-						<li>
-							<a href="/sport/activity_management_history.html">
-								活动历史
-							</a>
-						</li>
-						
-								
-					</ul>
-				</div> -->
-				<div class="content-main radius">
-				<form method="post" action="/activity/add/" name="activity_form" enctype="multipart/form-data" onsubmit="return addActivity();">
-					<div class="span12 tablespan">	
-								<div class="span5">
-								选择场馆：
-								<select id="stadium_select" style="margin-bottom:0px" name="stadium">
-									
-								</select>
-								</div>
-								
-								<!--<div class="span5">
-								<button class="btn-new" type="button" style="height:30px;float:right" onclick="openAddItem()">设置活动票价</button>
-								</div>-->
-					</div>
-				
-					<div class="span12 tablespan" style="margin-left:0px !important">	
-						<div class="col-md-5 preview-section radius">
-						  <div>
-							<p id="stadium-preview-title" class="radius">微页面标题</p>
-						  </div>
-						  <div id="img_preview_div" style="padding:5px;"><div style="background-color:inherit" id="stadium-preview-image" class="radius"/>活动图片</div></div>
-						  <div>
-							<p id="stadium-preview-content-title" class="radius">活动正文标题</p>
-						  </div>
-						  <div>
-							<p id="stadium-preview-starttime" class="radius">开始时间</p>
-						  </div>
-						  <div>
-							<p id="stadium-preview-endtime" class="radius">结束时间</p>
-						  </div>
-						  <div>
-							<p id="stadium-preview-count" class="radius">总人数</p>
-						  </div>
-						  <div>
-							<p id="stadium-preview-price" class="radius">活动票价</p>
-						  </div>
-						  <div>
-							<p id="stadium-preview-content" class="radius">活动正文</p>
-						  </div>
-						  
-						  <div style="margin-top:20px;text-align:center">
-							<button class="btn-new" type="button" style="height:40px;cursor:default" >报名参加</button>
-						  </div>
-						</div>
-							<div class="col-md-6 initialise-section radius">
-							<div>设置起始时间：<input name="start_time" onchange="set_starttime()" type="text" class="date-pick" style="font-size:12px;background:url('./img/date_time.png') 1px 1px no-repeat;height:28px;line-height:28px;width:200px;text-align:center" id="start_date" readonly='readonly' value=""></div>
-							<div>设置结束时间：<input name="end_time" onchange="set_endtime()" type="text" class="date-pick" style="font-size:12px;background:url('./img/date_time.png') 1px 1px no-repeat;height:28px;line-height:28px;width:200px;text-align:center" id="end_date" readonly='readonly' value=""></div>
-							<div>设置报名人数：<input name="attendant_count" onkeyup="set_count()" style="width:100px" id='attendant_count' type="text" placeholder="输入报名人数">&nbsp;人</div>
-							<div>设置活动票价：<input name="price" onkeyup="set_price()" style="width:100px" id='price' type="text" placeholder="输入活动票价">&nbsp;元</div>
-						  <div>设置页面标题：<input name="wx_title" onkeyup="set_page_title()" id='stadium-title' type="text" placeholder="输入微页面标题"></div>
-						  <div class="upload-image-section">
-							设置活动图片：<input id="upload-image-button" name="img" type='file' />
-							  <img id="upload-image-show"/>
-						  </div>
-						  <div>设置正文标题：<input name="title" onkeyup="set_content_title()" id='stadium-content-title' type="text" placeholder="输入活动正文标题"></div>
-						  <div>设置活动正文：<textarea name="content" onkeyup="set_content()" id='stadium-content' placeholder="输入活动正文"></textarea></div>
-						  <div style="display:none">
-						  	<input name="publish" id="publish" value="false">
-						  </div>
-						  <tr id="result" style="display:none">
-							<td colspan="2" id="result_text"></td>
-						  </tr>
-						  <div style="margin-top:20px;text-align:center">
-								<button class="btn-new" type="submit" style="height:40px;" name="action" onclick="$('#publish').val(0);return true"  value="save">保存</button>
-								<button class="btn-new" type="submit" style="height:40px;margin-left:30px;background-color:#44b549" name="action" onclick="$('#publish').val(1);return true"  value="publish">确认发布</button>
-						  </div>
-						</div>
-					</form>	
-					</div>
-				<div class="span1">
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
-
-
-
-<div id="loadingCover">
-        <p><img src="./img/loading.gif"/><span>请稍后</span></p>
- </div>
-<div class="qb_quick_tip qb_none" id="bubble"></div>
-<script>
-	function getUrlParam(name)
-	{
-		var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
-		var r = window.location.search.substr(1).match(reg);  //匹配目标参数
-		if (r!=null) return unescape(r[2]); return null; //返回参数值
-	} 
-
-	var id = getUrlParam("id")	
-	if(id != ""){
-		alert(id)
-			$.ajax({
-				url:'/activity/list/',
-				type:'POST',
-				data:JSON.stringify({"id":id}),
-				dataType:'json',
-				success:function(result){
-					if (result.error == 0){
-						activity_detail = result.activity_list
-						$('#stadium-preview-content').css({'lineHeight':'28px','text-align':'left','color':'#555555','border':"none","boxShadow":"none"});
-						$('#stadium-content').html(activity_detail[0].stadium_name);
-						$('#stadium-preview-image').attr("src",activity_detail[0].img);
-						$('#stadium-preview-title').css({'color':'#555555','border':"none","boxShadow":"none"});
-						$('#stadium-preview-title').text(activity_detail[0].title);
-						$('#stadium-preview-content-title').text(activity_detail[0].title);
-						$('#stadium-preview-starttime').text(activity_detail[0].start_time);
-						$('#stadium-preview-endtime').text(activity_detail[0].end_time);
-						$('#stadium-preview-count').html(activity_detail[0].attendant_count);
-						$('#stadium-preview-content').html(activity_detail[0].content);
-						 $('#stadium-preview-price').html(activity_detail[0].price);
-					}
-				},error:function(e){
-					alert("error")
-				}
-			})
-	}
+	
+	// if(id != ""){
+	// 	alert(id)
+	// 		$.ajax({
+	// 			url:'/activity/list/',
+	// 			type:'POST',
+	// 			data:JSON.stringify({"id":id}),
+	// 			dataType:'json',
+	// 			success:function(result){
+	// 				if (result.error == 0){
+	// 					activity_detail = result.activity_list
+	// 					$('#stadium-preview-content').css({'lineHeight':'28px','text-align':'left','color':'#555555','border':"none","boxShadow":"none"});
+	// 					$('#stadium-content').html(activity_detail[0].stadium_name);
+	// 					$('#stadium-preview-image').attr("src",activity_detail[0].img);
+	// 					$('#stadium-preview-title').css({'color':'#555555','border':"none","boxShadow":"none"});
+	// 					$('#stadium-preview-title').text(activity_detail[0].title);
+	// 					$('#stadium-preview-content-title').text(activity_detail[0].title);
+	// 					$('#stadium-preview-starttime').text(activity_detail[0].start_time);
+	// 					$('#stadium-preview-endtime').text(activity_detail[0].end_time);
+	// 					$('#stadium-preview-count').html(activity_detail[0].attendant_count);
+	// 					$('#stadium-preview-content').html(activity_detail[0].content);
+	// 					 $('#stadium-preview-price').html(activity_detail[0].price);
+	// 				}
+	// 			},error:function(e){
+	// 				alert("error")
+	// 			}
+	// 		})
+	// }
 	(function($){
 	         $(window).load(function(){
 	            //$(".custom_scrollbar").mCustomScrollbar();
@@ -611,8 +592,67 @@
 	    })(jQuery);
 		
 	function addActivity(){
+		var start_date = $("#start_date").val()
+		var end_date = $("#start_date").val()
+		var attendant_count = $("#attendant_count").val()
+		var price = $("#price").val()
+		var stadium_title = $("#stadium-title").val()
+		var upload_image = $("#upload-image-button").val()
+		var stadium_content_title = $("#stadium-content-title").val()
+		var stadium_content = $("#stadium-content").val()
+
+		start_date = $.trim(start_date)
+		end_date = $.trim(end_date)
+		attendant_count = $.trim(attendant_count)
+		price = $.trim(price)
+		stadium_title = $.trim(stadium_title)
+		upload_image = $.trim(upload_image)
+		stadium_content_title = $.trim(stadium_content_title)
+		stadium_content = $.trim(stadium_content)
+
+		if(start_date.length < 1){
+			alert("开始时间不能为空！")
+			$("#start_date").focus()
+			return false
+		}
+		if(end_date.length < 1){
+			alert("结束时间不能为空！")
+			$("#end_date").focus()
+			return false
+		}
+		if(attendant_count.length < 1){
+			alert("报名人数不能为空！")
+			$("#attendant_count").focus()
+			return false
+		}
+		if(price.length < 1){
+			alert("活动票价不能为空！")
+			$("#price").focus()
+			return false
+		}
+		if(stadium_title.length < 1){
+			alert("页面标题不能为空！")
+			$("#stadium_title").focus()
+			return false
+		}
+		if(upload_image.length < 1){
+			alert("活动图片不能为空！")
+			$("#upload_image").focus()
+			return false
+		}
+		if(stadium_content_title.length < 1){
+			alert("正文标题不能为空！")
+			$("#stadium_content_title").focus()
+			return false
+		}
+		if(stadium_content.length < 1){
+			alert("活动正文不能为空！")
+			$("#stadium_content").focus()
+			return false
+		}
+
 		$("form").ajaxSubmit(function(result) {
-			//alert(result)
+			// alert(result)
 			result = JSON.parse(result)
 			$("#result").hide()
 			$("result_text").html("")
@@ -620,17 +660,15 @@
 				$(".qb_quick_tip").css('background','#44b549')
 				showBubble("操作成功")
 			}else{
-				$(".qb_quick_tip").css('background','#e96262')
+				$(".qb_quick_tip").css('background','#se96262')
 				showBubble("操作失败")
 			}
 		})
-		return false
+		return false //防止表单自动提交
 	}	
 
-	
 
-
-var timeout
+	var timeout
 	function showBubble(a) {
 		var c = $("#bubble");
 			c.css("opacity", 1), c.hasClass("qb_none") || c.html(a), c.html(a).removeClass("qb_none")

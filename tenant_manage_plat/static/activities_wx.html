@@ -25,9 +25,6 @@
 	
 	<style type="text/css">
 		table td {text-align:center;line-height:35px;}	
-		.small_img{
-
-		}	
 	</style>
 </head>
 
@@ -40,11 +37,29 @@ function getUrlParam(name)
 	} 
 
 $(document).ready(function(){
-	query()
+	var parameter = ""
+	$.ajax({
+		url:"/tenantSettings/list/",
+        dataType:'JSON',
+        type: 'post',
+        data:JSON.stringify({"name":"style"}),
+        async:false,
+        success:function(result){
+        	if (result.error == "0") {
+        		parameter = result.value
+        	}else{
+    			alert("error")
+    		}
+        },
+        error:function(e){
+        	alert("error")
+        }
+	})
+	query(parameter)
 })
 // var openid = ''
-function query(){	
-	var parameter = getUrlParam('parameter')
+function query(parameter){	
+	var style = getUrlParam('style')
 	var openid = getUrlParam('openid')	
 	// var appid = 'wx95198705de430c74'
 	var appid = getUrlParam('appid')
@@ -61,39 +76,78 @@ function query(){
 				//alert(JSON.stringify(result))
 				var list = result.activity_list
 				var html = []
-				if(parameter == null){
-					for (var i=0;i<list.length;i++){
-						//alert(list[i].img )
-						html.push("<tr style='margin-bottom:5px;height:40px;' id=" + list[i].id + "><td colspan='2' style='padding:0px;'>")
-						html.push("<img src='" + list[i].img + "'>")
-						html.push("</td><td style='background-color:#fff'>")
-						html.push(list[i].wx_title)
-						html.push("<br>")
-						html.push("<button class='btn-new' style='width:100px;' onclick='detail(this)'>马上报名</button></td></tr><tr style='height:20px;'>")
-						html.push("<td colspan='3' class='hr_white' ></td>")
-						html.push("</tr>")	
-					}					
-				}else if(parameter == "2"){
-					for(var i=0;i<list.length;i+2){
-							var j=i+1;
-							html.push("<tr colspan='4' style='margin-bottom:5px;height:40px;'><td colspan='2' style='padding:0px;'><img src='" + list[i].img + "'></td><td colspan='2' style='padding:0px;''><img src='" + list[j].img + "'></td></tr>")
-							html.push("<tr style='margin-bottom:5px;height:40px;'><td colspan='2' id=" + list[i].id + " style='background-color:#fff;border-right:1px solid #ddd'>")
+				if(style != null){
+					if(style=="1"){
+						for (var i=0;i<list.length;i++){
+							//alert(list[i].img )
+							html.push("<tr style='margin-bottom:5px;height:40px;'><td colspan='2' style='padding:0px;'>")
+							html.push("<img src='" + list[i].img + "'>")
+							html.push("</td><td id=" + list[i].id + " style='background-color:#fff'>")
 							html.push(list[i].wx_title)
-							html.push("<br><button class='btn-new' style='width:100px;'' onclick='detail(this)'>马上报名</button></td><td colspan='2' id=" + list[i].id + " style='background-color:#fff'>")
-							html.push(list[j].wx_title)
-							html.push("<br><button class='btn-new' style='width:100px;' onclick='detail(this)''>马上报名</button></td></tr>")
-							html.push("<tr style='height:20px;'><td colspan='4' class='hr_white'></td></tr>")
-					}						
-					}else{
-						for(var i=0;i<list.length;i+3){
+							html.push("<br>")
+							html.push("<button class='btn-new' style='width:100px;' onclick='detail(this)'>马上报名</button></td></tr><tr style='height:20px;'>")
+							html.push("<td colspan='3' class='hr_white' ></td>")
+							html.push("</tr>")	
+						}					
+					}else if(style == "2"){
+						for(var i=0;i<list.length;i+=2){
 								var j=i+1;
-								html.push("<tr style='margin-bottom:5px;height:40px;' id=" + list[i].id + "><td colspan='4' style='padding:0px;'><img src='" + list[i].img + "'></td></tr>")
-								html.push("<tr style='margin-bottom:5px;height:40px;'><td colspan='4' style='background-color:#fff'>"+list[i].wx_title+"<br><button class='btn-new' style='width:100px;' onclick='detail(this)'>马上报名</button></td></tr>")
-								html.push("<tr colspan='4' style='margin-bottom:5px;height:40px;' id='17'><td colspan='2' style='padding:0px;'><img src='" + list[j].img + "'></td><td colspan='2' style='padding:0px;'><img src='" + list[j+1].img + "'></td></tr>")
+								html.push("<tr colspan='4' style='margin-bottom:5px;height:40px;'><td colspan='2' style='padding:0px;'><img src='" + list[i].img + "'></td><td colspan='2' style='padding:0px;''><img src='" + list[j].img + "'></td></tr>")
+								html.push("<tr style='margin-bottom:5px;height:40px;'><td colspan='2' id=" + list[i].id + " style='background-color:#fff;border-right:1px solid #ddd'>")
+								html.push(list[i].wx_title)
+								html.push("<br><button class='btn-new' style='width:100px;'' onclick='detail(this)'>马上报名</button></td><td colspan='2' id=" + list[j].id + " style='background-color:#fff'>")
+								html.push(list[j].wx_title)
+								html.push("<br><button class='btn-new' style='width:100px;' onclick='detail(this)''>马上报名</button></td></tr>")
+								html.push("<tr style='height:20px;'><td colspan='4' class='hr_white'></td></tr>")
+						}						
+					}else if(style == "3"){
+						for(var i=0;i<list.length;i+=3){
+								var j=i+1;
+								html.push("<tr style='margin-bottom:5px;height:40px;'><td colspan='4' style='padding:0px;'><img src='" + list[i].img + "'></td></tr>")
+								html.push("<tr style='margin-bottom:5px;height:40px;'><td colspan='4' style='background-color:#fff' id=" + list[i].id + ">"+list[i].wx_title+"<br><button class='btn-new' style='width:100px;' onclick='detail(this)'>马上报名</button></td></tr>")
+								html.push("<tr style='height:20px;'><td colspan='4' class='hr_white'></td></tr>")
+								html.push("<tr colspan='4' style='margin-bottom:5px;height:40px;'><td colspan='2' style='padding:0px;'><img src='" + list[j].img + "'></td><td colspan='2' style='padding:0px;'><img src='" + list[j+1].img + "'></td></tr>")
 								html.push("<tr style='margin-bottom:5px;height:40px;'><td id=" + list[j].id + " colspan='2' style='background-color:#fff;border-right:1px solid #ddd'>"+list[j].wx_title+"<br><button class='btn-new' style='width:100px;' onclick='detail(this)'>马上报名</button></td><td id=" + list[j+1].id + " colspan='2' style='background-color:#fff'>"+list[j+1].wx_title+"<br><button class='btn-new' style='width:100px;' onclick='detail(this)'>马上报名</button></td></tr>")
 								html.push("<tr style='height:20px;'><td colspan='4' class='hr_white'></td></tr>")
 						}	
 					}
+				}else{
+					if(parameter=="1"){
+						for (var i=0;i<list.length;i++){
+							//alert(list[i].img )
+							html.push("<tr style='margin-bottom:5px;height:40px;'><td colspan='2' style='padding:0px;'>")
+							html.push("<img src='" + list[i].img + "'>")
+							html.push("</td><td id=" + list[i].id + " style='background-color:#fff'>")
+							html.push(list[i].wx_title)
+							html.push("<br>")
+							html.push("<button class='btn-new' style='width:100px;' onclick='detail(this)'>马上报名</button></td></tr><tr style='height:20px;'>")
+							html.push("<td colspan='3' class='hr_white' ></td>")
+							html.push("</tr>")	
+						}					
+					}else if(parameter == "2"){
+						for(var i=0;i<list.length;i+=2){
+								var j=i+1;
+								html.push("<tr colspan='4' style='margin-bottom:5px;height:40px;'><td colspan='2' style='padding:0px;'><img src='" + list[i].img + "'></td><td colspan='2' style='padding:0px;''><img src='" + list[j].img + "'></td></tr>")
+								html.push("<tr style='margin-bottom:5px;height:40px;'><td colspan='2' id=" + list[i].id + " style='background-color:#fff;border-right:1px solid #ddd'>")
+								html.push(list[i].wx_title)
+								html.push("<br><button class='btn-new' style='width:100px;'' onclick='detail(this)'>马上报名</button></td><td colspan='2' id=" + list[j].id + " style='background-color:#fff'>")
+								html.push(list[j].wx_title)
+								html.push("<br><button class='btn-new' style='width:100px;' onclick='detail(this)''>马上报名</button></td></tr>")
+								html.push("<tr style='height:20px;'><td colspan='4' class='hr_white'></td></tr>")
+						}						
+					}else if(parameter == "3"){
+						for(var i=0;i<list.length;i+=3){
+								var j=i+1;
+								html.push("<tr style='margin-bottom:5px;height:40px;'><td colspan='4' style='padding:0px;'><img src='" + list[i].img + "'></td></tr>")
+								html.push("<tr style='margin-bottom:5px;height:40px;'><td colspan='4' style='background-color:#fff' id=" + list[i].id + ">"+list[i].wx_title+"<br><button class='btn-new' style='width:100px;' onclick='detail(this)'>马上报名</button></td></tr>")
+								html.push("<tr style='height:20px;'><td colspan='4' class='hr_white'></td></tr>")
+								html.push("<tr colspan='4' style='margin-bottom:5px;height:40px;'><td colspan='2' style='padding:0px;'><img src='" + list[j].img + "'></td><td colspan='2' style='padding:0px;'><img src='" + list[j+1].img + "'></td></tr>")
+								html.push("<tr style='margin-bottom:5px;height:40px;'><td id=" + list[j].id + " colspan='2' style='background-color:#fff;border-right:1px solid #ddd'>"+list[j].wx_title+"<br><button class='btn-new' style='width:100px;' onclick='detail(this)'>马上报名</button></td><td id=" + list[j+1].id + " colspan='2' style='background-color:#fff'>"+list[j+1].wx_title+"<br><button class='btn-new' style='width:100px;' onclick='detail(this)'>马上报名</button></td></tr>")
+								html.push("<tr style='height:20px;'><td colspan='4' class='hr_white'></td></tr>")
+						}	
+					}					
+				}
+
 
 				$("#time_list").append(html.join(""))
 			}
@@ -104,7 +158,7 @@ function query(){
 }
 
 function detail(obj){
-	var id = $(obj).closest("tr").attr("id")
+	var id = $(obj).closest("td").attr("id")
 	window.location.href = "/sport/activity_modal1.html?id=" + id + "&openid=" + getUrlParam('openid') + "&appid=" + getUrlParam("appid")
 }
 
@@ -139,12 +193,6 @@ function detail(obj){
 		</div>
 	</div>
 </div>
-
-<script>
-
-
-
-
 
 </body>
 </html>

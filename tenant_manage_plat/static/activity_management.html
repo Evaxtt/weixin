@@ -36,8 +36,9 @@
 	<style type="text/css">
 		.nav-tabs>.active>a{background-color:#fff !important}
 		.config{padding-left:30px;background:url('./img/config.png') 0 no-repeat;text-decoration:none;color:inherit !important}
-		.list{padding-left:30px;background:url('./img/list.png') 0 center no-repeat;text-decoration:none;color:inherit !important}
-	
+		.share{padding-left:30px;background:url('./img/share.png') 0 no-repeat;text-decoration:none;color:inherit !important}	
+		.list{padding-left:30px;background:url('./img/list.png') 0 center no-repeat;text-decoration:none;color:inherit !important}	
+		.delete{padding-left:30px;background:url('./img/delete.png') 0 center no-repeat;text-decoration:none;color:inherit !important}
 	</style>
 </head>
 
@@ -77,12 +78,7 @@
 								<a href="/sport/vip_ifo.html" style="color:#555">								
 									会员信息
 								</a>
-							</li>							
-							<!--<li style="min-width:120px;">
-								<a href="#">
-									数据中心
-								</a>
-							</li>-->										
+							</li>									
 						</ul>
 				</div>
 				<div class="span2" style="height:30px;">	
@@ -137,59 +133,58 @@
 					</ul>
 				</div>
 				<div class="content-main radius">
-						<div class="span12">
-							<button class="btn-new" type="button" onclick="javascript:window.location.href='/sport/activity_management_publish.html'" style="margin-top:10px;margin-left:5px;">+ 发布活动</button>
-						</div>
-				
-						<div class="tabbable" style="margin-left:30px;" id="tabs-483419" >
-								<ul class="nav nav-tabs" style="padding-left:10px;margin-bottom:0px;margin-top:25px;">
-									<li class="active" style="display:inline-block;float:none">
-										<a href="javascript:void(0)" data-toggle="tab" style="color:#bdbdbd">已经发布</a>
-									</li>
-									<li style="display:inline-block;float:none">
-										<a href="javascript:void(0)" data-toggle="tab" style="color:#bdbdbd">草稿</a>
-									</li>									
-									<li style="display:inline-block;float:none">
-										<a href="#panel-finished" data-toggle="tab" style="color:#bdbdbd">已结束</a>
-									</li>
-								</ul>
-								<div class="tab-content">
-									<div class="tab-pane active" id="panel-published">										
-									    <div style="padding:20px 10px 20px 10px;" class="span11 web-function-tab">
-											<div class="radius" style="border:1px solid #dedede;height:100px;margin-left:0px;margin-bottom:20px;">
-												<table style="width:100%">
-													<tr style="height:50px">
-														<td colspan="2" style="text-align:left;padding-left:10px;">测试活动1</td>
-														<td colspan="2" style="text-align:right;padding-right:10px;color:#bcbcbc">报名人数：0/100</td>
-													</tr>
-													<tr style="height:50px">
-														<td colspan="2" style="text-align:left;padding-left:10px;color:#bcbcbc">开始时间：2015-12-16 00:00:00</td>
-														<td style="text-align:right;color:#bcbcbc;background:url('./img/config.png') 42% center no-repeat"><a href="/sport/activity_management_info.html" style="text-decoration:none;color:inherit !important">活动设置</a></td>
-														<td style="text-align:right;padding-right:10px;color:#bcbcbc;background:url('./img/list.png') 47% center no-repeat"><a href="/sport/activity_management_member.html" style="text-decoration:none;color:inherit !important">名单管理</a></td>
-													</tr>
-												</table>
-											</div>
-											<div class="radius" style="border:1px solid #dedede;height:50px;margin-left:0px;margin-bottom:20px;"></div>
-										
-										</div>
+					<div class="span12">
+						<button class="btn-new" type="button" onclick="javascript:window.location.href='/sport/activity_management_publish.html'" style="margin-top:10px;margin-left:5px;">+ 发布活动</button>
+					</div>
+					<div class="tabbable" style="margin-left:30px;" id="tabs-483419" >
+						<ul class="nav nav-tabs" style="padding-left:10px;margin-bottom:0px;margin-top:25px;">
+							<li class="active" style="display:inline-block;float:none">
+								<a id="published" href="javascript:void(0)" data-toggle="tab" style="color:#bdbdbd">已经发布</a>
+							</li>
+							<li style="display:inline-block;float:none">
+								<a id="not-published" href="javascript:void(0)" data-toggle="tab" style="color:#bdbdbd">草稿</a>
+							</li>									
+							<li style="display:inline-block;float:none">
+								<a href="#panel-finished" data-toggle="tab" style="color:#bdbdbd">已结束</a>
+							</li>
+						</ul>
+						<div class="tab-content">
+							<div class="tab-pane active" id="panel-published">			
+							    <div style="padding:20px 10px 20px 10px;" class="span11 web-function-tab">
+									<div class="radius" style="border:1px solid #dedede;height:100px;margin-left:0px;margin-bottom:20px;">
+										<table style="width:100%">
+											<tr style="height:50px">
+												<td colspan="2" style="text-align:left;padding-left:10px;">测试活动1</td>
+												<td colspan="2" style="text-align:right;padding-right:10px;color:#bcbcbc">报名人数：0/100</td>
+											</tr>
+											<tr style="height:50px">
+												<td colspan="2" style="text-align:left;padding-left:10px;color:#bcbcbc">开始时间：2015-12-16 00:00:00</td>
+												<td style="text-align:right;color:#bcbcbc;background:url('./img/config.png') 42% center no-repeat"><a href="/sport/activity_management_info.html" style="text-decoration:none;color:inherit !important">活动设置</a></td>
+												<td style="text-align:right;padding-right:10px;color:#bcbcbc;background:url('./img/list.png') 47% center no-repeat"><a href="/sport/activity_management_member.html" style="text-decoration:none;color:inherit !important">名单管理</a></td>
+											</tr>
+										</table>
 									</div>
-									<div class="tab-pane" id="panel-notpublished">
-										<div style="padding:20px 10px 20px 10px;" class="span11 web-function-tab">
-											<div class="radius" style="border:1px solid #dedede;height:100px;margin-left:0px;margin-bottom:20px;">
-												<table style="width:100%">
-													<tr style="height:50px">
-														<td colspan="2" style="text-align:left;padding-left:10px;">测试活动1</td>
-														<td colspan="2" style="text-align:right;padding-right:10px;color:#bcbcbc">报名人数：0/100</td>
-													</tr>
-													<tr style="height:50px">
-														<td colspan="2" style="text-align:left;padding-left:10px;color:#bcbcbc">开始时间：2015-12-16 00:00:00</td>		
-													</tr>
-												</table>
-											</div>
-										</div>
+									<div class="radius" style="border:1px solid #dedede;height:50px;margin-left:0px;margin-bottom:20px;"></div>
+								
+								</div>
+							</div>
+							<div class="tab-pane" id="panel-notpublished">
+								<div style="padding:20px 10px 20px 10px;" class="span11 web-function-tab">
+									<div class="radius" style="border:1px solid #dedede;height:100px;margin-left:0px;margin-bottom:20px;">
+										<table style="width:100%">
+											<tr style="height:50px">
+												<td colspan="2" style="text-align:left;padding-left:10px;">测试活动1</td>
+												<td colspan="2" style="text-align:right;padding-right:10px;color:#bcbcbc">报名人数：0/100</td>
+											</tr>
+											<tr style="height:50px">
+												<td colspan="2" style="text-align:left;padding-left:10px;color:#bcbcbc">开始时间：2015-12-16 00:00:00</td>		
+											</tr>
+										</table>
 									</div>
 								</div>
+							</div>
 						</div>
+					</div>
 			</div>
 		</div>
 	</div>
@@ -202,76 +197,84 @@
  </div>
 <div class="qb_quick_tip qb_none" id="bubble"></div>
 <script>
-(function($){
-         $(window).load(function(){
-            //$(".custom_scrollbar").mCustomScrollbar();
-			$(".container").mCustomScrollbar({
-				axis:"y", // horizontal scrollbar
-				theme:"3d-dark"
-			});		
+	(function($){
+	         $(window).load(function(){
+	            //$(".custom_scrollbar").mCustomScrollbar();
+				$(".container").mCustomScrollbar({
+					axis:"y", // horizontal scrollbar
+					theme:"3d-dark"
+				});		
+				
+				
+	        });		
 			
-			
-        });		
+	    })(jQuery);
 		
-    })(jQuery);
-	
-$(document).ready(function(){
-	//获取session的登录用户信息		
-	$.ajax({
-		url:"/user/get_login_info",
-        dataType:'JSON',
-        type: 'GET',
-        success:function(result){
-        	if (result.error == "0") {
-        		var login_info = result.login_info;
-        		var user_name = login_info.user;
-        		$("#user_name").text(user_name);
-        	}else if(result.error == "1"){
-        		window.location.href="/sport/login.html"
-        	}else{
-        		alert("internal error!")
-        	}
-        },
-        error:function(e){
-        	alert("this error")
-        }
-	})	
-
-	$("#login_out").click(function(){
+	$(document).ready(function(){
+		//获取session的登录用户信息		
 		$.ajax({
-			url:"/login_out/",
-            dataType:'JSON',
-            type: 'GET',
-            success:function(result){
-            	if (result.error == "0") {
-            		window.location.href="/sport/login.html"
-            	}else{
-        			alert("注销失败！")
-        		}
-            },
-            error:function(e){
-            	alert("error")
-            }
+			url:"/user/get_login_info",
+	        dataType:'JSON',
+	        type: 'GET',
+	        success:function(result){
+	        	if (result.error == "0") {
+	        		var login_info = result.login_info;
+	        		var user_name = login_info.user;
+	        		$("#user_name").text(user_name);
+	        	}else if(result.error == "1"){
+	        		window.location.href="/sport/login.html"
+	        	}else{
+	        		alert("internal error!")
+	        	}
+	        },
+	        error:function(e){
+	        	alert("this error")
+	        }
 		})	
+
+		$("#login_out").click(function(){
+			$.ajax({
+				url:"/login_out/",
+	            dataType:'JSON',
+	            type: 'GET',
+	            success:function(result){
+	            	if (result.error == "0") {
+	            		window.location.href="/sport/login.html"
+	            	}else{
+	        			alert("注销失败！")
+	        		}
+	            },
+	            error:function(e){
+	            	alert("error")
+	            }
+			})	
+		})
+		query(1)
+		$("#not-published").click(function(){
+			query(0)
+		})
+		$("#published").click(function(){
+			query(1)
+		})
+
 	})
-	query(1)
-})
-	
-function query(published){
-	//alert()
-	if (published == 1){
-		location.hash = "#panel-published"
-		$("#panel-notpublished").removeClass("active")
-		$("#panel-published").addClass("active")
-	}else{
-		location.hash = "#panel-notpublished"
-		$("#panel-published").removeClass("active")
-		$("#panel-notpublished").addClass("active")
-	}
-	
-	$("#loadingCover").show()
+		
+	function query(published){
+		//alert()
+		if (published == 1){
+			location.hash = "#panel-published"
+			$("#panel-notpublished").removeClass("active")
+			$("#panel-published").addClass("active")
+		}else{
+			location.hash = "#panel-notpublished"
+			$("#panel-published").removeClass("active")
+			$("#panel-notpublished").addClass("active")
+		}
+		
+		$("#loadingCover").show()
 		$("#panel-published").empty()
 		$("#panel-notpublished").empty()
+
 		var data = {"publish":published}
 		$.ajax({
 			url:'/activity/list/',
@@ -281,25 +284,38 @@ function query(published){
 			success:function(result){
 				if (result.error == 0){
 					var html = []
-					
 					var list = result.activity_list
-					for (var i=0;i<list.length;i++){
-						html.push('<div class="span12 radius" id=' + list[i].id + ' style="border:1px solid #dedede;height:100px;margin-left:0px;margin-bottom:20px;">')
-						html.push('<table style="width:100%"><tr style="height:50px">')
-						html.push('<td style="text-align:left;padding-left:10px;">' + list[i].title + '</td>')
-						html.push('<td style="text-align:left;padding-left:10px;">' + list[i].stadium_name + '</td>')
-						html.push('<td colspan="2" style="text-align:right;padding-right:10px;color:#bcbcbc">报名人数：' + list[i].registered_count + '/' + list[i].attendant_count + '</td>')
-						html.push('</tr>')
-						html.push('<tr style="height:50px">')
-						html.push('<td style="text-align:left;padding-left:10px;color:#bcbcbc">开始时间：' + list[i].start_time + '</td>')
-						html.push('<td style="text-align:left;padding-left:10px;color:#bcbcbc">截止时间：' + list[i].end_time + '</td>')
-						html.push('<td style="text-align:right;color:#bcbcbc;"><a class="config" href="/sport/activity_management_publish.html?id='+list[i].id+'">活动编辑</a></td><td style="text-align:right;color:#bcbcbc;"><a class="config" href="/sport/activity_management_info.html?id='+list[i].id+'">活动设置</a></td><td style="text-align:right;padding-right:10px;color:#bcbcbc;"><a class="list" href="/sport/activity_management_member.html?id='+list[i].id+'">名单管理</a></td>')
-						html.push('</tr></table></div>')
-					}
-					$("#loadingCover").hide()
 					if (published == 1){
+						for (var i=0;i<list.length;i++){
+							html.push('<div class="span12 radius" id=' + list[i].id + ' style="border:1px solid #dedede;height:100px;margin-left:0px;margin-bottom:20px;">')
+							html.push('<table style="width:100%"><tr style="height:50px">')
+							html.push('<td style="text-align:left;padding-left:10px;">' + list[i].title + '</td>')
+							html.push('<td style="text-align:left;padding-left:10px;">' + list[i].stadium_name + '</td>')
+							html.push('<td colspan="2" style="text-align:right;padding-right:10px;color:#bcbcbc">报名人数：' + list[i].registered_count + '/' + list[i].attendant_count + '</td>')
+							html.push('</tr>')
+							html.push('<tr style="height:50px">')
+							html.push('<td style="text-align:left;padding-left:10px;color:#bcbcbc">开始时间：' + list[i].start_time + '</td>')
+							html.push('<td style="text-align:left;padding-left:10px;color:#bcbcbc">截止时间：' + list[i].end_time + '</td>')
+							html.push('<td style="text-align:right;color:#bcbcbc;"><a class="config" href="/sport/activity_management_publish.html?id='+list[i].id+'">活动编辑</a></td><td style="text-align:right;color:#bcbcbc;"><a class="share" href="/sport/activity_popularize.html?id='+list[i].id+'">活动推广</a></td><td style="text-align:right;padding-right:10px;color:#bcbcbc;"><a class="list" href="/sport/activity_management_member.html?id='+list[i].id+'">名单管理</a></td>')
+							html.push('</tr></table></div>')
+						}
+						$("#loadingCover").hide()
 						$("#panel-published").append(html.join(''))
 					}else{
+						for (var i=0;i<list.length;i++){
+							html.push('<div class="span12 radius" id=' + list[i].id + ' style="border:1px solid #dedede;height:100px;margin-left:0px;margin-bottom:20px;">')
+							html.push('<table style="width:100%"><tr style="height:50px">')
+							html.push('<td style="text-align:left;padding-left:10px;">' + list[i].title + '</td>')
+							html.push('<td style="text-align:left;padding-left:10px;">' + list[i].stadium_name + '</td>')
+							html.push('<td colspan="2" style="text-align:right;padding-right:10px;color:#bcbcbc">报名人数：' + list[i].registered_count + '/' + list[i].attendant_count + '</td>')
+							html.push('</tr>')
+							html.push('<tr style="height:50px">')
+							html.push('<td style="text-align:left;padding-left:10px;color:#bcbcbc">开始时间：' + list[i].start_time + '</td>')
+							html.push('<td style="text-align:left;padding-left:10px;color:#bcbcbc">截止时间：' + list[i].end_time + '</td>')
+							html.push('<td style="text-align:right;color:#bcbcbc;"><a class="config" href="/sport/activity_management_publish.html?id='+list[i].id+'">活动编辑</a></td><td style="text-align:right;color:#bcbcbc;"><a class="share" href="/sport/activity_popularize.html?id='+list[i].id+'">活动推广</a></td><td style="text-align:right;color:#bcbcbc;"><a class="delete" id="delete_activity" href="javascript:;" onclick="delete_activity('+list[i].id+')">删除活动</a></td><td style="text-align:right;padding-right:10px;color:#bcbcbc;"><a class="list" href="/sport/activity_management_member.html?id='+list[i].id+'">名单管理</a></td>')
+							html.push('</tr></table></div>')
+						}
+						$("#loadingCover").hide()
 						$("#panel-notpublished").append(html.join(''))
 					}
 				}else{
@@ -307,18 +323,34 @@ function query(published){
 					$(".qb_quick_tip").css('background','#e96262')
 					showBubble("获取信息失败")
 				}			
-				},error:function (XMLHttpRequest, textStatus, errorThrown)  {
-					$("#loadingCover").hide()
-					$(".qb_quick_tip").css('background','#e96262')
-					showBubble("获取信息失败")
-				}
-		
+			},error:function (XMLHttpRequest, textStatus, errorThrown)  {
+				$("#loadingCover").hide()
+				$(".qb_quick_tip").css('background','#e96262')
+				showBubble("获取信息失败")
+			}
 		})
-}
+	}
 	
+	function delete_activity(activity_id){
+		$.ajax({
+			url:'/activity/delete/',
+			type:'POST',
+			data:JSON.stringify({"id":activity_id}),
+			dataType:'json',
+			success:function(result){
+				if (result.error == 0) {
+					alert("删除成功！")
+					window.location.reload()
+				}else{
+					alert("删除失败！")
+				}
+			},error:function(e){
+				alert("删除失败！")
+			}	
+		})
+	}
 
-
-var timeout
+	var timeout
 	function showBubble(a) {
 		var c = $("#bubble");
 			c.css("opacity", 1), c.hasClass("qb_none") || c.html(a), c.html(a).removeClass("qb_none")

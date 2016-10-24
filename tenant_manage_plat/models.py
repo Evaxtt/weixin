@@ -396,5 +396,18 @@ class WeixinUser(models.Model):
 
 
     
+class TenantSettings(models.Model):
+    settingName = models.CharField(primary_key=True, max_length=64)
+    settingValue = models.CharField(max_length=128)
+
+
+    def get_tenant_setting(self):
+        return self.settingValue
+
+    class Meta:
+        db_table="tenantsettings"
+
+
+
     
     

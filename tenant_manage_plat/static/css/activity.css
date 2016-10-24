@@ -71,16 +71,16 @@
     width: 400px;
     height: 600px;
     margin-left: 200px;
-    padding-top: 66px;
-    padding-bottom: 66px;
+    padding-top: 50px;
+    padding-bottom: 70px;
     /* padding-right: 16px; */
 }
 .activityattend-liveapp iframe{
     position: absolute;
     // top: 68px;
     // left: 22px;
-    width: 480px;
-    height: 880px;
+    width: 458px;
+    height: 800px;
     -webkit-transform: scale(.7);
     -o-transform: scale(.7);
     transform: scale(.7);
@@ -192,4 +192,29 @@
 #qrcodeCanvas canvas{
 	width: 123px;
 	height:123px;
+}
+#save-style{
+    width: 250px;
+    height: 50px;
+    margin-left: 50px;
+    margin-top: 20px;
+    background-color: #ff9933;
+    color: #fff;
+    font-size: 20px;
+    border: none;
+    border-radius: 5px;
+}
+#save-style:hover{
+    color:#fff; 
+}
+#titlebar h1 {
+    padding: 18px 60px 0 60px;
+    margin:0;
+    height: 46px;
+    line-height: 46px;
+    font-size: 16px;
+    color: #fff;
+    font-weight: bold;
+    text-align: center;
+    background: url(../img/titlebar.png) no-repeat;
 }

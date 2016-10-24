@@ -24,7 +24,7 @@ from tenant_manage_plat import sport_manage
 from tenant_manage_plat import price_manage
 from tenant_manage_plat import activity_manage
 from tenant_manage_plat import reserve_manage
-from tenant_manage_plat import weixin
+from tenant_manage_plat import weixin, tenant_settings_manage
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
@@ -35,6 +35,8 @@ urlpatterns = [
     url(r'^tenant/list/$', tenant_manage.list),
     url(r'^tenant/delete/$', tenant_manage.delete),
     url(r'^tenant/detail/$', tenant_manage.detail),
+    url(r'^tenantSettings/edit/$', tenant_settings_manage.edit),
+    url(r'^tenantSettings/list/$', tenant_settings_manage.list),
     url(r'^user/add/$', user_manage.add),
     url(r'^user/edit/$', user_manage.edit),
     url(r'^user/delete/$', user_manage.delete),
@@ -48,6 +50,7 @@ urlpatterns = [
     url(r'^place_type/list/$', place_manage.place_type_list),
     url(r'^sport_type/list/$', sport_manage.type_list),
     url(r'^activity/add/$', activity_manage.add),
+    url(r'^activity/delete/$', activity_manage.delete),
     url(r'^activity/apply/$', activity_manage.apply),
     url(r'^activity/list/$', activity_manage.list),
     url(r'^activity/applicant_list/$', activity_manage.applicant_list),

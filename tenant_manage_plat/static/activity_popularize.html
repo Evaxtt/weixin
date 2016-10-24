@@ -141,7 +141,7 @@
 					<!-- Nav tabs -->
 					<ul class="nav nav-tabs" role="tablist">
 					  <li role="presentation" class="active"><a href="#social-media" role="tab" data-toggle="tab">社交媒体</a></li>
-					  <li role="presentation"><a href="#wechat-invite" role="tab" data-toggle="tab">微信邀请函</a></li>
+					  <li role="presentation"><a id="invite-tab" href="#wechat-invite" role="tab" data-toggle="tab">微信邀请函</a></li>
 					  <li role="presentation"><a href="#messages" role="tab" data-toggle="tab">短信推广</a></li>
 					</ul>
 
@@ -184,7 +184,7 @@
 					  </div>
 					  <div role="tabpanel" class="tab-pane" id="wechat-invite">
 					  	<div class="event-liveapp">
-					  		<iframe src="/sport/activity_invite.html" frameborder="0" id="wechatInviteIframe"></iframe>	
+					  		<iframe id="activity-invite" name="frame1" src="/sport/activity_invite.html" frameborder="0" id="wechatInviteIframe"></iframe>	
 					  		<div id="qrcodeCanvas"></div>
 					  	</div>			  		
 					  </div>
@@ -213,21 +213,24 @@
 		</div>
 	</div>
 </body>
+<!-- JiaThis Button BEGIN --> 
+<script src="http://v2.jiathis.com/code/jiathis_r.js?move=0"></script> 
+<!-- JiaThis Button END -->
 <script type="text/javascript">
-	jQuery("#qrcodeCanvas").qrcode({
-		text:"http://115.28.111.96/sport/activity_invite.html"
-	});
-	jQuery("#qrcodeCanvas0").qrcode({
-		text:"http://115.28.111.96/sport/activity_invite.html"
-	});
-
 	function getUrlParam(name)
 	{
 		var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
 		var r = window.location.search.substr(1).match(reg);  //匹配目标参数
 		if (r!=null) return unescape(r[2]); return null; //返回参数值
 	}
-	
+	var activity_id = getUrlParam("id")
+
+	var jiathis_config = { 
+		url: "http://115.28.111.96/sport/activity_invite.html?id="+activity_id, 
+		title: "活动推广", 
+		summary:"这是活动邀请页面，赶紧分享给朋友吧！" 
+	} 
+
 	$(document).ready(function(){
 		//获取session的登录用户信息		
 		$.ajax({
@@ -267,54 +270,20 @@
 	            }
 			})	
 		})
-
-		var storage = window.sessionStorage;
-		var activity_id = storage.getItem("activity_id")
+		
 		// var activity_id = getUrlParam("id")
-		// $(".activity_link").click(function(){
-		// 	$(".activity_link").attr('href',$(this).attr('href')+activity_id)
-		// })
-		// alert(activity_id)
-		$.ajax({
-			url:"/activity/applicant_list/",
-	        dataType:'JSON',
-	        type: 'post',
-	        data:JSON.stringify({'activity_id':activity_id}),
-	        success:function(result){
-	        	if (result.error == "0") {
-	        		var applicants = result.applicants
-	        		for(var i=0;i<applicants.length;i++){
-		        		var name = applicants[i].name
-		        		var telephone_number = applicants[i].telephone
-		        		var apply_time = applicants[i].apply_time
-		        		var pay_state = applicants[i].is_payed
-		        		var sign_state = applicants[i].checked
-
-		        		if (pay_state == true) {
-		        			var pay_img_src = "./img/status_ok.png"
-		        		}else{
-		        			pay_img_src = "./img/status_fail.png"
-		        		}
-
-		        		if (sign_state == '0') {
-		        			var sign_img_src = "./img/status_fail.png"
-		        		}else{
-		        			sign_img_src = "./img/status_ok.png"
-		        		}
-
-		        		var activity_member = '<tr><td><input type="checkbox"></input></td><td>'+name+'</td><td>'+telephone_number+'</td><td>'+apply_time+'</td><td><img src="'+pay_img_src+'"></img></td><td><img class="sign_state_img" src="'+sign_img_src+'"></img></td></tr>'
-
-		        		$(activity_member).appendTo("#place_list")
-	        		}
-
-	        	}else{
-	        		alert("this error!")
-	        	}
-	        },
-	        error:function(e){
-	        	alert("error")
-	        }
+		// var storage = window.sessionStorage;
+		// var activity_id = storage.getItem("activity_id")
+		$("#invite-tab").click(function(){
+			$("#activity-invite",parent.document.body).attr('src','/sport/activity_invite.html?id='+activity_id)
 		})	
+
+		jQuery("#qrcodeCanvas").qrcode({
+			text:"http://115.28.111.96/sport/activity_invite.html?id="+activity_id
+		});
+		jQuery("#qrcodeCanvas0").qrcode({
+			text:"http://115.28.111.96/sport/activity_invite.html?id="+activity_id
+		});		
 	})	
 </script>
 </html>
